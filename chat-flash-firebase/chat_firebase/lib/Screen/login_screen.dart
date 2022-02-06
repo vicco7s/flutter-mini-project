@@ -79,24 +79,27 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(
               height: 24.0,
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.all(Radius.circular(30.0)),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    //Implement login functionality.
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
+            Hero(
+                tag: 'login',
+                child: Padding(
+                  padding: EdgeInsets.symmetric(vertical: 16.0),
+                  child: Material(
+                    color: Colors.greenAccent[400],
+                    borderRadius: BorderRadius.all(Radius.circular(30.0)),
+                    elevation: 5.0,
+                    child: MaterialButton(
+                      onPressed: () {
+                        //Implement login functionality.
+                      },
+                      minWidth: 200.0,
+                      height: 42.0,
+                      child: Text(
+                        'Log In',
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
+            )
           ],
         ),
       ),
