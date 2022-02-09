@@ -13,22 +13,23 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
 
+  late Animation animation;
+
   @override
   void initState() {
     super.initState();
     controller = AnimationController(
       duration: Duration(seconds: 1),
       vsync: this,
-      upperBound: 100,
     );
+
+    animation = CurvedAnimation(parent: controller, curve: Curves.easeInOutQuart);
 
     controller.forward();
 
     controller.addListener(() {
-      setState(() {
-        
-      });
-      print(controller.value);
+      setState(() {});
+      print(animation.value);
     });
   }
 
@@ -49,11 +50,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60.0,
+                    height: animation.value * 100,
                   ),
                 ),
                 Text(
-                  '${controller.value.toInt()}', //persen
+                  'Chat Aja', //persen
                   style: TextStyle(
                       fontSize: 45.0,
                       fontWeight: FontWeight.w900,
