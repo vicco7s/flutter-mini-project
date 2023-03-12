@@ -32,7 +32,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
   ];
   var _currentItemSelected = "diterima";
   var ket = "diterima";
-  final dataCreateDinas = CreatePdinas();
+  final dataPdinas = ControllerPDinas();
 
   @override
   Widget build(BuildContext context) {
@@ -223,7 +223,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                   height: 20,
                 ),
                 ElevatedButton(
-                  onPressed: ()  async {
+                  onPressed: () {
                     if (_formkey.currentState!.validate()) {
                       final inputDinas = InputDinas(
                         nama: _selectedValue,
@@ -235,7 +235,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                             DateTime.parse(_tanggal_berakhir.text),
                         status: ket,
                       );
-                      dataCreateDinas.createInputSurel(inputDinas);
+                      dataPdinas.createInputSurel(inputDinas);
                       // createInputSurel(inputDinas);
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

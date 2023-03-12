@@ -5,7 +5,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/model/pdinasservice.dart';
 
-class CreatePdinas {
+class ControllerPDinas {
   final CollectionReference _pdinas =
         FirebaseFirestore.instance.collection('pdinas');
         
@@ -16,13 +16,8 @@ class CreatePdinas {
     json["id"] = maxId + 1;
     await _pdinas.add(json);
   }
-}
 
-class DeletePdinas {
-  final CollectionReference _pdinas =
-      FirebaseFirestore.instance.collection('pdinas');
-
-    Future<void> delete(String id, BuildContext context) async {
+   Future<void> delete(String id, BuildContext context) async {
     try {
       await _pdinas.doc(id).delete();
       // ignore: use_build_context_synchronously
@@ -37,11 +32,6 @@ class DeletePdinas {
           content: Text('Data tidak berhasil di hapus')));
     }
   }
-}
-
-class UpdatePdinas {
-  final CollectionReference _pdinas =
-      FirebaseFirestore.instance.collection('pdinas');
 
   Future<void> update(DocumentSnapshot<Object?> documentSnapshot, BuildContext context) async {
   final _formkey = GlobalKey<FormState>();
@@ -262,4 +252,5 @@ class UpdatePdinas {
         );
       });
   }
+
 }

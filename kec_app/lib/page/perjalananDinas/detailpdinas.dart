@@ -19,8 +19,7 @@ class DetailPdinas extends StatelessWidget {
     var timers = DateFormat.yMMMMd().format(date);
     var timer = DateFormat.yMMMMd().format(dates);
 
-    final deleteData = DeletePdinas();
-    final updateData = UpdatePdinas();
+    final dataPdinas = ControllerPDinas();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -143,7 +142,7 @@ class DetailPdinas extends StatelessWidget {
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               ElevatedButton(
                 onPressed: () async {
-                  await updateData.update(documentSnapshot, context);
+                  await dataPdinas.update(documentSnapshot, context);
                 },
                 child: const Text("Update"),
                 style: ElevatedButton.styleFrom(
@@ -156,7 +155,7 @@ class DetailPdinas extends StatelessWidget {
               ),
               ElevatedButton(
                 onPressed: () async {
-                  await deleteData.delete(documentSnapshot.id, context);
+                  await dataPdinas.delete(documentSnapshot.id, context);
                 },
                 child: const Text("Delete"),
                 style: ElevatedButton.styleFrom(

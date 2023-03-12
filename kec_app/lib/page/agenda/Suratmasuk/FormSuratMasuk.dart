@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:kec_app/components/inputborder.dart';
+import 'package:kec_app/controller/controlerSuratMasuk.dart';
 import 'package:kec_app/model/suratmasukService.dart';
 import 'package:intl/intl.dart';
 
@@ -23,6 +24,7 @@ class _FormSuratMasukState extends State<FormSuratMasuk> {
   final TextEditingController _perihal = TextEditingController();
   final TextEditingController _tanggal_terima = TextEditingController();
 
+  final dataControllerSM = ControllerSM();
   var options = [
     'sudah diterima',
     'belum diterima',
@@ -178,39 +180,42 @@ class _FormSuratMasukState extends State<FormSuratMasuk> {
                       left: 10.0,
                     ),
                     child: DropdownButtonFormField<String>(
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      iconEnabledColor: Colors.black,
-                      focusColor: Colors.black,
-                      items: options.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringItem,
-                          child: Text(
-                            dropDownStringItem,
+                        dropdownColor: Colors.white,
+                        isExpanded: true,
+                        iconEnabledColor: Colors.black,
+                        focusColor: Colors.black,
+                        items: options.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(
+                              dropDownStringItem,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValueSelected) {
+                          setState(() {
+                            _currentItemSelected = newValueSelected!;
+                            ket = newValueSelected;
+                          });
+                        },
+                        // value: _currentItemSelected,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (newValueSelected) {
-                        setState(() {
-                          _currentItemSelected = newValueSelected!;
-                          ket = newValueSelected;
-                        });
-                      },
-                      // value: _currentItemSelected,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[500]),
+                          // hintText: "Masukan Email",
+                          fillColor: Colors.white70,
+                          labelText: "keterangan",
                         ),
-                        filled: true,
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        // hintText: "Masukan Email",
-                        fillColor: Colors.white70,
-                        labelText: "keterangan",
-                      ),
-                      validator: (value) => (value == null ? 'keterangan tidak boleh kosong !' :null)
-                    ),
+                        validator: (value) => (value == null
+                            ? 'keterangan tidak boleh kosong !'
+                            : null)),
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       if (_formkey.currentState!.validate()) {
@@ -222,7 +227,7 @@ class _FormSuratMasukState extends State<FormSuratMasuk> {
                           tanggal_terima: DateTime.parse(_tanggal_terima.text),
                           keterangan: ket,
                         );
-                        _createInputSurel(inputSurel);
+                        dataControllerSM.createInputSurel(inputSurel);
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -240,18 +245,5 @@ class _FormSuratMasukState extends State<FormSuratMasuk> {
                 ],
               )),
         ));
-  }
-
-  void _createInputSurel(InputSurel inputSurel) async {
-    final CollectionReference _suratmasuk =
-        FirebaseFirestore.instance.collection('suratmasuk');
-
- 
-
-    final json = inputSurel.toJson();
-    var querySnapshot = await _suratmasuk.orderBy("no", descending: true).limit(1).get();
-    var maxId = querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("no") : 0;
-    json["no"] = maxId + 1;
-    await _suratmasuk.add(json);
   }
 }

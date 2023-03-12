@@ -5,6 +5,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/components/inputborder.dart';
+import 'package:kec_app/controller/controllerPegawai.dart';
+import 'package:kec_app/controller/controllerpdinas.dart';
 import 'package:kec_app/model/pegawaiAsnServices.dart';
 import 'package:kec_app/model/suratmasukService.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +25,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final TextEditingController _nip = TextEditingController();
   final TextEditingController _jabatan = TextEditingController();
 
+  final dataPegawai = ControllerPegawai();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,50 +77,52 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 10.0, right: 10.0, left: 10.0),
-                        child: DropdownButtonForms(
+                    child: DropdownButtonForms(
                       itemes: pangkat.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(
-                          dropDownStringItem,
-                        ),
-                      );
-                    }).toList(),
-                      onchage:  (newValueSelected) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
                         setState(() {
                           var _currentItemSelected = newValueSelected!;
                           pakat = newValueSelected;
                         });
                       },
                       labelTitle: "Pangkat",
-                      validators: ((value) =>
-                      (value == null ? 'Pangkat tidak boleh kosong !' : null)),
+                      validators: ((value) => (value == null
+                          ? 'Pangkat tidak boleh kosong !'
+                          : null)),
                     ),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 10.0, right: 10.0, left: 10.0),
-                        child: DropdownButtonForms(
+                    child: DropdownButtonForms(
                       itemes: golongan.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(
-                          dropDownStringItem,
-                        ),
-                      );
-                    }).toList(),
-                      onchage:  (newValueSelected) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
                         setState(() {
                           var _currentItemSelected = newValueSelected!;
                           gol = newValueSelected;
                         });
                       },
                       labelTitle: "golongan",
-                      validators: ((value) =>
-                      (value == null ? 'golongan tidak boleh kosong !' : null)),
+                      validators: ((value) => (value == null
+                          ? 'golongan tidak boleh kosong !'
+                          : null)),
                     ),
                   ),
-                    Padding(
+                  Padding(
                     padding: const EdgeInsets.only(
                       top: 10.0,
                       right: 10.0,
@@ -134,7 +139,6 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       },
                     ),
                   ),
-                  
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 10.0,
@@ -143,44 +147,47 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                     ),
                     child: DropdownButtonForms(
                       itemes: status.map((String dropDownStringItem) {
-                      return DropdownMenuItem<String>(
-                        value: dropDownStringItem,
-                        child: Text(
-                          dropDownStringItem,
-                        ),
-                      );
-                    }).toList(),
-                      onchage:  (newValueSelected) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
                         setState(() {
                           var _currentItemSelected = newValueSelected!;
                           stas = newValueSelected;
                         });
                       },
                       labelTitle: "Status",
-                      validators: ((value) =>
-                      (value == null ? 'Status tidak boleh kosong !' : null)),
+                      validators: ((value) => (value == null
+                          ? 'Status tidak boleh kosong !'
+                          : null)),
                     ),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       if (_formkey.currentState!.validate()) {
                         final inputAsn = InputAsn(
-                          nama: _nama.text, 
-                          nip: int.parse(_nip.text), 
-                          pangkat: pakat, 
-                          golongan: gol, 
-                          jabatan: _jabatan.text, 
+                          nama: _nama.text,
+                          nip: int.parse(_nip.text),
+                          pangkat: pakat,
+                          golongan: gol,
+                          jabatan: _jabatan.text,
                           status: stas,
                         );
-                        _createInputSurel(inputAsn);
+                        dataPegawai.createInputSurel(inputAsn);
                         Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: Colors.green,
-                        content: Text('Berhasil Menambahkan Data')));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text('Berhasil Menambahkan Data')));
                       } else {
-                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: Colors.red,
-                        content: Text('Gagal Menambahkan Data')));
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                backgroundColor: Colors.red,
+                                content: Text('Gagal Menambahkan Data')));
                       }
                     },
                     child: Text('Submit'),
@@ -189,22 +196,4 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
               )),
         ));
   }
-
-  
-
-  void _createInputSurel(InputAsn inputAsn) async {
-    final CollectionReference _pegawaiAsn =
-        FirebaseFirestore.instance.collection('pegawai');
-
-    // inputSurel.id = _suratmasuk.id;
-
-    final json = inputAsn.toJson();
-    var querySnapshot = await _pegawaiAsn.orderBy("id", descending: true).limit(1).get();
-    var maxId = querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("id") : 0;
-    json["id"] = maxId + 1;
-    await _pegawaiAsn.add(json);
-  }
-   
 }
-
-

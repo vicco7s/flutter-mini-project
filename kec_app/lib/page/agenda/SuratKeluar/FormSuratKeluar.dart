@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/controller/controllerSuratKeluar.dart';
 import 'package:kec_app/model/suratkeluarService.dart';
 
 class FormSuratKeluar extends StatefulWidget {
@@ -23,6 +24,7 @@ class _FormSuratKeluarState extends State<FormSuratKeluar> {
   final TextEditingController _perihal = TextEditingController();
   String? _input;
   String? _inputErrorText;
+  final dataSuratKeluar = ControllerSK();
 
   var options = [
     'sudah dikirim',
@@ -144,60 +146,60 @@ class _FormSuratKeluarState extends State<FormSuratKeluar> {
                       left: 10.0,
                     ),
                     child: DropdownButtonFormField<String>(
-                      dropdownColor: Colors.white,
-                      isExpanded: true,
-                      iconEnabledColor: Colors.black,
-                      focusColor: Colors.black,
-                      items: options.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringItem,
-                          child: Text(
-                            dropDownStringItem,
+                        dropdownColor: Colors.white,
+                        isExpanded: true,
+                        iconEnabledColor: Colors.black,
+                        focusColor: Colors.black,
+                        items: options.map((String dropDownStringItem) {
+                          return DropdownMenuItem<String>(
+                            value: dropDownStringItem,
+                            child: Text(
+                              dropDownStringItem,
+                            ),
+                          );
+                        }).toList(),
+                        onChanged: (newValueSelected) {
+                          setState(() {
+                            _currentItemSelected = newValueSelected!;
+                            ket = newValueSelected;
+                          });
+                        },
+                        // value: _currentItemSelected,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (newValueSelected) {
-                        setState(() {
-                          _currentItemSelected = newValueSelected!;
-                          ket = newValueSelected;
-                        });
-                      },
-                      // value: _currentItemSelected,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                          filled: true,
+                          hintStyle: TextStyle(color: Colors.grey[500]),
+                          // hintText: "Masukan Email",
+                          fillColor: Colors.white70,
+                          labelText: "keterangan",
                         ),
-                        filled: true,
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        // hintText: "Masukan Email",
-                        fillColor: Colors.white70,
-                        labelText: "keterangan",
-                      ),
-                      validator: (value) => (value == null ? 'keterangan tidak boleh kosong !' :null)
-                    ),
+                        validator: (value) => (value == null
+                            ? 'keterangan tidak boleh kosong !'
+                            : null)),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       setState(() {
                         if (_formkey.currentState!.validate()) {
                           final inputSurel = OutputSurel(
-                            noBerkas: _noBerkas.text,
-                            alamat: _alamat.text,
-                            tanggal: DateTime.parse(_tanggal.text),
-                            perihal: _perihal.text, 
-                            keterangan: ket
-                          );
-                          _createOutputSurel(inputSurel);
+                              noBerkas: _noBerkas.text,
+                              alamat: _alamat.text,
+                              tanggal: DateTime.parse(_tanggal.text),
+                              perihal: _perihal.text,
+                              keterangan: ket);
+                           dataSuratKeluar.createOutputSurel(inputSurel);
                           Navigator.pop(context);
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('Berhasil Menambahkan Data')));
+                              const SnackBar(
+                                  backgroundColor: Colors.green,
+                                  content: Text('Berhasil Menambahkan Data')));
                         } else {
-                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text('Gagal Menambahkan Data')));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  backgroundColor: Colors.red,
+                                  content: Text('Gagal Menambahkan Data')));
                         }
                       });
                     },
@@ -206,18 +208,5 @@ class _FormSuratKeluarState extends State<FormSuratKeluar> {
                 ],
               )),
         ));
-  }
-
-  void _createOutputSurel(OutputSurel outputSurel) async {
-    final CollectionReference<Map<String, dynamic>> _suratkeluar =
-        FirebaseFirestore.instance.collection('suratkeluar');
-
-    // outputSurel.id = _suratkeluar.id;
-
-    final json = outputSurel.toJson();
-     var querySnapshot = await _suratkeluar.orderBy("no", descending: true).limit(1).get();
-    var maxId = querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("no") : 0;
-    json["no"] = maxId + 1;
-    await _suratkeluar.add(json);
   }
 }
