@@ -6,8 +6,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/controller/controllerpdinas.dart';
 import 'package:kec_app/model/pdinasservice.dart';
-
 
 class FormPDinasPage extends StatefulWidget {
   const FormPDinasPage({super.key});
@@ -32,6 +32,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
   ];
   var _currentItemSelected = "diterima";
   var ket = "diterima";
+  final dataCreateDinas = CreatePdinas();
 
   @override
   Widget build(BuildContext context) {
@@ -86,182 +87,172 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                           }
                         }))),
                 Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                      right: 10.0,
-                      left: 10.0,
-                    ),
-                    child: TextFormFields(
-                      controllers: _tujuan,
-                      labelTexts: 'Tujuan',
-                      keyboardtypes: TextInputType.text,
-                      validators: (value) {
-                        if (value!.isEmpty) {
-                          return "Tujuan Tidak Boleh Kosong !";
-                        }
-                      },
-                    ),
+                  padding: const EdgeInsets.only(
+                    top: 10.0,
+                    right: 10.0,
+                    left: 10.0,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                      right: 10.0,
-                      left: 10.0,
-                    ),
-                    child: TextFormFields(
-                      controllers: _keperluan,
-                      labelTexts: 'Keperluan',
-                      keyboardtypes: TextInputType.text,
-                      validators: (value) {
-                        if (value!.isEmpty) {
-                          return "Keperluan Tidak Boleh Kosong !";
-                        }
-                      },
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                      right: 10.0,
-                      left: 10.0,
-                    ),
-                    child: DateTimeField(
-                      format: DateFormat('yyyy-MM-dd'),
-                      onShowPicker:
-                          (BuildContext context, DateTime? currentValue) {
-                        return showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                      },
-                      controller: _tanggal_berangkat,
-                      validator: (value) {
-                        if ((value.toString().isEmpty) ||
-                            (DateTime.tryParse(value.toString()) == null)) {
-                          return "Tanggal berangkat Tidak Boleh Kosong !";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.date_range_outlined),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        // hintText: "Masukan Email",
-                        fillColor: Colors.white70,
-                        labelText: 'Tanggal Berangkat',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-                      top: 10.0,
-                      right: 10.0,
-                      left: 10.0,
-                    ),
-                    child: DateTimeField(
-                      format: DateFormat('yyyy-MM-dd'),
-                      onShowPicker:
-                          (BuildContext context, DateTime? currentValue) {
-                        return showDatePicker(
-                          context: context,
-                          firstDate: DateTime(2000),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                      },
-                      controller: _tanggal_berakhir,
-                      validator: (value) {
-                        if ((value.toString().isEmpty) ||
-                            (DateTime.tryParse(value.toString()) == null)) {
-                          return "Tanggal berakhir Tidak Boleh Kosong !";
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        prefixIcon: const Icon(Icons.date_range_outlined),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        filled: true,
-                        hintStyle: TextStyle(color: Colors.grey[500]),
-                        // hintText: "Masukan Email",
-                        fillColor: Colors.white70,
-                        labelText: 'Tanggal Berakhir',
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
-                    child: DropdownButtonForms(
-                      itemes: options.map((String dropDownStringItem) {
-                        return DropdownMenuItem<String>(
-                          value: dropDownStringItem,
-                          child: Text(
-                            dropDownStringItem,
-                          ),
-                        );
-                      }).toList(),
-                      onchage: (newValueSelected) {
-                         setState(() {
-                          _currentItemSelected = newValueSelected!;
-                          ket = newValueSelected;
-                        });
-                      },
-                      labelTitle: "Status",
-                      validators: (value) => (value == null ? 'Status tidak boleh kosong !' :null),
-                    ),
-                  ),
-                  SizedBox(height: 20,),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (_formkey.currentState!.validate()) {
-                        final inputDinas = InputDinas(
-                          nama: _selectedValue,
-                          tujuan: _tujuan.text,
-                          keperluan: _keperluan.text,
-                          tanggal_berangkat: DateTime.parse(_tanggal_berangkat.text),
-                          tanggal_berakhir: DateTime.parse(_tanggal_berakhir.text), 
-                          status: ket,
-                        );
-                        _createInputSurel(inputDinas);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('Berhasil Menambahkan Data')));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text('Gagal Menambahkan Data')));
+                  child: TextFormFields(
+                    controllers: _tujuan,
+                    labelTexts: 'Tujuan',
+                    keyboardtypes: TextInputType.text,
+                    validators: (value) {
+                      if (value!.isEmpty) {
+                        return "Tujuan Tidak Boleh Kosong !";
                       }
                     },
-                    child: Text('Submit'),
-                  )
-
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10.0,
+                    right: 10.0,
+                    left: 10.0,
+                  ),
+                  child: TextFormFields(
+                    controllers: _keperluan,
+                    labelTexts: 'Keperluan',
+                    keyboardtypes: TextInputType.text,
+                    validators: (value) {
+                      if (value!.isEmpty) {
+                        return "Keperluan Tidak Boleh Kosong !";
+                      }
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10.0,
+                    right: 10.0,
+                    left: 10.0,
+                  ),
+                  child: DateTimeField(
+                    format: DateFormat('yyyy-MM-dd'),
+                    onShowPicker:
+                        (BuildContext context, DateTime? currentValue) {
+                      return showDatePicker(
+                        context: context,
+                        firstDate: DateTime(2000),
+                        initialDate: currentValue ?? DateTime.now(),
+                        lastDate: DateTime(2100),
+                      );
+                    },
+                    controller: _tanggal_berangkat,
+                    validator: (value) {
+                      if ((value.toString().isEmpty) ||
+                          (DateTime.tryParse(value.toString()) == null)) {
+                        return "Tanggal berangkat Tidak Boleh Kosong !";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.date_range_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      filled: true,
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      // hintText: "Masukan Email",
+                      fillColor: Colors.white70,
+                      labelText: 'Tanggal Berangkat',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(
+                    top: 10.0,
+                    right: 10.0,
+                    left: 10.0,
+                  ),
+                  child: DateTimeField(
+                    format: DateFormat('yyyy-MM-dd'),
+                    onShowPicker:
+                        (BuildContext context, DateTime? currentValue) {
+                      return showDatePicker(
+                        context: context,
+                        firstDate: DateTime(2000),
+                        initialDate: currentValue ?? DateTime.now(),
+                        lastDate: DateTime(2100),
+                      );
+                    },
+                    controller: _tanggal_berakhir,
+                    validator: (value) {
+                      if ((value.toString().isEmpty) ||
+                          (DateTime.tryParse(value.toString()) == null)) {
+                        return "Tanggal berakhir Tidak Boleh Kosong !";
+                      }
+                      return null;
+                    },
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.date_range_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      filled: true,
+                      hintStyle: TextStyle(color: Colors.grey[500]),
+                      // hintText: "Masukan Email",
+                      fillColor: Colors.white70,
+                      labelText: 'Tanggal Berakhir',
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
+                  child: DropdownButtonForms(
+                    itemes: options.map((String dropDownStringItem) {
+                      return DropdownMenuItem<String>(
+                        value: dropDownStringItem,
+                        child: Text(
+                          dropDownStringItem,
+                        ),
+                      );
+                    }).toList(),
+                    onchage: (newValueSelected) {
+                      setState(() {
+                        _currentItemSelected = newValueSelected!;
+                        ket = newValueSelected;
+                      });
+                    },
+                    labelTitle: "Status",
+                    validators: (value) =>
+                        (value == null ? 'Status tidak boleh kosong !' : null),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                ElevatedButton(
+                  onPressed: ()  async {
+                    if (_formkey.currentState!.validate()) {
+                      final inputDinas = InputDinas(
+                        nama: _selectedValue,
+                        tujuan: _tujuan.text,
+                        keperluan: _keperluan.text,
+                        tanggal_berangkat:
+                            DateTime.parse(_tanggal_berangkat.text),
+                        tanggal_berakhir:
+                            DateTime.parse(_tanggal_berakhir.text),
+                        status: ket,
+                      );
+                      dataCreateDinas.createInputSurel(inputDinas);
+                      // createInputSurel(inputDinas);
+                      Navigator.pop(context);
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Colors.green,
+                          content: Text('Berhasil Menambahkan Data')));
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text('Gagal Menambahkan Data')));
+                    }
+                  },
+                  child: Text('Submit'),
+                )
               ],
             )),
       ),
     );
   }
-
-  void _createInputSurel(InputDinas inputDinas) async {
-    final CollectionReference _pdinas =
-        FirebaseFirestore.instance.collection('pdinas');
-
- 
-
-    final json = inputDinas.toJson();
-    var querySnapshot = await _pdinas.orderBy("id", descending: true).limit(1).get();
-    var maxId = querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("id") : 0;
-    json["id"] = maxId + 1;
-    await _pdinas.add(json);
-  }
-
 
 }
