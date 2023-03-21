@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:kec_app/components/TabbarViewWidget.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PdinasCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';
@@ -21,15 +22,20 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
 
   final List<Widget> myTabs = [
     Tab(
-      icon: Icon(Icons.group),
-      text: "pegawai",
+      icon: Icon(Icons.group_outlined),
     ),
     Tab(
-      icon: Icon(Icons.group),
-      text: "pegawai",
+      icon: Icon(Icons.mark_email_unread_outlined),
     ),
-    // Tab(icon: Icon(Icons.group),),
-    // Tab(icon: Icon(Icons.),),
+    Tab(
+      icon: Icon(Icons.outgoing_mail),
+    ),
+    Tab(
+      icon: Icon(Icons.emoji_transportation_outlined),
+    ),
+    Tab(
+      icon: Icon(Icons.paid_outlined),
+    ),
   ];
 
   late TabController tabController;
@@ -38,7 +44,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
   void initState() {
     // TODO: implement initState
     super.initState();
-    tabController = TabController(length: 2, vsync: this);
+    tabController = TabController(length: 5, vsync: this);
   }
 
 
@@ -341,73 +347,21 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
               ),
               ListTile(
                 title: Text(
-                  "List Data",
+                  "Daftar Data",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             
             // list tabbarview
            TabBar(
-                    controller: tabController,
-                    tabs: myTabs,
-                    labelColor: Colors.blueAccent,
-                  ),
+              controller: tabController,
+              tabs: myTabs,
+              labelColor: Colors.blueAccent,
+            ),
            Container(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: TabBarView(
-                    controller: tabController,
-                    physics: ScrollPhysics(),
-                    children: [
-                      Column(
-                        children: [
-                          Expanded(
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance.collection('pegawai').orderBy('id', descending: false).snapshots(),
-                              builder: (context, snapshot) {
-                              return (snapshot.connectionState == ConnectionState.waiting)
-                    ? Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : ListView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data!.docs.length,
-                        itemBuilder: (BuildContext context, index) {
-                          final DocumentSnapshot documentSnapshot =
-                              snapshot.data!.docs[index];
-                          return Card(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(15.0),
-                                bottomRight: Radius.circular(15.0),
-                                topRight: Radius.circular(15.0),
-                                bottomLeft: Radius.circular(15.0),
-                            )),
-                            elevation: 5.0,
-                            child: ListTile(
-                              onTap: () {
-                                // Navigator.of(context).push(CupertinoPageRoute(
-                                //     builder: (context) => DetailPegawaiCamat(documentSnapshot: documentSnapshot,)));
-                              },
-                              title: Text(documentSnapshot['nama'],style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                              subtitle: Text(
-                                  documentSnapshot['nip'].toInt().toString()),
-                            ),
-                          );
-                        },
-                      );
-                            },)
-                          )
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          Text("dua")
-                        ],
-                      ),
-                    ],
-                  ),
+                  child: TabBarViewWidget(controllers: tabController,),
                 ),
               )
 
@@ -417,6 +371,8 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
       ),
     );
   }
+
+  
 }
 
 Future<void> logout(BuildContext context) async {
