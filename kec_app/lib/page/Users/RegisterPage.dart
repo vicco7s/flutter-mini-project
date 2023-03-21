@@ -30,6 +30,7 @@ class _CreateUserState extends State<CreateUser> {
   File? file;
 
   var options = [
+    'Camat',
     'Pegawai',
     'Admin',
   ];
@@ -166,12 +167,12 @@ class _CreateUserState extends State<CreateUser> {
                               fillColor: Colors.white70,
                               labelText: "Konfirmasi Password",
                               suffixIcon: IconButton(
-                                  icon: Icon(_isObscure
+                                  icon: Icon(_isObscure2
                                       ? Icons.visibility_off
                                       : Icons.visibility),
                                   onPressed: () {
                                     setState(() {
-                                      _isObscure = !_isObscure;
+                                      _isObscure2 = !_isObscure2;
                                     });
                                   }),
                               enabled: true,
@@ -329,25 +330,5 @@ class _CreateUserState extends State<CreateUser> {
       }
       Navigator.pop(context);
     }
-  }
-
-  postDetailsToFirestore(String email, String rool) async {
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    var user = _auth.currentUser;
-    CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref.doc(user!.uid).set({'email': emailController.text, 'rool': rool});
-    setState(() {
-      isLoading = false;
-    });
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.green,
-        content: Text('Email Berhasil Dibuat'),
-      ),
-    );
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
   }
 }

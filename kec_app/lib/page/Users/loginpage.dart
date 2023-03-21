@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:kec_app/page/Dashboard%20Camat/HomeCamatPage.dart';
 import 'package:kec_app/page/HomePage.dart';
 import 'package:kec_app/page/Dashboard%20user/HomeUserPage.dart';
 import 'package:kec_app/page/Users/RegisterPage.dart';
@@ -222,6 +223,13 @@ class _LoginPageState extends State<LoginPage> {
           context,
           CupertinoPageRoute(
             builder: (context) =>  const HomePage(),
+          ),
+        );
+        }else if (documentSnapshot.get('rool') == "Camat"){
+          Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(
+            builder: (context) =>  const HomeCamatPage(),
           ),
         );
         }else{
