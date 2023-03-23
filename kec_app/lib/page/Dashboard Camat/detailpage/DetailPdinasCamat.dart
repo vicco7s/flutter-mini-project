@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/controller/controllerCamat.dart';
 
 class DetailPdinasCamat extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
@@ -16,6 +17,7 @@ class DetailPdinasCamat extends StatelessWidget {
     var dates = timerstamps.toDate();
     var timers = DateFormat.yMMMMd().format(date);
     var timer = DateFormat.yMMMMd().format(dates);
+    final updateStatus = UpdateCamat();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -134,6 +136,18 @@ class DetailPdinasCamat extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              ElevatedButton(
+                onPressed: () async {
+                  await updateStatus.update(documentSnapshot, context);
+                },
+                child: const Text("Ubah Status"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue, // background
+                  foregroundColor: Colors.white, // foreground
+                ),
+              ),
+            ]),
           ],
         ),
       ),

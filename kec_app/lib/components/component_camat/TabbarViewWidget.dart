@@ -169,11 +169,67 @@ class TabBarViewWidget extends StatelessWidget {
             ))
           ],
         ),
+        // perjalanan dinas
         Column(
-          children: [Text("dua")],
+          children: [
+            Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('pdinas')
+                  .orderBy('id', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                return (snapshot.connectionState == ConnectionState.waiting)
+                    ? Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: snapshot.data!.docs.length,
+                        itemBuilder: (BuildContext context, index) {
+                          final DocumentSnapshot documentSnapshot =
+                              snapshot.data!.docs[index];
+                          return Card(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(15.0),
+                              bottomRight: Radius.circular(15.0),
+                              topRight: Radius.circular(15.0),
+                              bottomLeft: Radius.circular(15.0),
+                            )),
+                            elevation: 5.0,
+                            child: ListTile(
+                              onTap: () {
+                                // Navigator.of(context).push(CupertinoPageRoute(
+                                //     builder: (context) => DetailPegawaiCamat(documentSnapshot: documentSnapshot,)));
+                              },
+                                title: Text(documentSnapshot['nama'],
+                                  style: TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontWeight: FontWeight.bold)),
+                                subtitle: Text(documentSnapshot['tujuan']),
+                                trailing: (documentSnapshot['status'] ==
+                                      'diterima')
+                                  ? Text(
+                                      documentSnapshot['status'],
+                                      style:
+                                          const TextStyle(color: Colors.green),
+                                    )
+                                  : Text(
+                                      documentSnapshot['status'],
+                                      style: const TextStyle(color: Colors.red),
+                                    )
+                              ),
+                          );
+                        },
+                      );
+              },
+            ))
+          ],
         ),
         Column(
-          children: [Text("dua")],
+          children: [Text("No Data")],
         ),
       ],
     );

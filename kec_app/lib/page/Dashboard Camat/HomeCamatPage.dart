@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kec_app/components/TabbarViewWidget.dart';
+import 'package:kec_app/components/component_camat/TabbarViewWidget.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PdinasCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';
@@ -125,7 +125,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                         child: Center(
                           child: Column(
                             children: [
-                              Icon(Icons.person),
+                              Icon(Icons.group),
                               SizedBox(
                                 height: 10,
                               ),
@@ -183,7 +183,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                         child: Center(
                           child: Column(
                             children: [
-                              Icon(Icons.mail),
+                              Icon(Icons.mark_email_unread),
                               SizedBox(
                                 height: 10,
                               ),
@@ -210,7 +210,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                           child: Center(
                               child: Column(
                             children: [
-                              Icon(Icons.drafts),
+                              Icon(Icons.outgoing_mail),
                               SizedBox(
                                 height: 10,
                               ),
@@ -220,6 +220,37 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                             ],
                           )))),
                 ],
+              ),
+              SizedBox(height: 30,),
+              Padding(
+                padding: const EdgeInsets.only(left: 24, top: 0, right: 24, bottom: 0),
+                child: ElevatedButton(
+                        onPressed: () {
+                          // Navigator.push(
+                          //     context,
+                          //     CupertinoPageRoute(
+                          //         builder: ((context) => SuratMasukCamat())));
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white, // background
+                          foregroundColor: Colors.blueAccent, // foreground
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(11, 20, 11, 20),
+                          child: Center(
+                            child: Column(
+                              children: [
+                                Icon(Icons.paid),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text("Biaya Perjalanan Dinas",
+                                    style: TextStyle(
+                                        fontSize: 15, fontWeight: FontWeight.bold)),
+                              ],
+                            ),
+                          ),
+                        )),
               ),
               SizedBox(
                 height: 15,
@@ -347,7 +378,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
               ),
               ListTile(
                 title: Text(
-                  "Daftar Data",
+                  "Highlights",
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
@@ -371,8 +402,6 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
       ),
     );
   }
-
-  
 }
 
 Future<void> logout(BuildContext context) async {
