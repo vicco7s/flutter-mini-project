@@ -2,8 +2,6 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
-import 'package:kec_app/page/Users/RegisterPage.dart';
 import 'package:kec_app/screen/SplashScreen.dart';
 
 // add firestore ke widget flutter
