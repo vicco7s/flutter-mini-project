@@ -27,6 +27,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final TextEditingController _alamat = TextEditingController();
   final TextEditingController _tempatlahir = TextEditingController();
   final TextEditingController _jumlahAnak = TextEditingController();
+  
   final dataPegawai = ControllerPegawai();
   @override
   Widget build(BuildContext context) {
@@ -59,6 +60,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         if (value!.isEmpty) {
                           return "nama Tidak Boleh Kosong !";
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -73,6 +75,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         if (value!.isEmpty) {
                           return "nip Tidak Boleh Kosong !";
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -91,7 +94,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       onchage: (newValueSelected) {
                         setState(() {
                           var _currentItemSelected = newValueSelected!;
-                          pakat = newValueSelected;
+                          jk = newValueSelected;
                         });
                       },
                       labelTitle: "Jenis Kelamin",
@@ -151,6 +154,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         if (value!.isEmpty) {
                           return "tempat lahir Tidak Boleh Kosong !";
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -208,6 +212,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         if (value!.isEmpty) {
                           return "alamat Tidak Boleh Kosong !";
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -227,7 +232,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       onchage: (newValueSelected) {
                         setState(() {
                           var _currentItemSelected = newValueSelected!;
-                          pakat = newValueSelected;
+                          pendidikan_ak = newValueSelected;
                         });
                       },
                       labelTitle: "Pendidikan Terkahir",
@@ -301,6 +306,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         if (value!.isEmpty) {
                           return "Jabatan Tidak Boleh Kosong !";
                         }
+                        return null;
                       },
                     ),
                   ),
@@ -351,7 +357,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       onchage: (newValueSelected) {
                         setState(() {
                           var _currentItemSelected = newValueSelected!;
-                          stas = newValueSelected;
+                          sperkawinan = newValueSelected;
                         });
                       },
                       labelTitle: "Status Perkawinan",
@@ -372,6 +378,23 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         if (value!.isEmpty) {
                           return "jumlah anak Tidak Boleh Kosong !";
                         }
+                        return null;
+                      },
+                    ),
+                  ),
+                  //telp
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, right: 10.0, left: 10.0),
+                    child: TextFormFields(
+                      controllers: _telp,
+                      labelTexts: 'telp',
+                      keyboardtypes: TextInputType.number,
+                      validators: (value) {
+                        if (value!.isEmpty) {
+                          return "telp Tidak Boleh Kosong !";
+                        }
+                        return null;
                       },
                     ),
                   ),
@@ -385,7 +408,16 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           pangkat: pakat,
                           golongan: gol,
                           jabatan: _jabatan.text,
-                          status: stas,
+                          status: stas, 
+                          jenis_kelamin: jk, 
+                          alamat: _alamat.text, 
+                          jumlah_anak: int.parse(_jumlahAnak.text), 
+                          pendidikan_terakhir: pendidikan_ak, 
+                          status_perkawinan: sperkawinan, 
+                          tanggal_mulai_tugas: DateTime.parse(_tmulaitugas.text), 
+                          tempat_lahir: _tempatlahir.text, 
+                          tgl_lahir: DateTime.parse(_tlahir.text), 
+                          telp: int.parse(_telp.text),
                         );
                         dataPegawai.createInputSurel(inputAsn);
                         Navigator.pop(context);
