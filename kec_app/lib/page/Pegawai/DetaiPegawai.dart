@@ -1,11 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
 import 'package:kec_app/controller/controllerPegawai.dart';
-import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
-import 'package:kec_app/util/OptionDropDown.dart';
 
 class DetailPagePegawai extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
