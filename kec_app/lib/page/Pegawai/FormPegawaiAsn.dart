@@ -26,6 +26,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final TextEditingController _telp = TextEditingController();
   final TextEditingController _alamat = TextEditingController();
   final TextEditingController _tempatlahir = TextEditingController();
+  final TextEditingController _jumlahAnak = TextEditingController();
   final dataPegawai = ControllerPegawai();
   @override
   Widget build(BuildContext context) {
@@ -145,7 +146,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                     child: TextFormFields(
                       controllers: _tempatlahir,
                       labelTexts: 'Tempat Lahir',
-                      keyboardtypes: TextInputType.number,
+                      keyboardtypes: TextInputType.text,
                       validators: (value) {
                         if (value!.isEmpty) {
                           return "tempat lahir Tidak Boleh Kosong !";
@@ -331,8 +332,49 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           : null)),
                     ),
                   ),
-                  
-                  
+                  //Status Perkawinan
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      right: 10.0,
+                      left: 10.0,
+                    ),
+                    child: DropdownButtonForms(
+                      itemes: s_perkawinan.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
+                        setState(() {
+                          var _currentItemSelected = newValueSelected!;
+                          stas = newValueSelected;
+                        });
+                      },
+                      labelTitle: "Status Perkawinan",
+                      validators: ((value) => (value == null
+                          ? 'Status Perkawinan tidak boleh kosong !'
+                          : null)),
+                    ),
+                  ),
+                  //jumlah anak
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, right: 10.0, left: 10.0),
+                    child: TextFormFields(
+                      controllers: _jumlahAnak,
+                      labelTexts: 'jumlah anak',
+                      keyboardtypes: TextInputType.number,
+                      validators: (value) {
+                        if (value!.isEmpty) {
+                          return "jumlah anak Tidak Boleh Kosong !";
+                        }
+                      },
+                    ),
+                  ),
                   
                   ElevatedButton(
                     onPressed: () {
