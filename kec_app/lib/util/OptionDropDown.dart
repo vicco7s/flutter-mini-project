@@ -51,3 +51,24 @@ var golongan = [
 ];
 var gol = '--';
 
+var jenis_k = ['--', 'laki-laki', 'perempuan'];
+var jk = '--';
+
+var s_perkawinan = ['--', 'belum kawin', 'sudah kawin'];
+var sperkawinan = '--';
+
+var pendidikan_akhir = [
+  '--',
+  'SD',
+  'SMP',
+  'SMK',
+  'SMA',
+  'DI',
+  'DII',
+  'DIII',
+  'DIV',
+  'S1',
+  'S2',
+  'S3',
+];
+var pendidikan_ak = '--';

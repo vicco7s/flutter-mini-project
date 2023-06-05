@@ -1,16 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:kec_app/controller/controllerPegawai.dart';
-import 'package:kec_app/controller/controllerpdinas.dart';
 import 'package:kec_app/model/pegawaiAsnServices.dart';
-import 'package:kec_app/model/suratmasukService.dart';
-import 'package:intl/intl.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
+import 'package:intl/intl.dart';
 
 class FormPegawaiAsn extends StatefulWidget {
   const FormPegawaiAsn({super.key});
@@ -24,7 +21,11 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final TextEditingController _nama = TextEditingController();
   final TextEditingController _nip = TextEditingController();
   final TextEditingController _jabatan = TextEditingController();
-
+  final TextEditingController _tmulaitugas = TextEditingController();
+  final TextEditingController _tlahir = TextEditingController();
+  final TextEditingController _telp = TextEditingController();
+  final TextEditingController _alamat = TextEditingController();
+  final TextEditingController _tempatlahir = TextEditingController();
   final dataPegawai = ControllerPegawai();
   @override
   Widget build(BuildContext context) {
@@ -78,6 +79,167 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                     padding: const EdgeInsets.only(
                         top: 10.0, right: 10.0, left: 10.0),
                     child: DropdownButtonForms(
+                      itemes: jenis_k.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
+                        setState(() {
+                          var _currentItemSelected = newValueSelected!;
+                          pakat = newValueSelected;
+                        });
+                      },
+                      labelTitle: "Jenis Kelamin",
+                      validators: ((value) => (value == null
+                          ? 'Jenis kelamin tidak boleh kosong !'
+                          : null)),
+                    ),
+                  ),
+                  //tgl lahir
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      right: 10.0,
+                      left: 10.0,
+                    ),
+                    child: DateTimeField(
+                      format: DateFormat('yyyy-MM-dd'),
+                      onShowPicker:
+                          (BuildContext context, DateTime? currentValue) {
+                        return showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2000),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime(2100),
+                        );
+                      },
+                      controller: _tlahir,
+                      validator: (value) {
+                        if ((value.toString().isEmpty) ||
+                            (DateTime.tryParse(value.toString()) == null)) {
+                          return "Tanggal Lahir Tidak Boleh Kosong !";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.date_range_outlined),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500]),
+                        // hintText: "Masukan Email",
+                        fillColor: Colors.white70,
+                        labelText: 'Tanggal Lahir',
+                      ),
+                    ),
+                  ),
+                  // tempat lahir
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, right: 10.0, left: 10.0),
+                    child: TextFormFields(
+                      controllers: _tempatlahir,
+                      labelTexts: 'Tempat Lahir',
+                      keyboardtypes: TextInputType.number,
+                      validators: (value) {
+                        if (value!.isEmpty) {
+                          return "tempat lahir Tidak Boleh Kosong !";
+                        }
+                      },
+                    ),
+                  ),
+                  // tanggal mulai tugas
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      right: 10.0,
+                      left: 10.0,
+                    ),
+                    child: DateTimeField(
+                      format: DateFormat('yyyy-MM-dd'),
+                      onShowPicker:
+                          (BuildContext context, DateTime? currentValue) {
+                        return showDatePicker(
+                          context: context,
+                          firstDate: DateTime(2000),
+                          initialDate: currentValue ?? DateTime.now(),
+                          lastDate: DateTime(2100),
+                        );
+                      },
+                      controller: _tmulaitugas,
+                      validator: (value) {
+                        if ((value.toString().isEmpty) ||
+                            (DateTime.tryParse(value.toString()) == null)) {
+                          return "Tanggal mulai tugas Tidak Boleh Kosong !";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        prefixIcon: const Icon(Icons.date_range_outlined),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        filled: true,
+                        hintStyle: TextStyle(color: Colors.grey[500]),
+                        // hintText: "Masukan Email",
+                        fillColor: Colors.white70,
+                        labelText: 'Tanggal Mulai Tugas',
+                      ),
+                    ),
+                  ),
+                  // alamat
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      right: 10.0,
+                      left: 10.0,
+                    ),
+                    child: TextFormFields(
+                      controllers: _alamat,
+                      labelTexts: 'Alamat',
+                      keyboardtypes: TextInputType.text,
+                      validators: (value) {
+                        if (value!.isEmpty) {
+                          return "alamat Tidak Boleh Kosong !";
+                        }
+                      },
+                    ),
+                  ),
+                  //pendidikan akhir
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, right: 10.0, left: 10.0),
+                    child: DropdownButtonForms(
+                      itemes: pendidikan_akhir.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
+                        setState(() {
+                          var _currentItemSelected = newValueSelected!;
+                          pakat = newValueSelected;
+                        });
+                      },
+                      labelTitle: "Pendidikan Terkahir",
+                      validators: ((value) => (value == null
+                          ? 'Pendidikan Terakhir tidak boleh kosong !'
+                          : null)),
+                    ),
+                  ),
+                  //pangkat
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        top: 10.0, right: 10.0, left: 10.0),
+                    child: DropdownButtonForms(
                       itemes: pangkat.map((String dropDownStringItem) {
                         return DropdownMenuItem<String>(
                           value: dropDownStringItem,
@@ -98,6 +260,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           : null)),
                     ),
                   ),
+                  //golongan
                   Padding(
                     padding: const EdgeInsets.only(
                         top: 10.0, right: 10.0, left: 10.0),
@@ -122,6 +285,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           : null)),
                     ),
                   ),
+                  // Jabatan
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 10.0,
@@ -139,6 +303,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       },
                     ),
                   ),
+                  // status pegawai
                   Padding(
                     padding: const EdgeInsets.only(
                       top: 10.0,
@@ -160,12 +325,15 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           stas = newValueSelected;
                         });
                       },
-                      labelTitle: "Status",
+                      labelTitle: "Status Pegawai",
                       validators: ((value) => (value == null
-                          ? 'Status tidak boleh kosong !'
+                          ? 'Status Pegawai tidak boleh kosong !'
                           : null)),
                     ),
                   ),
+                  
+                  
+                  
                   ElevatedButton(
                     onPressed: () {
                       if (_formkey.currentState!.validate()) {
