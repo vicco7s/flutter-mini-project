@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
 import 'package:kec_app/page/agenda/SuratKeluar/SuratKeluarPage.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/SuratMasukPage.dart';
@@ -100,21 +98,25 @@ class Drawes extends StatelessWidget {
               ),
             ],
           ),
+          
+          //Laporan
           ExpansionTile(
             leading: Icon(Icons.ad_units_outlined),
             title: Text("Laporan"),
             children: <Widget>[
-              ListTile(
-                title: const Text(
-                  'Laporan Pegawai Asn Dan Bukan Asn',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-              CupertinoPageRoute(builder: (context) => ReportPegawaiAsn()));
-                },
-              ),
-              ListTile(
+              ExpansionTile(
+                title: Text("Laporan Pegawai"),
+                children: <Widget>[
+                  ListTile(
+                        title: const Text(
+                        'Laporan Pegawai Asn Dan Bukan Asn',
+                        style: TextStyle(fontSize: 13),                  
+                    ),
+                    onTap:(){
+                      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const ReportPegawaiAsn()));
+                    }
+                  ),
+                  ListTile(
                 title: const Text(
                   'Laporan Pegawai Berdasarkan Pangkat',
                   style: TextStyle(fontSize: 13),
@@ -124,7 +126,13 @@ class Drawes extends StatelessWidget {
               CupertinoPageRoute(builder: (context) => ReportJumlahPegawai()));
                 },
               ),
-              ListTile(
+                ],
+              ),
+              
+              ExpansionTile(
+                title: Text("Laporan Surat"),
+                children: [
+                  ListTile(
                 title: const Text(
                   'Laporan Surat Masuk Perbulan',
                   style: TextStyle(fontSize: 13),
@@ -164,7 +172,13 @@ class Drawes extends StatelessWidget {
                       builder: ((context) => const ReportOutSurelPertahun())));
                 },
               ),
-              ListTile(
+                ],
+                ),
+              
+              ExpansionTile(
+                title: Text("Laporan Perjalanan Dinas"),
+                children: [
+                  ListTile(
                 title: const Text(
                   'Laporan Perjalanan Dinas PerTahun',
                   style: TextStyle(fontSize: 13),
@@ -173,6 +187,8 @@ class Drawes extends StatelessWidget {
                   Navigator.of(context).push(CupertinoPageRoute(
                       builder: ((context) => const ReportpDinasPertahun())));
                 },
+              ),
+                ],
               ),
             ],
           ),
