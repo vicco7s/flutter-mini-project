@@ -3,12 +3,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/screen/SplashScreen.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 // add firestore ke widget flutter
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  // Inisialisasi Firebase Storage
+  await firebase_storage.FirebaseStorage.instance;
   runApp(SalbaApp());
 }
 

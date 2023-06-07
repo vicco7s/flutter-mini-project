@@ -44,6 +44,8 @@ dependencies:
   printing: ^5.9.3
   email_validator: ^2.1.17
   basic_utils: ^5.4.2
+  image_picker: ^0.8.7+5
+  firebase_storage: ^11.2.2
 
 dev_dependencies:
   flutter_test:

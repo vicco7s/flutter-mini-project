@@ -14,6 +14,7 @@ class InputAsn {
   final String status_perkawinan;
   final int jumlah_anak;
   final int telp;
+  String? imageUrl;
 
   InputAsn({
     required this.nama,
@@ -31,6 +32,7 @@ class InputAsn {
     required this.status_perkawinan,
     required this.jumlah_anak,
     required this.telp,
+    required this.imageUrl
   });
 
   Map<String, dynamic> toJson() => {
@@ -48,6 +50,7 @@ class InputAsn {
         'status': status,
         'status_pernikahan': status_perkawinan,
         'jumlah_anak': jumlah_anak,
-        'telpon': telp
+        'telpon': telp,
+        'imageUrl': imageUrl
       };
 }

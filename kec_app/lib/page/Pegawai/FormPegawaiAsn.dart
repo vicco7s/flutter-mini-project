@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:async';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -8,6 +11,8 @@ import 'package:kec_app/controller/controllerPegawai.dart';
 import 'package:kec_app/model/pegawaiAsnServices.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:intl/intl.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class FormPegawaiAsn extends StatefulWidget {
   const FormPegawaiAsn({super.key});
@@ -27,8 +32,38 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final TextEditingController _alamat = TextEditingController();
   final TextEditingController _tempatlahir = TextEditingController();
   final TextEditingController _jumlahAnak = TextEditingController();
-  
+
+  File? _selectedImage;
+
   final dataPegawai = ControllerPegawai();
+
+  Future<String> uploadImageToFirestore(File? imageFile) async {
+    if (imageFile == null) {
+      throw Exception('No image file provided.');
+    }
+
+    try {
+      // Generate a unique filename for the image using a timestamp and file extension
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      String extension = imageFile.path.split('.').last;
+      String filePath = 'images/$fileName.$extension';
+
+      // Upload the image file to Firebase Storage
+      await firebase_storage.FirebaseStorage.instance
+          .ref(filePath)
+          .putFile(imageFile);
+
+      // Get the download URL for the uploaded image
+      String downloadURL = await firebase_storage.FirebaseStorage.instance
+          .ref(filePath)
+          .getDownloadURL();
+
+      return downloadURL;
+    } catch (e) {
+      throw Exception('Failed to upload image to Firestore: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -398,28 +433,93 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       },
                     ),
                   ),
-                  
+
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.lightGreen)),
+                          onPressed: () async {
+                            // Open the image picker to select an image from the gallery
+                            final pickedImage = (await ImagePicker()
+                                .pickImage(source: ImageSource.gallery));
+                            if (pickedImage != null) {
+                              setState(() {
+                                _selectedImage = File(pickedImage.path);
+                              });
+                            }
+                          },
+                          child: Text('Select Image'),
+                        ),
+                        SizedBox(width: 10.0),
+                        Expanded(
+                          child: Text(
+                            _selectedImage != null
+                                ? shortenImagePath(_selectedImage!.path)
+                                : 'No Image Selected',
+                            style: TextStyle(
+                              color: _selectedImage != null
+                                  ? Colors.green
+                                  : Colors.red,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: ()  async {
                       if (_formkey.currentState!.validate()) {
+                        //validation image if image no pick on gallery
+                        if (_selectedImage == null) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              backgroundColor: Colors.red,
+                              content: Text('Please select an image'),
+                            ),
+                          );
+                          return;
+                        }
+
                         final inputAsn = InputAsn(
                           nama: _nama.text,
                           nip: int.parse(_nip.text),
                           pangkat: pakat,
                           golongan: gol,
                           jabatan: _jabatan.text,
-                          status: stas, 
-                          jenis_kelamin: jk, 
-                          alamat: _alamat.text, 
-                          jumlah_anak: int.parse(_jumlahAnak.text), 
-                          pendidikan_terakhir: pendidikan_ak, 
-                          status_perkawinan: sperkawinan, 
-                          tanggal_mulai_tugas: DateTime.parse(_tmulaitugas.text), 
-                          tempat_lahir: _tempatlahir.text, 
-                          tgl_lahir: DateTime.parse(_tlahir.text), 
+                          status: stas,
+                          jenis_kelamin: jk,
+                          alamat: _alamat.text,
+                          jumlah_anak: int.parse(_jumlahAnak.text),
+                          pendidikan_terakhir: pendidikan_ak,
+                          status_perkawinan: sperkawinan,
+                          tanggal_mulai_tugas:
+                              DateTime.parse(_tmulaitugas.text),
+                          tempat_lahir: _tempatlahir.text,
+                          tgl_lahir: DateTime.parse(_tlahir.text),
                           telp: int.parse(_telp.text),
+                          imageUrl: '',
                         );
-                        dataPegawai.createInputSurel(inputAsn);
+                        String? imageUrl;
+                        // Upload the image to Firestore and get the image URL
+                        try {
+                           imageUrl = await uploadImageToFirestore(_selectedImage);
+                         } catch (e) {
+                           ScaffoldMessenger.of(context).showSnackBar(
+                             SnackBar(
+                               backgroundColor: Colors.red,
+                               content: Text('Failed to upload image: $e'),
+                             ),
+                           );
+                           return;
+                         }
+                        inputAsn.imageUrl = imageUrl;
+                        dataPegawai.createInputPegawai(inputAsn);
                         Navigator.pop(context);
                         ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -437,5 +537,15 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                 ],
               )),
         ));
+  }
+}
+
+String shortenImagePath(String imagePath) {
+  if (imagePath.length <= 20) {
+    return imagePath;
+  } else {
+    final fileName = imagePath.split('/').last;
+    final shortenedPath = '.../${fileName.substring(0, 40)}...';
+    return shortenedPath;
   }
 }
