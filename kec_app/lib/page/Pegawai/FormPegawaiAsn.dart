@@ -151,7 +151,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           (BuildContext context, DateTime? currentValue) {
                         return showDatePicker(
                           context: context,
-                          firstDate: DateTime(2000),
+                          firstDate: DateTime(1900),
                           initialDate: currentValue ?? DateTime.now(),
                           lastDate: DateTime(2100),
                         );
@@ -206,7 +206,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           (BuildContext context, DateTime? currentValue) {
                         return showDatePicker(
                           context: context,
-                          firstDate: DateTime(2000),
+                          firstDate: DateTime(1900),
                           initialDate: currentValue ?? DateTime.now(),
                           lastDate: DateTime(2100),
                         );

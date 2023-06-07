@@ -1,11 +1,17 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
 import 'package:kec_app/model/pegawaiAsnServices.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import '../page/Pegawai/FormPegawaiAsn.dart';
+
+
 
 class ControllerPegawai {
   final CollectionReference pegawai =
@@ -38,6 +44,29 @@ class ControllerPegawai {
     }
   }
 
+  File? _selectedImage;
+
+  Future<void> updateImage(File imageFile, String documentID) async {
+    try {
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference storageReference = storage.ref().child('images/$documentID.jpg');
+
+    if (imageFile != null) {
+      UploadTask uploadTask = storageReference.putFile(imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+      String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+      pegawai.doc(documentID).update({
+        'imageUrl': imageUrl,
+      });
+    }
+  } catch (error) {
+    print(error);
+    // Handle error
+  }
+  }
+
   Future<void> update(
       DocumentSnapshot<Object?> documentSnapshot, BuildContext context) async {
     final _formkey = GlobalKey<FormState>();
@@ -51,6 +80,8 @@ class ControllerPegawai {
     final TextEditingController _alamat = TextEditingController();
     final TextEditingController _tempatlahir = TextEditingController();
     final TextEditingController _jumlahAnak = TextEditingController();
+
+    File? _selectedImage;
 
     if (documentSnapshot != null) {
       Timestamp timerstamp = documentSnapshot['tgl_lahir'];
@@ -70,6 +101,15 @@ class ControllerPegawai {
       _alamat.text = documentSnapshot['alamat'];
       _tempatlahir.text = documentSnapshot['tempat_lahir'];
       _jumlahAnak.text = documentSnapshot['jumlah_anak'].toInt().toString();
+    }
+
+    Future<void> pickImage() async {
+      final pickedImage =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        _selectedImage = File(pickedImage.path);
+        
+      }
     }
 
     await showModalBottomSheet(
@@ -143,7 +183,7 @@ class ControllerPegawai {
                               (BuildContext context, DateTime? currentValue) {
                             return showDatePicker(
                               context: context,
-                              firstDate: DateTime(2000),
+                              firstDate: DateTime(1900),
                               initialDate: currentValue ?? DateTime.now(),
                               lastDate: DateTime(2100),
                             );
@@ -169,7 +209,7 @@ class ControllerPegawai {
                               (BuildContext context, DateTime? currentValue) {
                             return showDatePicker(
                               context: context,
-                              firstDate: DateTime(2000),
+                              firstDate: DateTime(1900),
                               initialDate: currentValue ?? DateTime.now(),
                               lastDate: DateTime(2100),
                             );
@@ -300,6 +340,36 @@ class ControllerPegawai {
                           ),
                         ),
 
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: 10.0, right: 0.0, left: 0.0),
+                          child: Row(
+                            children: [
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Colors.lightGreen),
+                                ),
+                                onPressed: pickImage,
+                                child: Text('Select Image'),
+                              ),
+                              SizedBox(width: 10.0),
+                              Expanded(
+                                child: Text(
+                                  _selectedImage != null
+                                      ? shortenImagePath(_selectedImage!.path)
+                                      : "foto belum di pilih",
+                                  style: TextStyle(
+                                    color: _selectedImage != null
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+
                         const SizedBox(
                           height: 10,
                         ),
@@ -308,13 +378,31 @@ class ControllerPegawai {
                             ElevatedButton(
                               child: const Text('Update'),
                               onPressed: () async {
+                                
+                                //condition update image
+                                if (_selectedImage != null) {
+                                  await updateImage(_selectedImage!, documentSnapshot.id);
+                                }
+
                                 final int no = int.parse(_id.text);
                                 final String nama = _nama.text;
                                 final int nip = int.parse(_nip.text);
+                                final DateTime tglmulai =
+                                    DateTime.parse(_tmulaitugas.text);
+                                final DateTime tgllahir =
+                                    DateTime.parse(_tlahir.text);
+                                final int telp = int.parse(_telp.text);
+                                final String alamat = _alamat.text;
+                                final String temlahir = _tempatlahir.text;
+                                final int jumlahanak =
+                                    int.parse(_jumlahAnak.text);
                                 final String pangkat = _pakat;
                                 final String golongan = _gol;
                                 final String jabatan = _jabatan.text;
                                 final String status = _stas;
+                                final String jk = _jk;
+                                final String peak = _peak;
+                                final String stper = _stper;
                                 if (no != null) {
                                   await pegawai
                                       .doc(documentSnapshot.id)
@@ -326,6 +414,15 @@ class ControllerPegawai {
                                     "golongan": golongan,
                                     "jabatan": jabatan,
                                     "status": status,
+                                    "jenis_kelamin": jk,
+                                    "tgl_lahir": tgllahir,
+                                    "tempat_lahir": temlahir,
+                                    "tgl_mulaitugas": tglmulai,
+                                    "alamat": alamat,
+                                    "pendidikan_terakhir": peak,
+                                    "status_perkawinan": stper,
+                                    "jumlah_anak": jumlahanak,
+                                    "telpon": telp,
                                   });
                                   _id.text = '';
                                   _nama.text = '';
@@ -334,6 +431,15 @@ class ControllerPegawai {
                                   _gol = '';
                                   _jabatan.text = '';
                                   _stas = '';
+                                  _alamat.text = '';
+                                  _jk = '';
+                                  _jumlahAnak.text = '';
+                                  _peak = '';
+                                  _stper = '';
+                                  _telp.text = '';
+                                  _tempatlahir.text = '';
+                                  _tlahir.text = '';
+                                  _tmulaitugas.text = '';
                                   Navigator.pop(context);
                                   Navigator.pop(context);
                                   ScaffoldMessenger.of(context).showSnackBar(
