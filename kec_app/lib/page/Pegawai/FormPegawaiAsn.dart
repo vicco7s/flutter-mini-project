@@ -14,6 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
+import '../../util/shortpath.dart';
+
 class FormPegawaiAsn extends StatefulWidget {
   const FormPegawaiAsn({super.key});
 
@@ -395,7 +397,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           sperkawinan = newValueSelected;
                         });
                       },
-                      labelTitle: "Status Perkawinan",
+                      labelTitle: "Status Pernikahan",
                       validators: ((value) => (value == null
                           ? 'Status Perkawinan tidak boleh kosong !'
                           : null)),
@@ -540,12 +542,4 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   }
 }
 
-String shortenImagePath(String imagePath) {
-  if (imagePath.length <= 20) {
-    return imagePath;
-  } else {
-    final fileName = imagePath.split('/').last;
-    final shortenedPath = '.../${fileName.substring(0, 40)}...';
-    return shortenedPath;
-  }
-}
+
