@@ -4,7 +4,7 @@ String shortenImagePath(String imagePath) {
     return imagePath;
   } else {
     final fileName = imagePath.split('/').last;
-    final shortenedPath = '.../${fileName.substring(0, 40)}...';
+    final shortenedPath = '.../${fileName.substring(0, 29)}...';
     return shortenedPath;
   }
 }

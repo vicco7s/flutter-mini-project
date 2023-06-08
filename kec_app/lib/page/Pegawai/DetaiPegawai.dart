@@ -47,7 +47,49 @@ class DetailPagePegawai extends StatelessWidget {
                         documentSnapshot["id"].toString(),
                         style: TextStyle(fontSize: 18),
                       ),
+                      trailing: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Container(
+                                  width: 300,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: NetworkImage(documentSnapshot["imageUrl"]),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                  child: Text('Close'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              image: NetworkImage(documentSnapshot["imageUrl"]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
+
                     ListTile(
                       leading: const Text(
                         "Nama :",

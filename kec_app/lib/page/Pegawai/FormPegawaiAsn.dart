@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -59,6 +60,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
       String downloadURL = await firebase_storage.FirebaseStorage.instance
           .ref(filePath)
           .getDownloadURL();
+     
 
       return downloadURL;
     } catch (e) {
@@ -461,7 +463,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         Expanded(
                           child: Text(
                             _selectedImage != null
-                                ? shortenImagePath(_selectedImage!.path)
+                                ? 'berhasil di upload'
                                 : 'No Image Selected',
                             style: TextStyle(
                               color: _selectedImage != null

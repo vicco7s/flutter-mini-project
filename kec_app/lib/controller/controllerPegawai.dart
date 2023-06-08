@@ -8,7 +8,7 @@ import 'package:kec_app/model/pegawaiAsnServices.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storage ;
 import '../page/Pegawai/FormPegawaiAsn.dart';
 import '../util/shortpath.dart';
 
@@ -29,13 +29,39 @@ class ControllerPegawai {
 
   Future<void> delete(String id, BuildContext context) async {
     try {
+     // Dapatkan URL gambar dari Firestore
+    final snapshot = await pegawai.doc(id).get();
+    final data = snapshot.data();
+    if (snapshot.exists &&
+        data != null &&
+        data is Map<String, dynamic> &&
+        data['imageUrl'] != null) {
+      final imageUrl = data['imageUrl'];
+
+      // Hapus dokumen dari Firestore
       await pegawai.doc(id).delete();
+
+      // Hapus imageUrl dari Firebase Storage
+      final storageRef = storage.FirebaseStorage.instance.refFromURL(imageUrl);
+      await storageRef.delete();
+
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           backgroundColor: Colors.green,
-          content: Text('Data Berhasil Di hapus')));
+          content: Text('Data Berhasil Dihapus'),
+        ),
+      );
       // ignore: use_build_context_synchronously
       Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Data tidak berhasil dihapus'),
+        ),
+      );
+    }
     } on StateError catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,

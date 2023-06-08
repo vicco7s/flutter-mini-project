@@ -31,7 +31,17 @@ class _EditPegawaiState extends State<EditPegawai> {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference storageReference =
-          storage.ref().child('images/$documentID.jpg');
+          storage.ref().child('images/$documentID.png');
+
+       // Mengambil URL gambar sebelumnya dari Firestore
+    DocumentSnapshot docSnapshot = await pegawai.doc(documentID).get();
+    String previousImageUrl = docSnapshot.get('imageUrl');
+
+    // Menghapus foto sebelumnya dari Firebase Storage jika ada
+    if (previousImageUrl != null) {
+      Reference previousImageRef = storage.refFromURL(previousImageUrl);
+      await previousImageRef.delete();
+    }
 
       if (imageFile != null) {
         UploadTask uploadTask = storageReference.putFile(imageFile);
