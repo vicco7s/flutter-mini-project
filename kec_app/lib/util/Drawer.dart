@@ -4,13 +4,14 @@ import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
 import 'package:kec_app/page/agenda/SuratKeluar/SuratKeluarPage.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/SuratMasukPage.dart';
 import 'package:kec_app/page/perjalananDinas/pdinaspage.dart';
-import 'package:kec_app/report/ReportJumlahPegawai.dart';
 import 'package:kec_app/report/Report_pDinas/ReportPDinasPerNama.dart';
 import 'package:kec_app/report/Report_surat_Keluar/ReportOutSurelPertahun.dart';
 import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPerbulan.dart';
 import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPertahun.dart';
-import 'package:kec_app/report/ReportpdfASNNonAsn.dart';
 import 'package:kec_app/report/Report_surat_Keluar/ReportpdfOutSurel.dart';
+import 'package:kec_app/report/reportPegawai/ReportDetaiPegawai.dart';
+import 'package:kec_app/report/reportPegawai/ReportJumlahPegawai.dart';
+import 'package:kec_app/report/reportPegawai/ReportpdfASNNonAsn.dart';
 
 class Drawes extends StatelessWidget {
   const Drawes({
@@ -124,6 +125,17 @@ class Drawes extends StatelessWidget {
                 onTap: () {
                    Navigator.of(context).push(
               CupertinoPageRoute(builder: (context) => ReportJumlahPegawai()));
+                },
+              ),
+
+              ListTile(
+                title: const Text(
+                  'Laporan Detail Pegawai',
+                  style: TextStyle(fontSize: 13),
+                ),
+                onTap: () {
+                   Navigator.of(context).push(
+              CupertinoPageRoute(builder: (context) => ReportDetailPegawai()));
                 },
               ),
                 ],

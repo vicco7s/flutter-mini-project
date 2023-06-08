@@ -5,7 +5,6 @@ import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/page/Pegawai/DetaiPegawai.dart';
 import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
-import 'package:kec_app/report/ReportpdfASNNonAsn.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
