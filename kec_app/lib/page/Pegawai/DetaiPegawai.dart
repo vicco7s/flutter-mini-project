@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:kec_app/controller/controllerPegawai.dart';
 import 'package:kec_app/page/Pegawai/editpegawai.dart';
+import 'package:intl/intl.dart';
 
 class DetailPagePegawai extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
@@ -10,6 +11,14 @@ class DetailPagePegawai extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    Timestamp timerstamp = documentSnapshot['tgl_lahir'];
+    Timestamp timerstamps = documentSnapshot['tgl_mulaitugas'];
+    var dates = timerstamps.toDate();
+    var date = timerstamp.toDate();
+    var tgllahir = DateFormat.yMMMMd().format(date);
+    var tglmulaitugas = DateFormat.yMMMMd().format(dates);
+
     final dataPegawai = ControllerPegawai();
     return Scaffold(
       appBar: AppBar(
@@ -114,6 +123,72 @@ class DetailPagePegawai extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Text(
+                        "Jenis Kelamin :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot["jenis_kelamin"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Tanggal Lahir :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        tgllahir.toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Tempat Lahir :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['tempat_lahir'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Tanggal Mulai Tugas :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        tglmulaitugas.toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Alamat :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['alamat'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Pendidikan Terakhir :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['pendidikan_terakhir'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
                         "Pangkat :",
                         style:
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
@@ -156,41 +231,75 @@ class DetailPagePegawai extends StatelessWidget {
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
+                    ListTile(
+                      leading: const Text(
+                        "Status Pernikahan :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['status_pernikahan'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Jumlah Anak :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['jumlah_anak'].toInt().toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Telpon :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['telpon'].toInt().toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              EditPegawai(documentSnapshot: documentSnapshot)));
+                      // await dataPegawai.update(documentSnapshot, context);
+                    },
+                    child: const Text("Update"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue, // background
+                      foregroundColor: Colors.white, // foreground
+                    ),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await dataPegawai.delete(documentSnapshot.id, context);
+                    },
+                    child: const Text("Delete"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // background
+                      foregroundColor: Colors.white, // foreground
+                    ),
+                  ),
+                ]),
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                onPressed: () async {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          EditPegawai(documentSnapshot: documentSnapshot)));
-                  // await dataPegawai.update(documentSnapshot, context);
-                },
-                child: const Text("Update"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // background
-                  foregroundColor: Colors.white, // foreground
-                ),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await dataPegawai.delete(documentSnapshot.id, context);
-                },
-                child: const Text("Delete"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // background
-                  foregroundColor: Colors.white, // foreground
-                ),
-              ),
-            ]),
+            
           ],
         ),
       ),

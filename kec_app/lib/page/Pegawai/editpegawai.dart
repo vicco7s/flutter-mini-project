@@ -33,7 +33,7 @@ class _EditPegawaiState extends State<EditPegawai> {
       Reference storageReference =
           storage.ref().child('images/$documentID.png');
 
-       // Mengambil URL gambar sebelumnya dari Firestore
+    // Mengambil URL gambar sebelumnya dari Firestore
     DocumentSnapshot docSnapshot = await pegawai.doc(documentID).get();
     String previousImageUrl = docSnapshot.get('imageUrl');
 
@@ -357,7 +357,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                               SizedBox(width: 10.0),
                               Expanded(
                                 child: Text(
-                                _selectedImage != null ? 'berhasil di Upload' : shortenImageUpdate(widget.documentSnapshot['imageUrl']),
+                                _selectedImage != null ? 'foto sudah dipilih' : shortenImageUpdate(widget.documentSnapshot['imageUrl']),
                                 style: TextStyle(
                                   color: _selectedImage != null ? Colors.green : Colors.grey,
                                 ),

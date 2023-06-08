@@ -463,8 +463,8 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                         Expanded(
                           child: Text(
                             _selectedImage != null
-                                ? 'berhasil di upload'
-                                : 'No Image Selected',
+                                ? 'foto berhasil dipilih'
+                                : 'tidak ada foto yang dipilih',
                             style: TextStyle(
                               color: _selectedImage != null
                                   ? Colors.green
