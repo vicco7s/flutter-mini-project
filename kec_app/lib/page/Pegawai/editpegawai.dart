@@ -9,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
 import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:kec_app/util/shortpath.dart';
 
@@ -62,11 +63,11 @@ class _EditPegawaiState extends State<EditPegawai> {
     final _formkey = GlobalKey<FormState>();
     final TextEditingController _id = TextEditingController();
     final TextEditingController _nama = TextEditingController();
-    final TextEditingController _nip = TextEditingController();
+    final  _nip = MaskedTextController(mask: '00000000 000000 0 000');
     final TextEditingController _jabatan = TextEditingController();
     final TextEditingController _tmulaitugas = TextEditingController();
     final TextEditingController _tlahir = TextEditingController();
-    final TextEditingController _telp = TextEditingController();
+    final _telp = MaskedTextController(mask: '0000 0000 0000');
     final TextEditingController _alamat = TextEditingController();
     final TextEditingController _tempatlahir = TextEditingController();
     final TextEditingController _jumlahAnak = TextEditingController();
@@ -85,11 +86,11 @@ class _EditPegawaiState extends State<EditPegawai> {
 
     _id.text = documentSnapshot['id'].toString();
     _nama.text = documentSnapshot['nama'];
-    _nip.text = documentSnapshot['nip'].toInt().toString();
+    _nip.text = documentSnapshot['nip'];
     _jabatan.text = documentSnapshot['jabatan'];
     _tmulaitugas.text = timers.toString();
     _tlahir.text = times1.toString();
-    _telp.text = documentSnapshot['telpon'].toInt().toString();
+    _telp.text = documentSnapshot['telpon'];
     _alamat.text = documentSnapshot['alamat'];
     _tempatlahir.text = documentSnapshot['tempat_lahir'];
     _jumlahAnak.text = documentSnapshot['jumlah_anak'].toInt().toString();
@@ -158,6 +159,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                           decoration: const InputDecoration(
                             labelText: 'Nip',
                           ),
+                          
                         ),
                         //jenis kelamin
                         DropdownButtonFormUpdates(
@@ -338,6 +340,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                           decoration: const InputDecoration(
                             labelText: 'Telpon',
                           ),
+
                         ),
 
                         //Update Foto
@@ -384,12 +387,12 @@ class _EditPegawaiState extends State<EditPegawai> {
 
                                 final int no = int.parse(_id.text);
                                 final String nama = _nama.text;
-                                final int nip = int.parse(_nip.text);
+                                final String nip = _nip.text;
                                 final DateTime tglmulai =
                                     DateTime.parse(_tmulaitugas.text);
                                 final DateTime tgllahir =
                                     DateTime.parse(_tlahir.text);
-                                final int telp = int.parse(_telp.text);
+                                final String telp = _telp.text;
                                 final String alamat = _alamat.text;
                                 final String temlahir = _tempatlahir.text;
                                 final int jumlahanak =

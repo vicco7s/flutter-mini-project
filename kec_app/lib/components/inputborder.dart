@@ -1,19 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextFormFields extends StatelessWidget {
   TextFormFields({
-  required this.controllers, 
-  required this.labelTexts, 
-  required this.keyboardtypes, 
-  required this.validators,
-  
+    required this.controllers,
+    required this.labelTexts,
+    required this.keyboardtypes,
+    required this.validators,  
   });
 
   final TextEditingController controllers;
   final String labelTexts;
   final TextInputType keyboardtypes;
-  final String? Function(String?)? validators; 
+  final String? Function(String?)? validators;
 
   @override
   Widget build(BuildContext context) {

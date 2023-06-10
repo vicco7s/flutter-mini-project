@@ -117,7 +117,7 @@ class DetailPagePegawai extends StatelessWidget {
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
-                        documentSnapshot["nip"].toInt().toString(),
+                        documentSnapshot["nip"],
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -260,7 +260,7 @@ class DetailPagePegawai extends StatelessWidget {
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
-                        documentSnapshot['telpon'].toInt().toString(),
+                        documentSnapshot['telpon'],
                         style: TextStyle(fontSize: 18),
                       ),
                     ),

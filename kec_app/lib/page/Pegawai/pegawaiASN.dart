@@ -84,7 +84,7 @@ class _PegawaiAsnState extends State<PegawaiAsn> {
                               },
                               title: Text(documentSnapshot['nama'],style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),
                               subtitle: Text(
-                                  documentSnapshot['nip'].toInt().toString()),
+                                  documentSnapshot['nip']),
                             ),
                           );
                         },

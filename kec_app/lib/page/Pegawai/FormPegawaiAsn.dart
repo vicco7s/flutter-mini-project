@@ -12,6 +12,7 @@ import 'package:kec_app/controller/controllerPegawai.dart';
 import 'package:kec_app/model/pegawaiAsnServices.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
@@ -27,11 +28,11 @@ class FormPegawaiAsn extends StatefulWidget {
 class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _nama = TextEditingController();
-  final TextEditingController _nip = TextEditingController();
+  final  _nip = MaskedTextController(mask: '00000000 000000 0 000');
   final TextEditingController _jabatan = TextEditingController();
   final TextEditingController _tmulaitugas = TextEditingController();
   final TextEditingController _tlahir = TextEditingController();
-  final TextEditingController _telp = TextEditingController();
+  final _telp = MaskedTextController(mask: '0000 0000 0000');
   final TextEditingController _alamat = TextEditingController();
   final TextEditingController _tempatlahir = TextEditingController();
   final TextEditingController _jumlahAnak = TextEditingController();
@@ -428,10 +429,13 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                     child: TextFormFields(
                       controllers: _telp,
                       labelTexts: 'telp',
-                      keyboardtypes: TextInputType.number,
+                      keyboardtypes: TextInputType.phone,
                       validators: (value) {
-                        if (value!.isEmpty) {
+                       if (value!.isEmpty) {
                           return "telp Tidak Boleh Kosong !";
+                        }
+                        if (int.tryParse(value) == null) {
+                          return "Masukkan hanya angka.";
                         }
                         return null;
                       },
@@ -492,7 +496,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
 
                         final inputAsn = InputAsn(
                           nama: _nama.text,
-                          nip: int.parse(_nip.text),
+                          nip: _nip.text,
                           pangkat: pakat,
                           golongan: gol,
                           jabatan: _jabatan.text,
@@ -506,7 +510,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                               DateTime.parse(_tmulaitugas.text),
                           tempat_lahir: _tempatlahir.text,
                           tgl_lahir: DateTime.parse(_tlahir.text),
-                          telp: int.parse(_telp.text),
+                          telp: _telp.text,
                           imageUrl: '',
                         );
                         String? imageUrl;

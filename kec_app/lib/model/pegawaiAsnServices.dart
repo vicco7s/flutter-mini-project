@@ -1,6 +1,6 @@
 class InputAsn {
   final String nama;
-  final int nip;
+  final String nip;
   final String jenis_kelamin;
   final DateTime tgl_lahir;
   final String tempat_lahir;
@@ -13,7 +13,7 @@ class InputAsn {
   final String status;
   final String status_perkawinan;
   final int jumlah_anak;
-  final int telp;
+  final String telp;
   String? imageUrl;
 
   InputAsn({
