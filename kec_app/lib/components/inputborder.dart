@@ -3,17 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class TextFormFields extends StatelessWidget {
-  TextFormFields({
+  TextFormFields({super.key, 
     required this.controllers,
     required this.labelTexts,
     required this.keyboardtypes,
-    required this.validators,  
+    this.validators,
+    this.onChangeds,
+    this.enableds,
   });
 
   final TextEditingController controllers;
   final String labelTexts;
   final TextInputType keyboardtypes;
   final String? Function(String?)? validators;
+  void Function(String)? onChangeds;
+  final bool? enableds;
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +25,8 @@ class TextFormFields extends StatelessWidget {
       controller: controllers,
       keyboardType: keyboardtypes,
       validator: validators,
+      onChanged: onChangeds,
+      enabled: enableds,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

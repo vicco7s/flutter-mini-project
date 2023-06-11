@@ -78,7 +78,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
             onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back_ios_new),
           ),
-          title: Text('Masukan Data Pegawai Asn'),
+          title: Text('Masukan Data Pegawai'),
           centerTitle: true,
         ),
         body: SingleChildScrollView(
@@ -433,9 +433,6 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       validators: (value) {
                        if (value!.isEmpty) {
                           return "telp Tidak Boleh Kosong !";
-                        }
-                        if (int.tryParse(value) == null) {
-                          return "Masukkan hanya angka.";
                         }
                         return null;
                       },
