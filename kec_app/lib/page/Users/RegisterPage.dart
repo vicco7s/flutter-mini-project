@@ -22,6 +22,7 @@ class _CreateUserState extends State<CreateUser> {
   final _formkey = GlobalKey<FormState>();
   final _auth = FirebaseAuth.instance;
 
+  final namaController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpassController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -65,6 +66,25 @@ class _CreateUserState extends State<CreateUser> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Padding(
+                          padding: const EdgeInsets.only(
+                            top: 10.0,
+                            right: 10.0,
+                            left: 10.0,
+                          ),
+                          child: TextFormFields(
+                            controllers: namaController,
+                            labelTexts: 'Nama',
+                            keyboardtypes: TextInputType.emailAddress,
+                            validators: (value) {
+                              if (value!.length == 0) {
+                                return "Email tidak boleh kosong";
+                              } else {
+                                return null;
+                              }
+                            },
+                          ),
+                        ),
                         SizedBox(
                           height: 10,
                         ),
@@ -292,26 +312,31 @@ class _CreateUserState extends State<CreateUser> {
     try {
       await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    var user = _auth.currentUser;
-    CollectionReference ref = FirebaseFirestore.instance.collection('users');
-    ref.doc(user!.uid).set({'email': emailController.text, 'rool': rool});
-    setState(() {
-      isLoading = false;
-    });
+      var user = _auth.currentUser;
+      CollectionReference ref = FirebaseFirestore.instance.collection('users');
+      ref
+          .doc(user!.uid)
+          .set({
+            'nama' : namaController.text,
+            'email': emailController.text, 
+            'rool': rool, 
+            'uid': user.uid});
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        backgroundColor: Colors.green,
-        content: Text('Email Berhasil Dibuat'),
-      ),
-    );
+      setState(() {
+        isLoading = false;
+      });
 
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => HomePage()),
-    );
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text('Email Berhasil Dibuat'),
+        ),
+      );
 
+      Navigator.pop(context);
+      Navigator.pop(context);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(context).showSnackBar(

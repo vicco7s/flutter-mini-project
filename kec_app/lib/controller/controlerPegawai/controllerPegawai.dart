@@ -9,8 +9,8 @@ import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage ;
-import '../page/Pegawai/FormPegawaiAsn.dart';
-import '../util/shortpath.dart';
+import '../../page/Pegawai/FormPegawaiAsn.dart';
+import '../../util/shortpath.dart';
 
 class ControllerPegawai {
   final CollectionReference pegawai =
