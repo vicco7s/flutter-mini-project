@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/page/Dashboard%20user/surat/buatsuratbatalpjdinas.dart';
+import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/buatsuratbatalpjdinas.dart';
 
 class DrawerPegawaiHome extends StatelessWidget {
   const DrawerPegawaiHome({

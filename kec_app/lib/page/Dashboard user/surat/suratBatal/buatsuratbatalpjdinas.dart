@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
-import 'package:kec_app/page/Dashboard%20user/surat/formsuratbatalPJD.dart';
+import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/detailSuratBatalPjd.dart';
+import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/formsuratbatalPJD.dart';
 import 'package:kec_app/report/reportSuratBatal/ReporSuratBatal.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
@@ -63,7 +64,7 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                               snapshot.data!.docs[index];
 
                           Timestamp timerstamp =
-                              documentSnapshot['tanggal_perjalanan'];
+                              documentSnapshot['tanggal_surat'];
                           var date = timerstamp.toDate();
                           var tanggal = DateFormat.yMMMMd().format(date);
                           return Dismissible(
@@ -82,7 +83,8 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                                 ),
                               ),
                               onDismissed: (direction) async {
-                                await dataSuratBatal.delete(documentSnapshot.id, context);
+                                await dataSuratBatal.delete(
+                                    documentSnapshot.id, context);
                               },
                               child: Card(
                                 shape: const RoundedRectangleBorder(
@@ -94,8 +96,16 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                                 )),
                                 elevation: 5.0,
                                 child: ListTile(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                          CupertinoPageRoute(
+                                              builder: (context) => DetailSuratBatalPJD(documentSnapshot: documentSnapshot)));
+                                    },
                                     leading: IconButton(
-                                      icon: Icon(Icons.print),
+                                      icon: Icon(
+                                        Icons.print,
+                                        color: Colors.amberAccent,
+                                      ),
                                       onPressed: () {
                                         Navigator.of(context).push(
                                             CupertinoPageRoute(
@@ -128,7 +138,7 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                                           color: (documentSnapshot['status'] ==
                                                       'Disetujui' ||
                                                   documentSnapshot['status'] ==
-                                                      'Proses'
+                                                      'Mohon Tunggu'
                                               ? Colors.blue
                                               : Colors.red)),
                                     )),

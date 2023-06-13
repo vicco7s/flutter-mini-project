@@ -20,7 +20,7 @@ class _FormSuratBatalPJDState extends State<FormSuratBatalPJD> {
   final _tanggalPerjalananDinas = TextEditingController();
   final _alasan = TextEditingController();
 
-  String _status = "Proses";
+  String _status = "Mohon Tunggu";
   String _keterangan = "----";
 
   final dataSuratbatal = ControllerSuratBatal();
@@ -47,11 +47,11 @@ class _FormSuratBatalPJDState extends State<FormSuratBatalPJD> {
                     const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
                 child: TextFormFields(
                   controllers: _nama,
-                  labelTexts: 'Nama',
+                  labelTexts: 'Nama Lengkap',
                   keyboardtypes: TextInputType.text,
                   validators: (value) {
                     if (value!.isEmpty) {
-                      return "Nama Tidak Boleh Kosong !";
+                      return "Nama Lengkap Tidak Boleh Kosong !";
                     }
                     return null;
                   },
