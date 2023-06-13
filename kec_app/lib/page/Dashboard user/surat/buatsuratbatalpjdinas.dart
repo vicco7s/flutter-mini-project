@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/formsuratbatalPJD.dart';
 import 'package:kec_app/report/reportSuratBatal/ReporSuratBatal.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
@@ -24,6 +25,8 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
     _auth = FirebaseAuth.instance;
     _currentUser = _auth.currentUser;
   }
+
+  final dataSuratBatal = ControllerSuratBatal();
 
   @override
   Widget build(BuildContext context) {
@@ -63,51 +66,73 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                               documentSnapshot['tanggal_perjalanan'];
                           var date = timerstamp.toDate();
                           var tanggal = DateFormat.yMMMMd().format(date);
-                          return Card(
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(15.0),
-                              bottomRight: Radius.circular(15.0),
-                              topRight: Radius.circular(15.0),
-                              bottomLeft: Radius.circular(15.0),
-                            )),
-                            elevation: 5.0,
-                            child: ListTile(
-                                leading: IconButton(
-                                  icon: Icon(Icons.print),
-                                  onPressed: () {
-                                    Navigator.of(context).push(
-                                        CupertinoPageRoute(
-                                            builder: (context) =>
-                                                ReportSuratBatal(documentSnapshot: documentSnapshot,)));
-                                  },
-                                ),
-                                title: Text(documentSnapshot['nama'],
-                                    style: TextStyle(
-                                        color: Colors.blueAccent,
-                                        fontWeight: FontWeight.bold)),
-                                subtitle: Text(
-                                  tanggal.toString(),
-                                  style: TextStyle(
-                                    color: (DateFormat('MMMM d, yyyy')
-                                            .parse(tanggal)
-                                            .isBefore(DateTime.now()
-                                                .subtract(Duration(days: 30))))
-                                        ? Colors.red
-                                        : Colors.green,
+                          return Dismissible(
+                              key: Key(documentSnapshot.id),
+                              direction: DismissDirection.endToStart,
+                              background: Container(
+                                alignment: Alignment.centerRight,
+                                color: Colors.red,
+                                child: Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 16.0),
+                                  child: Icon(
+                                    Icons.delete,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                trailing: Text(
-                                  documentSnapshot['status'],
-                                  style: TextStyle(
-                                      color: (documentSnapshot['status'] ==
-                                                  'Disetujui' ||
-                                              documentSnapshot['status'] ==
-                                                  'Proses'
-                                          ? Colors.blue
-                                          : Colors.red)),
+                              ),
+                              onDismissed: (direction) async {
+                                await dataSuratBatal.delete(documentSnapshot.id, context);
+                              },
+                              child: Card(
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(15.0),
+                                  bottomRight: Radius.circular(15.0),
+                                  topRight: Radius.circular(15.0),
+                                  bottomLeft: Radius.circular(15.0),
                                 )),
-                          );
+                                elevation: 5.0,
+                                child: ListTile(
+                                    leading: IconButton(
+                                      icon: Icon(Icons.print),
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    ReportSuratBatal(
+                                                      documentSnapshot:
+                                                          documentSnapshot,
+                                                    )));
+                                      },
+                                    ),
+                                    title: Text(documentSnapshot['nama'],
+                                        style: TextStyle(
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold)),
+                                    subtitle: Text(
+                                      tanggal.toString(),
+                                      style: TextStyle(
+                                        color: (DateFormat('MMMM d, yyyy')
+                                                .parse(tanggal)
+                                                .isBefore(DateTime.now()
+                                                    .subtract(
+                                                        Duration(days: 30))))
+                                            ? Colors.red
+                                            : Colors.green,
+                                      ),
+                                    ),
+                                    trailing: Text(
+                                      documentSnapshot['status'],
+                                      style: TextStyle(
+                                          color: (documentSnapshot['status'] ==
+                                                      'Disetujui' ||
+                                                  documentSnapshot['status'] ==
+                                                      'Proses'
+                                              ? Colors.blue
+                                              : Colors.red)),
+                                    )),
+                              ));
                         },
                       );
               },
