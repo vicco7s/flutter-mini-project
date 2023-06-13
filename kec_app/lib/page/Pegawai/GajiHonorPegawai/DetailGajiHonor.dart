@@ -9,6 +9,7 @@ class DetailHonorPegawai extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     Timestamp timerstamp = documentSnapshot['tanggal'];
     var date = timerstamp.toDate();
     var tanggal = DateFormat.yMMMMd().format(date);

@@ -3,6 +3,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
 import 'package:kec_app/model/UserService/suratbatalservice.dart';
 
 class FormSuratBatalPJD extends StatefulWidget {
@@ -21,6 +22,8 @@ class _FormSuratBatalPJDState extends State<FormSuratBatalPJD> {
 
   String _status = "Proses";
   String _keterangan = "----";
+
+  final dataSuratbatal = ControllerSuratBatal();
 
   @override
   Widget build(BuildContext context) {
@@ -148,14 +151,15 @@ class _FormSuratBatalPJDState extends State<FormSuratBatalPJD> {
                   onPressed: () async {
                     if (_formkey.currentState!.validate()) {
                       final suratBatal = SuratBatal(
-                          nama: _nama.text,
-                          tanggal_surat: DateTime.parse(_tanggalSurat.text),
-                          tanggal_perjalanan: DateTime.parse(_tanggalPerjalananDinas.text),
-                          alasan: _alasan.text,
-                          status: _status,
-                          keterangan: _keterangan,
-                        );
-                      // dataHonorPegawai.createInputPegawai(gajihonor);
+                        nama: _nama.text,
+                        tanggal_surat: DateTime.parse(_tanggalSurat.text),
+                        tanggal_perjalanan:
+                            DateTime.parse(_tanggalPerjalananDinas.text),
+                        alasan: _alasan.text,
+                        status: _status,
+                        keterangan: _keterangan,
+                      );
+                      dataSuratbatal.createInputSuratBatal(suratBatal);
                       Navigator.pop(context);
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           backgroundColor: Colors.green,
