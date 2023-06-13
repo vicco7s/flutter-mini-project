@@ -56,7 +56,7 @@ class TabBarViewWidget extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                               ),
                               subtitle: Text(
-                                  documentSnapshot['nip'].toInt().toString()),
+                                  documentSnapshot['nip']),
                             ),
                           );
                         },

@@ -208,47 +208,56 @@ class _LoginPageState extends State<LoginPage> {
       } 
     }
   }
-  
+
   void route() {
-    
-    User? user = FirebaseAuth.instance.currentUser;
-    var kk = FirebaseFirestore.instance
-            .collection('users')
-            .doc(user!.uid)
-            .get()
-            .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        if (documentSnapshot.get('rool') == "Admin") {
-           Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(
-            builder: (context) =>  const HomePage(),
-          ),
-        );
-        }else if (documentSnapshot.get('rool') == "Camat"){
+  User? user = FirebaseAuth.instance.currentUser;
+  FirebaseFirestore.instance
+      .collection('users')
+      .doc(user!.uid)
+      .get()
+      .then((DocumentSnapshot documentSnapshot) {
+    if (documentSnapshot.exists) {
+      var role = documentSnapshot.get('rool');
+      if (role is String) {
+        if (role == 'Admin') {
           Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(
-            builder: (context) =>  const HomeCamatPage(),
-          ),
-        );
-        }else{
+            context,
+            CupertinoPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+          );
+        } else if (role == 'Camat') {
           Navigator.pushReplacement(
-          context,
-          CupertinoPageRoute(
-            builder: (context) =>  const HomeUserPage(),
-          ),
-        );
+            context,
+            CupertinoPageRoute(
+              builder: (context) => const HomeCamatPage(),
+            ),
+          );
+        } else {
+          Navigator.pushReplacement(
+            context,
+            CupertinoPageRoute(
+              builder: (context) => const HomeUserPage(),
+            ),
+          );
         }
       } else {
         const snackBar = SnackBar(
-              backgroundColor: Colors.red,
-              content: Text('Akun Tidak ada Di temukan ! '),
-            );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          backgroundColor: Colors.red,
+          content: Text('Invalid role value!'),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-    });
-  }
+    } else {
+      const snackBar = SnackBar(
+        backgroundColor: Colors.red,
+        content: Text('Akun Tidak ada Di temukan!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+  });
+}
+  
 
 }
 
