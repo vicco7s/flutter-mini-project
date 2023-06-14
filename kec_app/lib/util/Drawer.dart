@@ -206,6 +206,16 @@ class Drawes extends StatelessWidget {
                       builder: ((context) => const ReportOutSurelPertahun())));
                 },
               ),
+              ListTile(
+                title: const Text(
+                  'Laporan Surat Batal',
+                  style: TextStyle(fontSize: 13),
+                ),
+                onTap: () {
+                  // Navigator.of(context).push(CupertinoPageRoute(
+                  //     builder: ((context) => const ReportOutSurelPertahun())));
+                },
+              ),
                 ],
                 ),
               

@@ -15,8 +15,8 @@ class DetailSuratBatalPJD extends StatelessWidget {
     final Timestamp timerStamps = documentSnapshot['tanggal_perjalanan'];
     var date = timerStamp.toDate();
     var dates = timerStamps.toDate();
-    var tanggal_surat = DateFormat.yMMMMd('id_ID').format(date);
-    var tanggal_perjalanan = DateFormat.yMMMMd('id_ID').format(dates);
+    var tanggal_surat = DateFormat.yMMMMd().format(date);
+    var tanggal_perjalanan = DateFormat.yMMMMd().format(dates);
 
     return Scaffold(
         appBar: AppBar(

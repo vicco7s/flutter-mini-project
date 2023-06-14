@@ -47,7 +47,8 @@ class ReportSuratBatal extends StatelessWidget {
     final memoryImage = pw.MemoryImage(
       (await rootBundle.load('image/kabtapin.png')).buffer.asUint8List(),
     );
-
+    await initializeDateFormatting('id_ID');
+    
     final Timestamp timerStamp = documentSnapshot['tanggal_surat'];
     final Timestamp timerStamps = documentSnapshot['tanggal_perjalanan'];
     var date = timerStamp.toDate();

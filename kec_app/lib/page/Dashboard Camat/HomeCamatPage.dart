@@ -10,6 +10,7 @@ import 'package:kec_app/page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratmasukCamat.dart';
 import 'package:kec_app/page/Users/loginpage.dart';
+import 'package:kec_app/util/utilCamatHome/DrawerCamatHome.dart';
 
 class HomeCamatPage extends StatefulWidget {
   const HomeCamatPage({super.key});
@@ -19,7 +20,7 @@ class HomeCamatPage extends StatefulWidget {
 }
 
 class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProviderStateMixin{
-
+  final currentUser = FirebaseAuth.instance;
   final List<Widget> myTabs = [
     Tab(
       icon: Icon(Icons.group_outlined),
@@ -52,6 +53,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+      drawer: DrawerCamatHome(currentUser: currentUser,),
       appBar: AppBar(
         actions: [
           IconButton(
@@ -403,6 +405,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
     );
   }
 }
+
 
 Future<void> logout(BuildContext context) async {
 

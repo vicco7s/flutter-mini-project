@@ -72,3 +72,5 @@ var pendidikan_akhir = [
   'S3',
 ];
 var pendidikan_ak = '--';
+
+
