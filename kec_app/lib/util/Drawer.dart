@@ -14,6 +14,7 @@ import 'package:kec_app/report/reportPegawai/ReportDetaiPegawai.dart';
 import 'package:kec_app/report/reportPegawai/ReportJumlahPegawai.dart';
 import 'package:kec_app/report/reportPegawai/ReportPembayaranHonor.dart';
 import 'package:kec_app/report/reportPegawai/ReportpdfASNNonAsn.dart';
+import 'package:kec_app/report/reportSuratBatal/LaporanSuratbatal.dart';
 
 class Drawes extends StatelessWidget {
   const Drawes({
@@ -212,8 +213,8 @@ class Drawes extends StatelessWidget {
                   style: TextStyle(fontSize: 13),
                 ),
                 onTap: () {
-                  // Navigator.of(context).push(CupertinoPageRoute(
-                  //     builder: ((context) => const ReportOutSurelPertahun())));
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: ((context) => const LaporanSuratBatal())));
                 },
               ),
                 ],

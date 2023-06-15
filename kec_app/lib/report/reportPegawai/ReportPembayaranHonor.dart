@@ -193,7 +193,7 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
         pw.Divider(thickness: 3),
         pw.SizedBox(height: 20),
         pw.Center(
-          child: pw.Text("Laporan Jumlah Pegawai",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+          child: pw.Text("Laporan Pembayaran Honor",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
         ),
         pw.SizedBox(height: 20),
         pw.Row(
@@ -362,27 +362,3 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
     return doc.save();
   }
 }
-
-
-// SingleChildScrollView(
-//               child: DataTable(
-//                 columns: [
-//                   DataColumn(label: Text('ID')),
-//                   DataColumn(label: Text('Nama')),
-//                   DataColumn(label: Text('Tanggal')),
-//                 ],
-//                 rows: honorData.entries.map((entry) {
-//                   final data = entry.value;
-//                   final Timestamp timerStamp = data['tanggal'];
-//                   var date = timerStamp.toDate();
-//                   var tanggal = DateFormat.yMMMMd().format(date);
-//                   return DataRow(
-//                     cells: [
-//                       DataCell(Text(data['id'].toInt().toString())),
-//                       DataCell(Text(data['nama'])),
-//                       DataCell(Text(tanggal.toString())),
-//                     ],
-//                   );
-//                 }).toList(),
-//               ),
-//             );

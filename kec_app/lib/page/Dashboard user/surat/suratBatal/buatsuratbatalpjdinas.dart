@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/detailSuratBatalPjd.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/formsuratbatalPJD.dart';
-import 'package:kec_app/report/reportSuratBatal/ReporSuratBatal.dart';
+import 'package:kec_app/report/reportSuratBatal/SuratBatal.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
 

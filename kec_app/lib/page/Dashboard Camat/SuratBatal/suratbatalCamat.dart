@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/page/Dashboard%20Camat/SuratBatal/listsuratBatalUser.dart';
-import 'package:kec_app/report/reportSuratBatal/ReporSuratBatal.dart';
+import 'package:kec_app/report/reportSuratBatal/SuratBatal.dart';
 
 class SuratBatalCamat extends StatefulWidget {
   const SuratBatalCamat({super.key});
