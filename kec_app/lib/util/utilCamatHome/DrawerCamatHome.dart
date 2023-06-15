@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/page/Dashboard%20Camat/SuratBatal/suratbatalCamat.dart';
+import 'package:kec_app/page/Dashboard%20Camat/SuratPengganti/ListSuratPengganticamat.dart';
 
 class DrawerCamatHome extends StatelessWidget {
   const DrawerCamatHome({
@@ -72,7 +73,9 @@ class DrawerCamatHome extends StatelessWidget {
                             ListTile(
                               leading: Icon(Icons.email_outlined),
                               title: Text('Data Surat Peganti Perjalanan Dinas'),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(CupertinoPageRoute(builder: (context) => ListSuratPenggantiCamat()));
+                              },
                             ),
                           ],
                         );

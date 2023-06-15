@@ -1,16 +1,19 @@
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-class ReportSuratBatal extends StatelessWidget {
-  final DocumentSnapshot documentSnapshot;
-  const ReportSuratBatal({super.key, required this.documentSnapshot});
+class ReportSuratPengganti extends StatelessWidget {
+  final DocumentSnapshot suratpenggantiDoc;
+  const ReportSuratPengganti({super.key, required this.suratpenggantiDoc});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,7 @@ class ReportSuratBatal extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Surat Batal PJD'),
+        title: Text('Surat Pengganti PJD'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -32,14 +35,14 @@ class ReportSuratBatal extends StatelessWidget {
         ) =>
             generateDocument(
           format,
-          documentSnapshot,
+          suratpenggantiDoc,
         ),
       ),
     );
   }
 
-  Future<Uint8List> generateDocument(
-      PdfPageFormat format, DocumentSnapshot<Object?> documentSnapshot) async {
+  Future<Uint8List> generateDocument(PdfPageFormat format,
+      DocumentSnapshot<Object?> suratpenggantiDoc) async {
     final doc = pw.Document(pageMode: PdfPageMode.outlines);
     final font1 = await PdfGoogleFonts.openSansRegular();
     final font2 = await PdfGoogleFonts.openSansBold();
@@ -47,21 +50,20 @@ class ReportSuratBatal extends StatelessWidget {
     final memoryImage = pw.MemoryImage(
       (await rootBundle.load('image/kabtapin.png')).buffer.asUint8List(),
     );
+
     await initializeDateFormatting('id', null);
-    
-    final Timestamp timerStamp = documentSnapshot['tanggal_surat'];
-    final Timestamp timerStamps = documentSnapshot['tanggal_perjalanan'];
+    final Timestamp timerStamp = suratpenggantiDoc['tanggal_surat'];
+    final Timestamp timerStamps = suratpenggantiDoc['tanggal_perjalanan'];
     var date = timerStamp.toDate();
     var dates = timerStamps.toDate();
     var tanggal_surat = DateFormat('EEEE, d MMMM yyyy', 'id').format(date);
     var tanggal_perjalanan = DateFormat.yMMMMd('id').format(dates);
 
-
     doc.addPage(pw.MultiPage(
       mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
       build: (context) => [
-        
-        //cop surat
+
+        //cop surat 
         pw.Column(children: [
           pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.center,
@@ -102,14 +104,14 @@ class ReportSuratBatal extends StatelessWidget {
         pw.Column(children: [
 
           pw.Row(children: [pw.Paragraph(
-            text: 'Perihal : '+'Penolakan Perintah Perjalanan Dinas',),],),
+            text: 'Perihal : '+'Pergantian Pegawai Dalam Perjalanan Dinas',),],),
           pw.Row(children: [
             pw.Paragraph(
             text: 'Kepada,',),
           ]),
           pw.Row(children: [
             pw.Paragraph(
-            text: 'Bapak Camat Salam Babaris',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,)),
+            text: '${suratpenggantiDoc['nama_pengganti']}',style: pw.TextStyle(fontWeight: pw.FontWeight.bold,)),
           ]),
           pw.Row(children: [
             pw.Paragraph(
@@ -117,40 +119,41 @@ class ReportSuratBatal extends StatelessWidget {
           ]),
 
         pw.Paragraph(
-            text: '   Saya, '+ documentSnapshot['nama'] + ' dengan ini mengajukan ' +
-            'penolakan terhadap perintah perjalanan dinas yang telah '+
-            'diberikan kepada saya untuk tanggal '+ tanggal_perjalanan.toString()+'.',),
+            text: '     Bersama surat ini, kami ingin menginformasikan bahwa pegawai kami, ' +
+            '${suratpenggantiDoc['nama']}, yang seharusnya melaksanakan perjalanan dinas pada tanggal '+
+            '${tanggal_perjalanan.toString()}, tidak dapat melaksanakan tugas tersebut karena '+
+            '${suratpenggantiDoc['alasan']}.',),
        
         pw.Paragraph(
-          text: '   Alasan penolakan ini adalah ** ' + 
-          '${documentSnapshot['alasan']}' +' **. '+ 'Saya memohon pengertian dan kebijaksanaan '+
-          'dari pihak yang berwenang untuk mempertimbangkan ' + 'penolakan ini. Saya akan '+
-          'tetap berkomitmen untuk melaksanakan tugas-tugas yang lain yang diberikan '+
-          'kepada saya dalam lingkup kerja saya.',
+          text: '     Sebagai pengganti, kami telah menunjuk  ** ' + 
+          '${suratpenggantiDoc['nama_pengganti']}' +' **. untuk melaksanakan perjalanan dinas tersebut.'+
+          ' ${suratpenggantiDoc['nama_pengganti']} telah kami berikan briefing terkait tugas dan tanggung jawab yang harus diemban selama perjalanan dinas',
 
         ),
 
         pw.Paragraph(
-          text: '   Demikianlah surat penolakan ini saya sampaikan. Terima kasih atas perhatian dan pengertiannya.'),
+          text: '     Kami memohon pengertian dan kerjasama dari pihak pegawai. Terima kasih atas perhatian dan kerjasamanya.'),
 
         ]),
 
         ]),
 
-        
-
-        pw.SizedBox(height: 60),
+         pw.SizedBox(height: 60),
         pw.Row(mainAxisAlignment: pw.MainAxisAlignment.start, children: [
           pw.Column(children: [
-            pw.Text("Hormat Saya,"),
-            pw.SizedBox(height: 50),
+           pw.Text("Camat"),
+            pw.SizedBox(height: 30),
             pw.Padding(
                 padding: const pw.EdgeInsets.only(),
-                child: pw.Text(documentSnapshot['nama'],
+                child: pw.Text("Akhmad, S.Sos., M.AP",
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+            pw.Padding(
+                padding: const pw.EdgeInsets.only(),
+                child: pw.Text("198106202010011029",
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
           ])
         ])
-      ],
+      ]
     ));
 
     return doc.save();

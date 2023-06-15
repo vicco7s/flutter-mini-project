@@ -6,7 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerSuratKeluar.dart';
+import 'package:kec_app/controller/controllerSurat/controllerSuratKeluar.dart';
 import 'package:kec_app/model/suratkeluarService.dart';
 
 class FormSuratKeluar extends StatefulWidget {

@@ -43,7 +43,7 @@ class _ListSuratBatalUserState extends State<ListSuratBatalUser> {
             child: StreamBuilder<QuerySnapshot>(
               stream: documentSnapshot.reference
                   .collection('suratbatal')
-                  .orderBy('id', descending: false)
+                  .orderBy('id', descending: true)
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {

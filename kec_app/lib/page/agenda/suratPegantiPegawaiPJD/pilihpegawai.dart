@@ -1,18 +1,20 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:kec_app/page/Dashboard%20Camat/SuratBatal/listsuratBatalUser.dart';
-import 'package:kec_app/report/reportSuratBatal/SuratBatal.dart';
+import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/listSuratPenganti.dart';
+import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/tambahSuratPenganti.dart';
+import 'package:kec_app/util/SpeedDialFloating.dart';
 
-class SuratBatalCamat extends StatefulWidget {
-  const SuratBatalCamat({super.key});
+class PilihPegawaiSP extends StatefulWidget {
+  const PilihPegawaiSP({super.key});
 
   @override
-  State<SuratBatalCamat> createState() => _SuratBatalCamatState();
+  State<PilihPegawaiSP> createState() => _PilihPegawaiSPState();
 }
 
-class _SuratBatalCamatState extends State<SuratBatalCamat> {
+class _PilihPegawaiSPState extends State<PilihPegawaiSP> {
   String search = '';
 
   final Query<Map<String, dynamic>> _usersCollection =
@@ -27,7 +29,7 @@ class _SuratBatalCamatState extends State<SuratBatalCamat> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Pegawai Surat Batal'),
+        title: Text('Pilih Pegawai'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -45,7 +47,7 @@ class _SuratBatalCamatState extends State<SuratBatalCamat> {
             },
           ),
         ),
-        
+
         Expanded(
             child: StreamBuilder<QuerySnapshot>(
               stream: (search != "" && search != null)
@@ -76,7 +78,7 @@ class _SuratBatalCamatState extends State<SuratBatalCamat> {
                             child: ListTile(
                               onTap: () {
                                 Navigator.of(context).push(CupertinoPageRoute(
-                                    builder: (context) => ListSuratBatalUser(documentSnapshot: documentSnapshot,)));
+                                    builder: (context) => ListSuratPenganti(documentSnapshot: documentSnapshot,)));
                               },
                               title: Text(documentSnapshot['nama'],style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
                               subtitle: Text(
@@ -88,10 +90,8 @@ class _SuratBatalCamatState extends State<SuratBatalCamat> {
               },
             ),
           ),
-        
-
-      ]),
+      ],),
+      
     );
   }
 }
-

@@ -13,13 +13,12 @@ class ControllerSM {
     final CollectionReference _suratmasuk =
         FirebaseFirestore.instance.collection('suratmasuk');
 
- 
-
     final json = inputSurel.toJson();
     var querySnapshot = await _suratmasuk.orderBy("no", descending: true).limit(1).get();
     var maxId = querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("no") : 0;
     json["no"] = maxId + 1;
     await _suratmasuk.add(json);
+    
   }
 
   Future<void> delete(String id, BuildContext context) async {

@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
-import 'package:kec_app/controller/controlerSuratMasuk.dart';
+import 'package:kec_app/controller/controllerSurat/controlerSuratMasuk.dart';
 
 class DetailSuratMasuk extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;

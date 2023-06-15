@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/buatsuratbatalpjdinas.dart';
+import 'package:kec_app/page/Dashboard%20user/surat/suratpengganti/ListSuratPenggantiUser.dart';
 
 class DrawerPegawaiHome extends StatelessWidget {
   const DrawerPegawaiHome({
@@ -73,7 +74,9 @@ class DrawerPegawaiHome extends StatelessWidget {
                             ListTile(
                               leading: Icon(Icons.email_outlined),
                               title: Text('Surat Peganti Perjalanan Dinas'),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).push(CupertinoPageRoute(builder: (context) => ListSuratPenggantiUser()));
+                              },
                             ),
                           ],
                         );

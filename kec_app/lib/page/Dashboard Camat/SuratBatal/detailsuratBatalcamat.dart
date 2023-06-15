@@ -2,21 +2,26 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
 
 class DetailSuratBatalCamat extends StatelessWidget {
   final QueryDocumentSnapshot suratBatalDoc;
   final DocumentSnapshot documentSnapshot;
-  const DetailSuratBatalCamat({super.key, required this.suratBatalDoc, required this.documentSnapshot});
+  const DetailSuratBatalCamat(
+      {super.key, required this.suratBatalDoc, required this.documentSnapshot});
 
   @override
   Widget build(BuildContext context) {
+
     final Timestamp timerStamp = suratBatalDoc['tanggal_surat'];
     final Timestamp timerStamps = suratBatalDoc['tanggal_perjalanan'];
     var date = timerStamp.toDate();
     var dates = timerStamps.toDate();
-    var tanggal_surat = DateFormat.yMMMMd().format(date);
-    var tanggal_perjalanan = DateFormat.yMMMMd().format(dates);
+
+    initializeDateFormatting('id', null);
+    var tanggal_surat = DateFormat.yMMMMd('id').format(date);
+    var tanggal_perjalanan = DateFormat.yMMMMd('id').format(dates);
 
     final dataSuratBatal = ControllerSuratBatal();
 
@@ -120,7 +125,8 @@ class DetailSuratBatalCamat extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () async {
-                      await dataSuratBatal.update(documentSnapshot,suratBatalDoc, context);
+                      await dataSuratBatal.update(
+                          documentSnapshot, suratBatalDoc, context);
                     },
                     child: const Text("Update"),
                     style: ElevatedButton.styleFrom(

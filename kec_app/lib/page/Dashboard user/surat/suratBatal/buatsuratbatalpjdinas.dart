@@ -50,7 +50,7 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                   .collection('users')
                   .doc(_currentUser?.uid)
                   .collection('suratbatal')
-                  .orderBy('id', descending: false)
+                  .orderBy('id', descending: true)
                   .snapshots(),
               builder: (context, snapshot) {
                 return (snapshot.connectionState == ConnectionState.waiting)
