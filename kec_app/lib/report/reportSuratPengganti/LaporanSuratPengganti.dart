@@ -1,26 +1,25 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-class LaporanSuratBatal extends StatefulWidget {
-  const LaporanSuratBatal({super.key});
+class LaporanSuratPengganti extends StatefulWidget {
+  const LaporanSuratPengganti({super.key});
 
   @override
-  State<LaporanSuratBatal> createState() => _LaporanSuratBatalState();
+  State<LaporanSuratPengganti> createState() => _LaporanSuratPenggantiState();
 }
 
-class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
+class _LaporanSuratPenggantiState extends State<LaporanSuratPengganti> {
   late DateTime startDate;
   late DateTime endDate;
 
@@ -40,14 +39,14 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
     List<QueryDocumentSnapshot> userDocuments = querySnapshot.docs;
 
     // Buat map untuk menyimpan data pegawai
-    Map<String, dynamic> suratBatalData = {};
+    Map<String, dynamic> suratPenggantiData = {};
 
     // Iterasi setiap dokumen
     for (var userDocument in userDocuments) {
       QuerySnapshot subCollectionSnapshot = await FirebaseFirestore.instance
           .collection('users')
           .doc(userDocument.id)
-          .collection('suratbatal')
+          .collection('suratpengganti')
           .orderBy("id", descending: false)
           .get();
 
@@ -56,9 +55,9 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
 
       // Iterasi setiap dokumen di subkoleksi "suratbatal" pengguna
       for (var subCollectionDocument in subCollectionDocuments) {
-        Map<String, dynamic> suratBatalDoc =
+        Map<String, dynamic> suratPenggantiDoc =
             subCollectionDocument.data() as Map<String, dynamic>;
-        Timestamp timestamp = suratBatalDoc['tanggal_surat'];
+        Timestamp timestamp = suratPenggantiDoc['tanggal_perjalanan'];
 
         // Konversi Timestamp menjadi DateTime
         DateTime date = timestamp.toDate();
@@ -66,25 +65,25 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
         // Periksa apakah tanggal berada dalam rentang yang dipilih
         if (date.isAfter(startDate.subtract(Duration(days: 1))) &&
             date.isBefore(endDate.add(Duration(days: 1)))) {
-          suratBatalData[subCollectionDocument.id] = suratBatalDoc;
+          suratPenggantiData[subCollectionDocument.id] = suratPenggantiDoc;
         }
       }
     }
 
     // Urutkan data berdasarkan tanggal secara menurun
-    List<MapEntry<String, dynamic>> sortedSuratBatalData =
-        suratBatalData.entries.toList()
+    List<MapEntry<String, dynamic>> sortedSuratPenggantiData =
+        suratPenggantiData.entries.toList()
           ..sort((a, b) {
-            DateTime dateA = a.value['tanggal_surat'].toDate();
-            DateTime dateB = b.value['tanggal_surat'].toDate();
+            DateTime dateA = a.value['tanggal_perjalanan'].toDate();
+            DateTime dateB = b.value['tanggal_perjalanan'].toDate();
             return dateB.compareTo(dateA);
           });
 
     // Buat map baru untuk menyimpan data surat batal yang sudah diurutkan
-    Map<String, dynamic> sortedSuratBatalDataMap =
-        Map.fromEntries(sortedSuratBatalData);
+    Map<String, dynamic> sortedSuratPenggantiDataMap =
+        Map.fromEntries(sortedSuratPenggantiData);
 
-    return sortedSuratBatalDataMap;
+    return sortedSuratPenggantiDataMap;
   }
 
   Future<void> _selectDateRange(BuildContext context) async {
@@ -127,7 +126,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Report Surat batal'),
+        title: Text('Report Surat Pengganti'),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -145,8 +144,8 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            final sortedSuratBatalDataMap = snapshot.data!;
-            if (sortedSuratBatalDataMap.isEmpty) {
+            final sortedSuratPenggantiDataMap = snapshot.data!;
+            if (sortedSuratPenggantiDataMap.isEmpty) {
               return Center(
                 child: Text('No data available'),
               );
@@ -160,7 +159,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
               ) =>
                   generateDocument(
                 format,
-                sortedSuratBatalDataMap,
+                sortedSuratPenggantiDataMap,
               ),
             );
           } else {
@@ -174,7 +173,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
   }
 
   Future<Uint8List> generateDocument(PdfPageFormat format,
-      Map<String, dynamic> sortedSuratBatalDataMap) async {
+      Map<String, dynamic> sortedSuratPenggantiDataMap) async {
     final doc = pw.Document(pageMode: PdfPageMode.outlines);
     final font1 = await PdfGoogleFonts.openSansRegular();
     final font2 = await PdfGoogleFonts.openSansBold();
@@ -220,7 +219,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
         pw.Divider(thickness: 3),
         pw.SizedBox(height: 20),
         pw.Center(
-          child: pw.Text("Laporan Surat Batal Perjalanan Dinas",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+          child: pw.Text("Laporan Surat Pengganti Perjalanan Dinas",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
         ),
         pw.SizedBox(height: 20),
         pw.Row(
@@ -243,7 +242,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
           pw.Table(
           columnWidths: {
             0: pw.FlexColumnWidth(1.0),
-            1: pw.FlexColumnWidth(0.5),
+            2: pw.FlexColumnWidth(0.5),
           },
           border: pw.TableBorder.all(),
           children: [
@@ -255,19 +254,25 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
               pw.Expanded(
-                    child: pw.Text("Tanggal",
+                    child: pw.Text("Jabatan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
               pw.Expanded(
-                    child: pw.Text("Alasan",
+                    child: pw.Text("Tanggal Perjalanan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
               pw.Expanded(
-                    child: pw.Text("Keterangan",
+                    child: pw.Text("Alasan Pergantian",
+                        textAlign: pw.TextAlign.center,
+                        style: pw.TextStyle(
+                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                  ),
+              pw.Expanded(
+                    child: pw.Text("Pegawai Pengganti",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
@@ -279,12 +284,12 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
         pw.Table(
             columnWidths: {
               0: pw.FlexColumnWidth(1.0),
-              1: pw.FlexColumnWidth(0.5),
+              2: pw.FlexColumnWidth(0.5),
             },
             border: pw.TableBorder.all(),
-            children: sortedSuratBatalDataMap.entries.map((entry) {
+            children: sortedSuratPenggantiDataMap.entries.map((entry) {
               final data = entry.value;
-              final Timestamp timerStamp = data['tanggal_surat'];
+              final Timestamp timerStamp = data['tanggal_perjalanan'];
               var date = timerStamp.toDate();
               var tanggal = DateFormat.yMMMMd('id').format(date);
 
@@ -292,6 +297,12 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
                 pw.Expanded(
                   child: pw.Text(
                     data['nama'],
+                    style: pw.TextStyle(fontSize: 8),
+                  ),
+                ),
+                pw.Expanded(
+                  child: pw.Text(
+                    data['jabatan'],textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
@@ -306,14 +317,13 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
                       style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(data['keterangan'],
+                  child: pw.Text(data['nama_pengganti'],
                       style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
                 ),
                
               ]);
             }).toList(),
           ),
-
         ]),
 
         pw.SizedBox(height: 60),
@@ -339,4 +349,25 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
   }
 }
 
-
+// SingleChildScrollView(
+//               child: DataTable(
+//                 columns: [
+//                   DataColumn(label: Text('ID')),
+//                   DataColumn(label: Text('Nama')),
+//                   DataColumn(label: Text('Tanggal PJ')),
+//                 ],
+//                 rows: sortedSuratBatalDataMap.entries.map((entry) {
+//                   final data = entry.value;
+//                   final Timestamp timerStamp = data['tanggal_perjalanan'];
+//                   var date = timerStamp.toDate();
+//                   var tanggal = DateFormat.yMMMMd().format(date);
+//                   return DataRow(
+//                     cells: [
+//                       DataCell(Text(data['id'].toInt().toString())),
+//                       DataCell(Text(data['nama'])),
+//                       DataCell(Text(tanggal.toString())),
+//                     ],
+//                   );
+//                 }).toList(),
+//               ),
+//             );

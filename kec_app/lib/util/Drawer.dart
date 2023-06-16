@@ -16,6 +16,7 @@ import 'package:kec_app/report/reportPegawai/ReportJumlahPegawai.dart';
 import 'package:kec_app/report/reportPegawai/ReportPembayaranHonor.dart';
 import 'package:kec_app/report/reportPegawai/ReportpdfASNNonAsn.dart';
 import 'package:kec_app/report/reportSuratBatal/LaporanSuratbatal.dart';
+import 'package:kec_app/report/reportSuratPengganti/LaporanSuratPengganti.dart';
 
 class Drawes extends StatelessWidget {
   const Drawes({
@@ -229,8 +230,19 @@ class Drawes extends StatelessWidget {
                       builder: ((context) => const LaporanSuratBatal())));
                 },
               ),
-                ],
+
+              ListTile(
+                title: const Text(
+                  'Laporan Surat Pengganti',
+                  style: TextStyle(fontSize: 13),
                 ),
+                onTap: () {
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: ((context) => const LaporanSuratPengganti())));
+                },
+              ),
+            ],
+          ),
               
               ExpansionTile(
                 title: Text("Laporan Perjalanan Dinas"),
