@@ -154,8 +154,11 @@ class _ReportpDinasPertahunState extends State<ReportpDinasPertahun> {
     final memoryImage = pw.MemoryImage((await rootBundle.load('image/kabtapin.png')).buffer.asUint8List(),);
 
     doc.addPage(pw.MultiPage(
+      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       build: (context) => [
-        pw.Row(
+        pw.Column(
+          children: [
+            pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.center,
           children: [
             pw.Container(
@@ -185,45 +188,68 @@ class _ReportpDinasPertahunState extends State<ReportpDinasPertahun> {
         pw.Divider(thickness: 3),
         pw.SizedBox(height: 20),
         pw.Center(
-          child: pw.Text("Laporan Perjalanan Dinas Pertahun",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+          child: pw.Text("Laporan Yang Sering Melakukan Perjalanan Dinas",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
         ),
         pw.SizedBox(height: 20),
-        pw.Text(selectedYear,style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        pw.Row(children: [
+          pw.Text(selectedYear,style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        ]),
         pw.Table(
             columnWidths: {
-              0: pw.FlexColumnWidth(2.2),
+              0: pw.FlexColumnWidth(0.2),
               1: pw.FlexColumnWidth(1),
               2: pw.FlexColumnWidth(1.4),
             },
             border: pw.TableBorder.all(),
             children: [
               pw.TableRow(children: [
-                pw.Text("Pegawai",
+                pw.Expanded(
+                  child: pw.Text("No",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(
                       fontSize: 10,
                       fontWeight: pw.FontWeight.bold
                     )),
-                pw.Text("Jumlah Perjalanan Dinas",
+                  ),
+                pw.Expanded(
+                  child: pw.Text("Nama Pegawai",
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold
+                    )),
+                ),
+                pw.Expanded(
+                  child:  pw.Text("Jumlah Tugas Perjalanan Dinas",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),
+                ),
               ]),
             ]),
         pw.Table(
           columnWidths: {
-            0: pw.FlexColumnWidth(2.2),
+            0: pw.FlexColumnWidth(0.2),
             1: pw.FlexColumnWidth(1),
             2: pw.FlexColumnWidth(1.4),
           },
           border: pw.TableBorder.all(),
-          children: listPegawai.map((pegawai) => pw.TableRow(children: [
-                    pw.Text(pegawai['pegawai']),
-                    pw.Text(pegawai['jumlah'].toString(),textAlign: pw.TextAlign.center,),
-                  ]))
-              .toList(),
+          children: [
+            for (var i = 0; i < listPegawai.length; i++)
+            pw.TableRow(children: [
+              pw.Expanded(
+                child: pw.Text((i + 1).toString(), textAlign: pw.TextAlign.center), // Menampilkan nomor urutan
+              ),
+              pw.Expanded(child: pw.Text(listPegawai[i]['pegawai']),),
+              pw.Expanded(child: pw.Text(listPegawai[i]['jumlah'].toString(),textAlign: pw.TextAlign.center,),),
+            ]),
+          ]
         ),
+        
         pw.SizedBox(height: 60),
-        pw.Row(
+        
+      ],
+    ),
+    pw.Row(
           mainAxisAlignment: pw.MainAxisAlignment.end,
           children: [
             pw.Column(
@@ -240,7 +266,7 @@ class _ReportpDinasPertahunState extends State<ReportpDinasPertahun> {
             )
           ]
         )
-      ],
+    ]
     ));
 
     return doc.save();

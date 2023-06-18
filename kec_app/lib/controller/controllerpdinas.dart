@@ -210,7 +210,7 @@ class ControllerPDinas {
                       final String status = _ket;
                       if (no != null) {
                         await _pdinas.doc(documentSnapshot.id).update({
-                          "no": no,
+                          "id": no,
                           "nama": nama,
                           "tujuan": tujuan,
                           "keperluan": keperluan,

@@ -4,6 +4,7 @@ import 'package:kec_app/page/Pegawai/GajiHonorPegawai/Gajihonorpegawai.dart';
 import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
 import 'package:kec_app/page/agenda/SuratKeluar/SuratKeluarPage.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/SuratMasukPage.dart';
+import 'package:kec_app/page/agenda/suratBatalPerjalanan/suratbatalPJD.dart';
 import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/pilihpegawai.dart';
 import 'package:kec_app/page/perjalananDinas/pdinaspage.dart';
 import 'package:kec_app/report/Report_pDinas/ReportPDinasPerNama.dart';
@@ -105,6 +106,17 @@ class Drawes extends StatelessWidget {
                   Navigator.pop(context);
                   Navigator.of(context).push(CupertinoPageRoute(
                       builder: ((context) => PilihPegawaiSP())));
+                },
+              ),
+              ListTile(
+                title: Text(
+                  'Data Surat Batal',
+                  style: TextStyle(fontSize: 13),
+                ),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.of(context).push(CupertinoPageRoute(
+                      builder: ((context) => SuratBatalAdminPJD())));
                 },
               ),
             ],

@@ -26,7 +26,7 @@ class DetailSuratPengantiCamat extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Detail Surat batal'),
+        title: Text('Detail Surat Pengganti'),
         centerTitle: true,
         elevation: 0,
       ),
