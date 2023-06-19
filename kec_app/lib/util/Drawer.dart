@@ -6,6 +6,7 @@ import 'package:kec_app/page/agenda/SuratKeluar/SuratKeluarPage.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/SuratMasukPage.dart';
 import 'package:kec_app/page/agenda/suratBatalPerjalanan/suratbatalPJD.dart';
 import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/pilihpegawai.dart';
+import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/buktikegiatanpjd.dart';
 import 'package:kec_app/page/perjalananDinas/pdinaspage.dart';
 import 'package:kec_app/report/Report_pDinas/ReportPDinasPerNama.dart';
 import 'package:kec_app/report/Report_surat_Keluar/ReportOutSurelPertahun.dart';
@@ -133,6 +134,16 @@ class Drawes extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                       CupertinoPageRoute(builder: ((context) => DinasPageList())));
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Bukti Kegiatan Perjalanan Dinas',
+                  style: TextStyle(fontSize: 13),
+                ),
+                onTap: () {
+                  Navigator.of(context).push(
+                      CupertinoPageRoute(builder: ((context) => BuktiKegiatanPJD())));
                 },
               ),
             ],

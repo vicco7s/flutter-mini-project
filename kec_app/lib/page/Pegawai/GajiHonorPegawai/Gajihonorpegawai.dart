@@ -55,7 +55,7 @@ class _GajiHonorPegawaiState extends State<GajiHonorPegawai> {
                   ? _gajihonor
                       .orderBy("nama")
                       .startAt([search]).endAt([search + "\uf8ff"]).snapshots()
-                  : _gajihonor.orderBy('id',descending: false).snapshots(),
+                  : _gajihonor.orderBy('id',descending: true).snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 return (snapshot.connectionState == ConnectionState.waiting)

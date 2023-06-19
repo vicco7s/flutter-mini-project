@@ -1,45 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerPerjalananDinas/controllerpdinas.dart';
+import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
 
-class DetailPdinas extends StatelessWidget {
+class DetailKegiatanPJD extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
-  const DetailPdinas({super.key, required this.documentSnapshot});
+  const DetailKegiatanPJD({super.key, required this.documentSnapshot});
 
   @override
   Widget build(BuildContext context) {
-    Timestamp timerstamp = documentSnapshot['tanggal_mulai'];
-    Timestamp timerstamps = documentSnapshot['tanggal_berakhir'];
+    initializeDateFormatting('id', null);
+
+    Timestamp timerstamp = documentSnapshot['tgl_awal'];
     var date = timerstamp.toDate();
+    var tanggal_awal = DateFormat('dd', 'id').format(date);
+
+    Timestamp timerstamps = documentSnapshot['tgl_akhir'];
     var dates = timerstamps.toDate();
-    var timers = DateFormat.yMMMMd().format(date);
-    var timer = DateFormat.yMMMMd().format(dates);
+    var tanggal_akhir = DateFormat.yMMMMd('id').format(dates);
 
-    final dataPdinas = ControllerPDinas();
-
+    final dataBuktiKegiatan = ControllerBuktiKegiatanPJD();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0.0,
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Detail Perjalanan Dinas'),
+        title: const Text('Detail Bukti Kegiatan'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
               child: Card(
-                elevation: 15.0,
-                shape: const RoundedRectangleBorder(
+                elevation: 10.0,
+                shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
                   bottomRight: Radius.circular(30.0),
@@ -55,7 +55,7 @@ class DetailPdinas extends StatelessWidget {
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
-                        documentSnapshot['id'].toString(),
+                        documentSnapshot['id'].toInt().toString(),
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
@@ -72,98 +72,103 @@ class DetailPdinas extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Text(
-                        "Tujuan :",
+                        "Nip :",
                         style:
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
-                        documentSnapshot['tujuan'],
+                        documentSnapshot['nip'],
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
                     ListTile(
                       leading: const Text(
-                        "Keperluan :",
+                        "Jabatan :",
                         style:
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
+                        documentSnapshot['jabatan'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text(
+                        "Keperluan :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      subtitle: Text(
                         documentSnapshot['keperluan'],
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
                     ListTile(
                       leading: const Text(
-                        "Tanggal Mulai :",
+                        "Tempat :",
                         style:
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
-                        timers.toString(),
+                        documentSnapshot['tempat'],
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
                     ListTile(
                       leading: const Text(
-                        "Tanggal Berakhir :",
+                        "Tanggal :",
                         style:
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
                       title: Text(
-                        timer.toString(),
+                        '${tanggal_awal.toString()} - ${tanggal_akhir.toString()}',
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
                     ListTile(
-                      leading: const Text(
-                        "Status :",
+                      title: const Text(
+                        "Dasar :",
                         style:
                             TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
-                      title: (documentSnapshot['status'] == 'diterima')
-                          ? Text(
-                              documentSnapshot['status'],
-                              style: const TextStyle(
-                                  color: Colors.green, fontSize: 18),
-                            )
-                          : Text(
-                              documentSnapshot['status'],
-                              style: const TextStyle(
-                                  color: Colors.red, fontSize: 18),
-                            ),
+                      subtitle: Text(
+                        documentSnapshot['dasar'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      title: const Text(
+                        "Hasil kegiatan :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      subtitle: Text(
+                        documentSnapshot['hasil'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 30,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            await dataBuktiKegiatan.update(documentSnapshot, context);
+                          },
+                          child: const Text("Update"),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue, // background
+                            foregroundColor: Colors.white, // foreground
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              ElevatedButton(
-                onPressed: () async {
-                  await dataPdinas.update(documentSnapshot, context);
-                },
-                child: const Text("Update"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue, // background
-                  foregroundColor: Colors.white, // foreground
-                ),
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await dataPdinas.delete(documentSnapshot.id, context);
-                },
-                child: const Text("Delete"),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // background
-                  foregroundColor: Colors.white, // foreground
-                ),
-              ),
-            ]),
           ],
         ),
       ),

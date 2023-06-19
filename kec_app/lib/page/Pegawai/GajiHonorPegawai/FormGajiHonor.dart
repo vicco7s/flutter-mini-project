@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/components/DateTimeFields.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:kec_app/controller/controlerPegawai/controllerHonorGaji.dart';
@@ -130,36 +131,17 @@ class _FormGajiHonorPegawaiState extends State<FormGajiHonorPegawai> {
                     right: 10.0,
                     left: 10.0,
                   ),
-                  child: DateTimeField(
-                    format: DateFormat('yyyy-MM-dd'),
-                    onShowPicker:
-                        (BuildContext context, DateTime? currentValue) {
-                      return showDatePicker(
-                        context: context,
-                        firstDate: DateTime(1900),
-                        initialDate: currentValue ?? DateTime.now(),
-                        lastDate: DateTime(2100),
-                      );
-                    },
-                    controller: _tanggal,
-                    validator: (value) {
+                  child: DateTimeFields(
+                    controllers: _tanggal, 
+                    tanggalText: 'Tanggal', 
+                    validators: (value) { 
                       if ((value.toString().isEmpty) ||
                           (DateTime.tryParse(value.toString()) == null)) {
                         return "Tanggal Tidak Boleh Kosong !";
                       }
                       return null;
-                    },
-                    decoration: InputDecoration(
-                      prefixIcon: const Icon(Icons.date_range_outlined),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      filled: true,
-                      hintStyle: TextStyle(color: Colors.grey[500]),
-                      // hintText: "Masukan Email",
-                      fillColor: Colors.white70,
-                      labelText: 'Tanggal',
-                    ),
+                     },
+                    
                   ),
                 ),
                 Padding(
