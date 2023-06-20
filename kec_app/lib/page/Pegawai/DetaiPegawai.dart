@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
 import 'package:kec_app/page/Pegawai/editpegawai.dart';
 import 'package:intl/intl.dart';
@@ -11,13 +12,13 @@ class DetailPagePegawai extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
+    initializeDateFormatting('id',null);
     Timestamp timerstamp = documentSnapshot['tgl_lahir'];
     Timestamp timerstamps = documentSnapshot['tgl_mulaitugas'];
     var dates = timerstamps.toDate();
     var date = timerstamp.toDate();
-    var tgllahir = DateFormat.yMMMMd().format(date);
-    var tglmulaitugas = DateFormat.yMMMMd().format(dates);
+    var tgllahir = DateFormat.yMMMMd('id').format(date);
+    var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
 
     final dataPegawai = ControllerPegawai();
     return Scaffold(
@@ -68,18 +69,19 @@ class DetailPagePegawai extends StatelessWidget {
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     image: DecorationImage(
-                                      image: NetworkImage(documentSnapshot["imageUrl"]),
+                                      image: NetworkImage(
+                                          documentSnapshot["imageUrl"]),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
                                 actions: [
                                   TextButton(
-                                  child: Text('Close'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
+                                    child: Text('Close'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
                                 ],
                               );
                             },
@@ -98,7 +100,6 @@ class DetailPagePegawai extends StatelessWidget {
                         ),
                       ),
                     ),
-
                     ListTile(
                       leading: const Text(
                         "Nama :",
@@ -264,42 +265,42 @@ class DetailPagePegawai extends StatelessWidget {
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  ElevatedButton(
-                    onPressed: () async {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) =>
-                              EditPegawai(documentSnapshot: documentSnapshot)));
-                      // await dataPegawai.update(documentSnapshot, context);
-                    },
-                    child: const Text("Update"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue, // background
-                      foregroundColor: Colors.white, // foreground
+                    const SizedBox(
+                      height: 20,
                     ),
-                  ),
-                  SizedBox(
-                    width: 30,
-                  ),
-                  ElevatedButton(
-                    onPressed: () async {
-                      await dataPegawai.delete(documentSnapshot.id, context);
-                    },
-                    child: const Text("Delete"),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // background
-                      foregroundColor: Colors.white, // foreground
-                    ),
-                  ),
-                ]),
+                    Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                      ElevatedButton(
+                        onPressed: () async {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => EditPegawai(
+                                  documentSnapshot: documentSnapshot)));
+                          // await dataPegawai.update(documentSnapshot, context);
+                        },
+                        child: const Text("Update"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.blue, // background
+                          foregroundColor: Colors.white, // foreground
+                        ),
+                      ),
+                      SizedBox(
+                        width: 30,
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await dataPegawai.delete(
+                              documentSnapshot.id, context);
+                        },
+                        child: const Text("Delete"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.red, // background
+                          foregroundColor: Colors.white, // foreground
+                        ),
+                      ),
+                    ]),
                   ],
                 ),
               ),
             ),
-            
           ],
         ),
       ),

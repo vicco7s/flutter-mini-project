@@ -29,7 +29,7 @@ class _SuratBatalAdminPJDState extends State<SuratBatalAdminPJD> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Surat Batal Pegawai'),
+        title: Text('Histori Surat Batal'),
         centerTitle: true,
         elevation: 0,
       ),

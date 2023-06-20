@@ -81,7 +81,7 @@ class _PegawaiUserState extends State<PegawaiUser> {
                               },
                               title: Text(documentSnapshot['nama'],style: TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.bold),),
                               subtitle: Text(
-                                  documentSnapshot['nip'].toInt().toString()),
+                                  documentSnapshot['nip']),
                             ),
                           );
                         },

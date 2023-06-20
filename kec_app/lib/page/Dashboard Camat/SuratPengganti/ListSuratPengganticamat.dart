@@ -30,7 +30,7 @@ class _ListSuratPenggantiCamatState extends State<ListSuratPenggantiCamat> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Surat Pengganti'),
+        title: Text('Histori Surat Pengganti'),
         centerTitle: true,
         elevation: 0,
       ),

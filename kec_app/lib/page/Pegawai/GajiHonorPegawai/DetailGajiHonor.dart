@@ -23,7 +23,7 @@ class DetailHonorPegawai extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios_new),
         ),
-        title: const Text('Detail Pegawai'),
+        title: const Text('Detail Pembayaran'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(

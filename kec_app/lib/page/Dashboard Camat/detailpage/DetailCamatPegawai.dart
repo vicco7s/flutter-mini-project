@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class DetailPegawaiCamat extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
@@ -9,6 +11,14 @@ class DetailPegawaiCamat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting('id',null);
+    Timestamp timerstamp = documentSnapshot['tgl_lahir'];
+    Timestamp timerstamps = documentSnapshot['tgl_mulaitugas'];
+    var dates = timerstamps.toDate();
+    var date = timerstamp.toDate();
+    var tgllahir = DateFormat.yMMMMd('id').format(date);
+    var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
+    
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -36,54 +46,223 @@ class DetailPegawaiCamat extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                        leading: const Text(
-                          "No :",
-                          style: TextStyle(fontSize: 18,color: Colors.blueAccent),
-                        ),
-                        title: Text(documentSnapshot["id"].toString(),style: TextStyle(fontSize: 18),),
+                      leading: const Text(
+                        "No :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
-                      ListTile(
-                        leading: const Text(
-                          "Nama :",
-                          style: TextStyle(fontSize: 18,color: Colors.blueAccent),
-                        ),
-                        title: Text(documentSnapshot["nama"],style: TextStyle(fontSize: 18),),
+                      title: Text(
+                        documentSnapshot["id"].toString(),
+                        style: TextStyle(fontSize: 18),
                       ),
-                      ListTile(
-                        leading: const Text(
-                          "Nip :",
-                          style: TextStyle(fontSize: 18,color: Colors.blueAccent),
+                      trailing: GestureDetector(
+                        onTap: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                content: Container(
+                                  width: 300,
+                                  height: 300,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          documentSnapshot["imageUrl"]),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    child: Text('Close'),
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                  ),
+                                ],
+                              );
+                            },
+                          );
+                        },
+                        child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            image: DecorationImage(
+                              image: NetworkImage(documentSnapshot["imageUrl"]),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
                         ),
-                        title: Text(documentSnapshot["nip"].toInt().toString(),style: TextStyle(fontSize: 18),),
                       ),
-                      ListTile(
-                        leading: const Text(
-                          "Pangkat :",
-                          style: TextStyle(fontSize: 18 , color: Colors.blueAccent),
-                        ),
-                        title: Text(documentSnapshot["pangkat"],style: TextStyle(fontSize: 18),),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Nama :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
-                      ListTile(
-                        leading: const Text(
-                          "Golongan :",
-                          style: TextStyle(fontSize: 18,color: Colors.blueAccent),
-                        ),
-                        title: Text(documentSnapshot["golongan"],style: TextStyle(fontSize: 18),),
+                      title: Text(
+                        documentSnapshot["nama"],
+                        style: TextStyle(fontSize: 18),
                       ),
-                      ListTile(
-                        leading: const Text(
-                          "Jabatan :",
-                          style: TextStyle(fontSize: 18,color: Colors.blueAccent),
-                        ),
-                        title: Text(documentSnapshot["jabatan"],style: TextStyle(fontSize: 18),),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Nip :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
                       ),
-                      ListTile(
-                        leading: const Text(
-                          "Status :",
-                          style: TextStyle(fontSize: 18,color: Colors.blueAccent),
-                        ),
-                        title: Text(documentSnapshot["status"],style: TextStyle(fontSize: 18),),
+                      title: Text(
+                        documentSnapshot["nip"],
+                        style: TextStyle(fontSize: 18),
                       ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Jenis Kelamin :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot["jenis_kelamin"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Tanggal Lahir :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        tgllahir.toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Tempat Lahir :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['tempat_lahir'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Tanggal Mulai Tugas :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        tglmulaitugas.toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Alamat :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['alamat'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Pendidikan Terakhir :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['pendidikan_terakhir'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Pangkat :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot["pangkat"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Golongan :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot["golongan"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Jabatan :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot["jabatan"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Status :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot["status"],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Status Pernikahan :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['status_pernikahan'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Jumlah Anak :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['jumlah_anak'].toInt().toString(),
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
+                    ListTile(
+                      leading: const Text(
+                        "Telpon :",
+                        style:
+                            TextStyle(fontSize: 18, color: Colors.blueAccent),
+                      ),
+                      title: Text(
+                        documentSnapshot['telpon'],
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ),
                   ],
                 ),
               ),

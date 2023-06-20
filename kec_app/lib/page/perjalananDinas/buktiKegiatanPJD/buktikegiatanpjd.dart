@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
 import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/detailKegiatanPJD.dart';
 import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/formbuktiKegiatanPJD.dart';
+import 'package:kec_app/report/Report_pDinas/ReportBuktiKegiatanPJD.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 
 class BuktiKegiatanPJD extends StatefulWidget {
@@ -104,6 +105,21 @@ class _BuktiKegiatanPJDState extends State<BuktiKegiatanPJD> {
                                             documentSnapshot: documentSnapshot,
                                           )));
                                 },
+                                leading: IconButton(
+                                      icon: Icon(
+                                        Icons.print,
+                                        color: Colors.amberAccent,
+                                      ),
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                            CupertinoPageRoute(
+                                                builder: (context) =>
+                                                    ReportBuktiKegiatanPJD(
+                                                      documentSnapshot:
+                                                          documentSnapshot,
+                                                    )));
+                                      },
+                                    ),
                                 title: Text(documentSnapshot['nama'],
                                     style: TextStyle(
                                         color: Colors.blueAccent,

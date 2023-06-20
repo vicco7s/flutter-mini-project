@@ -8,6 +8,7 @@ import 'package:kec_app/page/agenda/suratBatalPerjalanan/suratbatalPJD.dart';
 import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/pilihpegawai.dart';
 import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/buktikegiatanpjd.dart';
 import 'package:kec_app/page/perjalananDinas/pdinaspage.dart';
+import 'package:kec_app/report/Report_pDinas/ReportBuktiKegiatanPJD.dart';
 import 'package:kec_app/report/Report_pDinas/ReportPDinasPerNama.dart';
 import 'package:kec_app/report/Report_surat_Keluar/ReportOutSurelPertahun.dart';
 import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPerbulan.dart';
@@ -271,15 +272,16 @@ class Drawes extends StatelessWidget {
                 title: Text("Laporan Perjalanan Dinas"),
                 children: [
                   ListTile(
-                title: const Text(
-                  'Laporan Perjalanan Dinas PerTahun',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const ReportpDinasPertahun())));
-                },
-              ),
+                    title: const Text(
+                      'Laporan Perjalanan Dinas PerTahun',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          builder: ((context) => const ReportpDinasPertahun())));
+                    },
+                  ),
+                  
                 ],
               ),
             ],
