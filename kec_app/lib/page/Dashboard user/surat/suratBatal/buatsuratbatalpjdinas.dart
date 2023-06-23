@@ -20,6 +20,8 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
   late FirebaseAuth _auth;
   User? _currentUser;
 
+  late DocumentSnapshot selectedDocument;
+
   @override
   void initState() {
     super.initState();
@@ -99,7 +101,10 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                                     onTap: () {
                                       Navigator.of(context).push(
                                           CupertinoPageRoute(
-                                              builder: (context) => DetailSuratBatalPJD(documentSnapshot: documentSnapshot)));
+                                              builder: (context) =>
+                                                  DetailSuratBatalPJD(
+                                                      documentSnapshot:
+                                                          documentSnapshot)));
                                     },
                                     leading: IconButton(
                                       icon: Icon(
@@ -151,10 +156,20 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
         ],
       ),
       floatingActionButton: SpeedDialFloating(
-        animatedIcons: AnimatedIcons.add_event,
-        ontap: () => Navigator.of(context).push(
-            CupertinoPageRoute(builder: ((context) => FormSuratBatalPJD()))),
-      ),
+          animatedIcons: AnimatedIcons.add_event,
+          ontap: () async {
+            final userDocument = await FirebaseFirestore.instance
+                .collection('users')
+                .doc(_currentUser?.uid)
+                .get();
+            setState(() {
+              selectedDocument = userDocument;
+            });
+            Navigator.of(context).push(CupertinoPageRoute(
+                builder: ((context) => FormSuratBatalPJD(
+                      userDocument: selectedDocument,
+                    ))));
+          }),
     );
   }
 }

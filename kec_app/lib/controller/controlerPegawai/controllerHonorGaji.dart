@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/components/DropDownSearch/DropdownSearchUpdate.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/model/Pegawai/gajihonorservice.dart';
 import 'package:intl/intl.dart';
@@ -106,34 +108,28 @@ class ControllerGajiHonor {
                                         snapshot.data as QuerySnapshot;
                                     List<DocumentSnapshot> items =
                                         querySnapshot.docs;
-                                    List<DropdownMenuItem<String>>
-                                        dropdownItems = [];
-                                    for (var item in items) {
-                                      dropdownItems.add(DropdownMenuItem(
-                                        child: Text(item['nama']),
-                                        value: item['nama'],
-                                      ));
-                                    }
+                                    List<String> namaList = items.map((item) => item['nama'] as String).toList();
+                                    // for (var item in items) {
+                                    //   dropdownItems.add(DropdownMenuItem(
+                                    //     child: Text(item['nama']),
+                                    //     value: item['nama'],
+                                    //   ));
+                                    // }
                                     return Column(
                                       children: [
-                                        DropdownButtonFormField<String>(
-                                          dropdownColor: Colors.white,
-                                          isExpanded: true,
-                                          iconEnabledColor: Colors.black,
-                                          focusColor: Colors.black,
-                                          items: dropdownItems,
-                                          onChanged: (value) {
-                                            _selectedValue = value!;
-                                            getJabatanByNama(value)
-                                                .then((jabatan) {
-                                              _jabatan.text =
-                                                  jabatan; // Set nilai pada _jabatanController
-                                            });
-                                          },
-                                          decoration: const InputDecoration(
-                                            labelText: 'Nama',
-                                          ),
-                                          value: _selectedValue,
+                                        DropdownSearchUpdate(
+                                          itemes: namaList,
+                                          textDropdownPorps: 'Nama',
+                                          hintTextProps: 'Search Nama...',
+                                          onChage: (value) {
+                                              _selectedValue = value!;
+                                              getJabatanByNama(value)
+                                                  .then((jabatan) {
+                                                _jabatan.text =
+                                                    jabatan; // Set nilai pada _jabatanController
+                                              });
+                                            },
+                                          selectedItems: _selectedValue,
                                         ),
                                         TextField(
                                           keyboardType: TextInputType.none,

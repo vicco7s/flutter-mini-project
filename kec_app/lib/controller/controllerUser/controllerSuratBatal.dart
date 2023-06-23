@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/api/firebase_api.dart';
 import 'package:kec_app/model/UserService/suratbatalservice.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
@@ -56,6 +57,12 @@ class ControllerSuratBatal {
       json["id"] = maxId + 1;
 
       await suratBatalCollection.add(json);
+
+      // Mengirim notifikasi saat surat batal ditambahkan
+      final title = 'Surat Batal Baru';
+      final body = 'Surat batal dengan ID ${json['id']} telah ditambahkan.';
+      await FirebaseApi().sendNotification(title, body);
+      
     }
   }
 

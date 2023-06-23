@@ -7,22 +7,27 @@ import 'package:kec_app/page/agenda/Suratmasuk/FormSuratMasuk.dart';
 class SpeedDialFloating extends StatelessWidget {
   const SpeedDialFloating({
     Key? key,
-    this.onPress,
-    this.animatedIcons, this.childs, this.ontap,
+    this.animatedIcons,
+    this.childs,
+    this.ontap,
+    this.icons, this.backColors,
   }) : super(key: key);
 
-  final Function()? onPress;
   final AnimatedIconData? animatedIcons;
   final Widget? childs;
   final Function()? ontap;
+  final IconData? icons;
+  final Color? backColors;
   @override
   Widget build(BuildContext context) {
     return SpeedDial(
       animatedIcon: animatedIcons,
-      backgroundColor: Colors.blue,
+      backgroundColor: backColors,
       overlayColor: Colors.black,
       overlayOpacity: 0.4,
       onPress: ontap,
+      icon: icons,
+      
     );
   }
 }

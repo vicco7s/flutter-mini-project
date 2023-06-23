@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/components/DateTimeFields.dart';
+import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:kec_app/controller/controlerPegawai/controllerHonorGaji.dart';
@@ -72,13 +74,13 @@ class _FormGajiHonorPegawaiState extends State<FormGajiHonorPegawai> {
                             QuerySnapshot querySnapshot =
                                 snapshot.data as QuerySnapshot;
                             List<DocumentSnapshot> items = querySnapshot.docs;
-                            List<DropdownMenuItem<String>> dropdownItems = [];
-                            for (var item in items) {
-                              dropdownItems.add(DropdownMenuItem(
-                                child: Text(item['nama']),
-                                value: item['nama'],
-                              ));
-                            }
+                            List<String> namaList = items.map((item) => item['nama'] as String).toList();
+                            // for (var item in items) {
+                            //   dropdownItems.add(DropdownMenuItem(
+                            //     child: Text(item['nama']),
+                            //     value: item['nama'],
+                            //   ));
+                            // }
                             return Column(
                               children: [
                                 Padding(
@@ -87,24 +89,22 @@ class _FormGajiHonorPegawaiState extends State<FormGajiHonorPegawai> {
                                     right: 10.0,
                                     left: 10.0,
                                   ),
-                                  child: DropdownButtonForms(
-                                      itemes: dropdownItems,
-                                      onchage: ((value) {
+                                  child: DropdownButtonSearch(
+                                    itemes: namaList,
+                                    textDropdownPorps: "Nama Pegawai",
+                                    hintTextProps: "Search Nama...",
+                                    onChage: (value) {
+                                      setState(() {
+                                      _selectedValue = value!;
+                                      getJabatanByNama(value).then((jabatan) {
                                         setState(() {
-                                          _selectedValue = value!;
-                                          getJabatanByNama(value)
-                                              .then((jabatan) {
-                                            setState(() {
-                                              _jabatan.text =
-                                                  jabatan; // Set nilai pada _jabatanController
-                                            });
-                                          }); // Panggil fungsi untuk mencari jabatan
+                                          _jabatan.text = jabatan; // Set nilai pada _jabatanController
                                         });
-                                      }),
-                                      labelTitle: "Nama",
-                                      validators: (value) => (value == null
-                                          ? 'Nama tidak boleh kosong !'
-                                          : null)),
+                                      });
+                                    });
+                                    },
+                                    validators:  (value) => (value == null ? 'Nama tidak boleh kosong!' : null),
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(
@@ -235,6 +235,7 @@ class _FormGajiHonorPegawaiState extends State<FormGajiHonorPegawai> {
       ),
     );
   }
+
 }
 
 Future<String> getJabatanByNama(String value) async {

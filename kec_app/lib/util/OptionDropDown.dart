@@ -73,4 +73,6 @@ var pendidikan_akhir = [
 ];
 var pendidikan_ak = '--';
 
-
+var jabatan = [
+  'Camat',
+];

@@ -7,7 +7,8 @@ import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
 import 'package:kec_app/model/UserService/suratbatalservice.dart';
 
 class FormSuratBatalPJD extends StatefulWidget {
-  const FormSuratBatalPJD({super.key});
+  final DocumentSnapshot userDocument;
+  const FormSuratBatalPJD({super.key, required this.userDocument});
 
   @override
   State<FormSuratBatalPJD> createState() => _FormSuratBatalPJDState();
@@ -23,10 +24,20 @@ class _FormSuratBatalPJDState extends State<FormSuratBatalPJD> {
   String _status = "Mohon Tunggu";
   String _keterangan = "----";
 
+  late DocumentSnapshot documentSnapshot;
+
+  @override
+  void initState() {
+    super.initState();
+    documentSnapshot = widget.userDocument;
+  }
+  
+
   final dataSuratbatal = ControllerSuratBatal();
 
   @override
   Widget build(BuildContext context) {
+    _nama.text = documentSnapshot['nama'];
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -48,7 +59,8 @@ class _FormSuratBatalPJDState extends State<FormSuratBatalPJD> {
                 child: TextFormFields(
                   controllers: _nama,
                   labelTexts: 'Nama Lengkap',
-                  keyboardtypes: TextInputType.text,
+                  keyboardtypes: TextInputType.none,
+                  enableds: false,
                   validators: (value) {
                     if (value!.isEmpty) {
                       return "Nama Lengkap Tidak Boleh Kosong !";

@@ -6,13 +6,19 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kec_app/page/Dashboard%20user/PdinasUser.dart';
 import 'package:kec_app/page/Dashboard%20user/profil/Pegawaiuser.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/Suratmasukuser.dart';
 import 'package:kec_app/page/Users/loginpage.dart';
+import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:kec_app/util/utilpegawaihome/DrawerPegawaiHome.dart';
 
 import 'surat/SuratKeluarUser.dart';
+
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeUserPage extends StatefulWidget {
   const HomeUserPage({super.key});
@@ -387,10 +393,17 @@ class _HomeUserPageState extends State<HomeUserPage> {
           ],
         ),
       ),
+      floatingActionButton: SpeedDialFloating(
+        backColors: Colors.green,
+        animatedIcons: null, // Set animatedIcons ke null
+        icons: FontAwesomeIcons.whatsapp,
+        ontap: () {
+          _launchWhatsApp();
+        },
+      ),
     );
   }
 }
-
 
 Future<void> logout(BuildContext context) async {
   await FirebaseAuth.instance.signOut();
@@ -401,4 +414,21 @@ Future<void> logout(BuildContext context) async {
       builder: (context) => LoginPage(),
     ),
   );
+}
+
+void _launchWhatsApp() async {
+  String phone = '6282149631510'; // Ganti dengan nomor WhatsApp yang ingin Anda arahkan ke sini
+  String message = 'Halo, saya membutuhkan bantuan.';
+
+  final url = 'https://wa.me/$phone/?text=${Uri.encodeComponent(message)}';
+
+  try {
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+  } catch (e) {
+    throw 'Tidak dapat membuka tautan WhatsApp.';
+  }
+  
 }

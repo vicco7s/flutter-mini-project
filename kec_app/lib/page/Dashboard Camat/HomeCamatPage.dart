@@ -4,13 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kec_app/components/component_camat/TabbarViewWidget.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PdinasCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratmasukCamat.dart';
 import 'package:kec_app/page/Users/loginpage.dart';
+import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:kec_app/util/utilCamatHome/DrawerCamatHome.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class HomeCamatPage extends StatefulWidget {
   const HomeCamatPage({super.key});
@@ -19,7 +22,8 @@ class HomeCamatPage extends StatefulWidget {
   State<HomeCamatPage> createState() => _HomeCamatPageState();
 }
 
-class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProviderStateMixin{
+class _HomeCamatPageState extends State<HomeCamatPage>
+    with SingleTickerProviderStateMixin {
   final currentUser = FirebaseAuth.instance;
   final List<Widget> myTabs = [
     Tab(
@@ -41,19 +45,20 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
 
   late TabController tabController;
 
-   @override
+  @override
   void initState() {
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 5, vsync: this);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      drawer: DrawerCamatHome(currentUser: currentUser,),
+      drawer: DrawerCamatHome(
+        currentUser: currentUser,
+      ),
       appBar: AppBar(
         actions: [
           IconButton(
@@ -133,7 +138,8 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                               ),
                               Text("Pegawai",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold)),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -141,7 +147,7 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                   ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(CupertinoPageRoute(
-                            builder: ((context) =>PerjalananDinasCamat())));
+                            builder: ((context) => PerjalananDinasCamat())));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white, // background
@@ -158,7 +164,8 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                               ),
                               Text("Perjalanan Dinas",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold)),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold)),
                             ],
                           )))),
                 ],
@@ -191,7 +198,8 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                               ),
                               Text("Surat Masuk",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold)),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold)),
                             ],
                           ),
                         ),
@@ -218,41 +226,45 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                               ),
                               Text("Surat Keluar",
                                   style: TextStyle(
-                                      fontSize: 15, fontWeight: FontWeight.bold)),
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold)),
                             ],
                           )))),
                 ],
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               Padding(
-                padding: const EdgeInsets.only(left: 24, top: 0, right: 24, bottom: 0),
+                padding: const EdgeInsets.only(
+                    left: 24, top: 0, right: 24, bottom: 0),
                 child: ElevatedButton(
-                        onPressed: () {
-                          // Navigator.push(
-                          //     context,
-                          //     CupertinoPageRoute(
-                          //         builder: ((context) => SuratMasukCamat())));
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white, // background
-                          foregroundColor: Colors.blueAccent, // foreground
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.fromLTRB(11, 20, 11, 20),
-                          child: Center(
-                            child: Column(
-                              children: [
-                                Icon(Icons.paid),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text("Biaya Perjalanan Dinas",
-                                    style: TextStyle(
-                                        fontSize: 15, fontWeight: FontWeight.bold)),
-                              ],
+                    onPressed: () {
+                      // Navigator.push(
+                      //     context,
+                      //     CupertinoPageRoute(
+                      //         builder: ((context) => SuratMasukCamat())));
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // background
+                      foregroundColor: Colors.blueAccent, // foreground
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(11, 20, 11, 20),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            Icon(Icons.paid),
+                            SizedBox(
+                              height: 10,
                             ),
-                          ),
-                        )),
+                            Text("Biaya Perjalanan Dinas",
+                                style: TextStyle(
+                                    fontSize: 15, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+                      ),
+                    )),
               ),
               SizedBox(
                 height: 15,
@@ -272,105 +284,167 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                   padding: const EdgeInsets.only(left: 22, right: 22),
                   child: Row(
                     children: [
-                    Card(
-                    elevation: 5.0,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-                      child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('suratkeluar').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-          
-                        int dataCount = snapshot.data!.docs.length;
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text("Surat Keluar",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                              SizedBox(height: 10,),
-                              Text("$dataCount",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-                            ],
-                          )
-                          );
-                        },
+                      Card(
+                          elevation: 5.0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('suratkeluar')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                int dataCount = snapshot.data!.docs.length;
+                                return Center(
+                                    child: Column(
+                                  children: [
+                                    Text(
+                                      "Surat Keluar",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("$dataCount",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ));
+                              },
+                            ),
+                          )),
+                      SizedBox(
+                        width: 10,
                       ),
-                    )),
-                    SizedBox(width: 10,),
-                    Card(
-                    elevation: 5.0,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-                      child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('suratmasuk').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-          
-                        int dataCount = snapshot.data!.docs.length;
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text("Surat Masuk",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                              SizedBox(height: 10,),
-                              Text("$dataCount",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-                            ],
-                          )
-                          );
-                        },
+                      Card(
+                          elevation: 5.0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('suratmasuk')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                int dataCount = snapshot.data!.docs.length;
+                                return Center(
+                                    child: Column(
+                                  children: [
+                                    Text(
+                                      "Surat Masuk",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("$dataCount",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ));
+                              },
+                            ),
+                          )),
+                      SizedBox(
+                        width: 10,
                       ),
-                    )),
-                    SizedBox(width: 10,),
-                    Card(
-                    elevation: 5.0,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(33, 50, 33, 50),
-                      child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('pdinas').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-          
-                        int dataCount = snapshot.data!.docs.length;
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text("Perjalanan Dinas",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                              SizedBox(height: 10,),
-                              Text("$dataCount",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-                            ],
-                          )
-                          );
-                        },
+                      Card(
+                          elevation: 5.0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(33, 50, 33, 50),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('pdinas')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                int dataCount = snapshot.data!.docs.length;
+                                return Center(
+                                    child: Column(
+                                  children: [
+                                    Text(
+                                      "Perjalanan Dinas",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("$dataCount",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ));
+                              },
+                            ),
+                          )),
+                      SizedBox(
+                        width: 10,
                       ),
-                    )),
-                    SizedBox(width: 10,),
-                    Card(
-                    elevation: 5.0,
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(33, 50, 33, 50),
-                      child: StreamBuilder<QuerySnapshot>(
-                      stream: FirebaseFirestore.instance.collection('pegawai').snapshots(),
-                      builder: (context, snapshot) {
-                        if (!snapshot.hasData) {
-                          return Center(child: CircularProgressIndicator());
-                        }
-          
-                        int dataCount = snapshot.data!.docs.length;
-                        return Center(
-                          child: Column(
-                            children: [
-                              Text("Pegawai",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold),),
-                              SizedBox(height: 10,),
-                              Text("$dataCount",style: TextStyle(fontSize: 15, color: Colors.blueAccent, fontWeight: FontWeight.bold)),
-                            ],
-                          )
-                          );
-                        },
-                      ),
-                    )),
+                      Card(
+                          elevation: 5.0,
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(33, 50, 33, 50),
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance
+                                  .collection('pegawai')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (!snapshot.hasData) {
+                                  return Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                int dataCount = snapshot.data!.docs.length;
+                                return Center(
+                                    child: Column(
+                                  children: [
+                                    Text(
+                                      "Pegawai",
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.blueAccent,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                    Text("$dataCount",
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.blueAccent,
+                                            fontWeight: FontWeight.bold)),
+                                  ],
+                                ));
+                              },
+                            ),
+                          )),
                     ],
                   ),
                 ),
@@ -384,31 +458,38 @@ class _HomeCamatPageState extends State<HomeCamatPage> with SingleTickerProvider
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
-            
-            // list tabbarview
-           TabBar(
-              controller: tabController,
-              tabs: myTabs,
-              labelColor: Colors.blueAccent,
-            ),
-           Container(
+
+              // list tabbarview
+              TabBar(
+                controller: tabController,
+                tabs: myTabs,
+                labelColor: Colors.blueAccent,
+              ),
+              Container(
                 child: SizedBox(
                   height: MediaQuery.of(context).size.height,
-                  child: TabBarViewWidget(controllers: tabController,),
+                  child: TabBarViewWidget(
+                    controllers: tabController,
+                  ),
                 ),
               )
-
             ],
           ),
         ),
+      ),
+      floatingActionButton: SpeedDialFloating(
+        backColors: Colors.green,
+        animatedIcons: null, // Set animatedIcons ke null
+        icons: FontAwesomeIcons.whatsapp,
+        ontap: () {
+          _launchWhatsApp();
+        },
       ),
     );
   }
 }
 
-
 Future<void> logout(BuildContext context) async {
-
   await FirebaseAuth.instance.signOut();
   // ignore: use_build_context_synchronously
   Navigator.pushReplacement(
@@ -417,4 +498,22 @@ Future<void> logout(BuildContext context) async {
       builder: (context) => LoginPage(),
     ),
   );
+}
+
+void _launchWhatsApp() async {
+  String? phone =
+      '6282149631510'; // Ganti dengan nomor WhatsApp yang ingin Anda arahkan ke sini
+  String? message = 'Halo, saya membutuhkan bantuan.';
+
+  final url = 'https://wa.me/$phone/?text=${Uri.decodeFull(message)}';
+
+  try {
+    await launchUrl(
+      Uri.parse(url),
+      mode: LaunchMode.externalApplication,
+    );
+  } catch (e) {
+    throw 'Tidak dapat membuka tautan WhatsApp.';
+  }
+  
 }
