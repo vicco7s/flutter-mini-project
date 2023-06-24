@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+// ignore: must_be_immutable
 class TextFormFields extends StatelessWidget {
   TextFormFields({
     super.key,
@@ -12,6 +13,7 @@ class TextFormFields extends StatelessWidget {
     this.onChangeds,
     this.enableds,
     this.maxlines,
+    this.initialValues,
   });
 
   final TextEditingController controllers;
@@ -21,6 +23,7 @@ class TextFormFields extends StatelessWidget {
   void Function(String)? onChangeds;
   final bool? enableds;
   final int? maxlines;
+  final String? initialValues;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +34,7 @@ class TextFormFields extends StatelessWidget {
       onChanged: onChangeds,
       enabled: enableds,
       maxLines: maxlines,
+      initialValue: initialValues,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10.0),

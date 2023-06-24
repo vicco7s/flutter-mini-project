@@ -3,6 +3,7 @@ import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/components/DateTimeFields.dart';
+import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
@@ -58,13 +59,15 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
                         QuerySnapshot querySnapshot =
                             snapshot.data as QuerySnapshot;
                         List<DocumentSnapshot> items = querySnapshot.docs;
-                        List<DropdownMenuItem<String>> dropdownItems = [];
-                        for (var item in items) {
-                          dropdownItems.add(DropdownMenuItem(
-                            child: Text(item['nama']),
-                            value: item['nama'],
-                          ));
-                        }
+                        List<String> namaList = items
+                                  .map((item) => item['nama'] as String)
+                                  .toList();
+                        // for (var item in items) {
+                        //   dropdownItems.add(DropdownMenuItem(
+                        //     child: Text(item['nama']),
+                        //     value: item['nama'],
+                        //   ));
+                        // }
                         return Column(
                           children: [
                             Padding(
@@ -73,22 +76,22 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
                                 right: 10.0,
                                 left: 10.0,
                               ),
-                              child: DropdownButtonForms(
-                                  itemes: dropdownItems,
-                                  onchage: ((value) {
+                              child: DropdownButtonSearch(
+                                  itemes: namaList,
+                                  textDropdownPorps: 'Nama pegawai',
+                                  hintTextProps: 'Search Nama...',
+                                  onChage: (value) {
                                     setState(() {
                                       _selectedName = value!;
                                       getJabatanAndNipByNama(value)
                                           .then((result) {
                                         setState(() {
                                           _jabatan.text = result['jabatan']!;
-                                          _nip.text = result[
-                                              'nip']!; // Set nilai pada _jabatanController
+                                          _nip.text = result['nip']!;
                                         });
-                                      }); // Panggil fungsi untuk mencari jabatan
+                                      });
                                     });
-                                  }),
-                                  labelTitle: "Nama",
+                                  },
                                   validators: (value) => (value == null
                                       ? 'Nama tidak boleh kosong !'
                                       : null)),
