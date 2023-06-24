@@ -3,6 +3,7 @@ import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/components/DropDownSearch/DropdownSearchUpdate.dart';
 import 'package:kec_app/model/surat/suratpenggantiService.dart';
 
 import '../../page/agenda/suratPegantiPegawaiPJD/tambahSuratPenganti.dart';
@@ -76,206 +77,201 @@ class ControllerSuratpengganti {
         .collection('suratpengganti');
 
     await showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (ctx) {
-          var _selectedValue = suratPenggantiDoc['nama'];
-
-          return DraggableScrollableSheet(
-            expand: false,
-            builder: (context, scrollController) {
-              return SingleChildScrollView(
-                controller: scrollController,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                      top: 20,
-                      left: 20,
-                      right: 20,
-                      bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                    TextField(
-                          keyboardType: TextInputType.none,
-                          controller: _no,
-                          enabled: false,
-                          decoration:
-                              const InputDecoration(labelText: 'Nomor'),
-                        ),
-
-                    Padding(
-                    padding: EdgeInsets.zero,
-                    child: FutureBuilder(
-                      future: FirebaseFirestore.instance
-                          .collection("pegawai")
-                          .get(),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          QuerySnapshot querySnapshot =
-                              snapshot.data as QuerySnapshot;
-                          List<DocumentSnapshot> items =
-                              querySnapshot.docs;
-                          List<DropdownMenuItem<String>>
-                              dropdownItems = [];
-                          for (var item in items) {
-                            dropdownItems.add(DropdownMenuItem(
-                              child: Text(item['nama']),
-                              value: item['nama'],
-                            ));
-                          }
-                          return Column(
-                            children: [
-                              DropdownButtonFormField<String>(
-                                dropdownColor: Colors.white,
-                                isExpanded: true,
-                                iconEnabledColor: Colors.black,
-                                focusColor: Colors.black,
-                                items: dropdownItems,
-                                onChanged: (value) {
-                                  _selectedValue = value!;
-                                  getJabatanByNama(value)
-                                      .then((jabatan) {
-                                    _jabatan.text =
-                                        jabatan; // Set nilai pada _jabatanController
-                                  });
-                                },
-                                decoration: const InputDecoration(
-                                  labelText: 'Nama Lengkap',
-                                ),
-                                value: _selectedValue,
-                              ),
-                              TextField(
-                                keyboardType: TextInputType.none,
-                                controller: _jabatan,
-                                enabled: false,
-                                decoration: const InputDecoration(
-                                    labelText: 'Jabatan'),
-                              ),
-                            ],
-                          );
-                        } else {
-                          return CircularProgressIndicator();
-                        }
-                      },
-                    )),
-
-                    TextField(
-                        keyboardType: TextInputType.none,
-                        controller: _nama_pengganti,
-                        enabled: false,
-                        decoration:
-                            const InputDecoration(labelText: 'Nama Pengganti'),
-                      ),
-
-                    DateTimeField(
-                      format: DateFormat('yyyy-MM-dd'),
-                      onShowPicker:
-                          (BuildContext context, DateTime? currentValue) {
-                        return showDatePicker(
-                          context: context,
-                          firstDate: DateTime(1900),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                      },
-                      controller: _tanggal_surat,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.date_range_outlined),
-                        labelText: 'Tanggal Surat',
-                      ),
-                    ),
-                    
-                    DateTimeField(
-                      format: DateFormat('yyyy-MM-dd'),
-                      onShowPicker:
-                          (BuildContext context, DateTime? currentValue) {
-                        return showDatePicker(
-                          context: context,
-                          firstDate: DateTime(1900),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100),
-                        );
-                      },
-                      controller: _tanggal_perjalanan,
-                      decoration: const InputDecoration(
-                        prefixIcon: Icon(Icons.date_range_outlined),
-                        labelText: 'Tanggal Perjalanan',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-
-                    Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white, // background
-                                  foregroundColor: Colors.blue, // foreground
-                                ),
-                                child: const Text('Update'),
-                                onPressed: () async {
-                                  final int no = int.parse(_no.text);
-                                  final String nama = _selectedValue;
-                                  final String jabatan = _jabatan.text;
-                                  final String nama_pengganti = _nama_pengganti.text;
-                                  final DateTime tanggal_surat =
-                                      DateTime.parse(_tanggal_surat.text);
-                                  final DateTime tanggal_perjalanan =
-                                      DateTime.parse(_tanggal_perjalanan.text);
-                                  final String alasan = _alasan.text;
-                                  if (no != null) {
-                                    await userCollection
-                                        .doc(suratPenggantiDoc.id)
-                                        .update({
-                                      "id": no,
-                                      "nama": nama,
-                                      "jabatan": jabatan,
-                                      "nama_pengganti": nama_pengganti,
-                                      "tanggal_surat": tanggal_surat,
-                                      "tanggal_perjalanan": tanggal_perjalanan,
-                                      "alasan": alasan,
-                                      
-                                    });
-                                    _no.text = '';
-                                    _selectedValue = '';
-                                    _jabatan.text = '';
-                                    _tanggal_surat.text = '';
-                                    _tanggal_perjalanan.text = '';
-                                    _alasan.text = '';
-                                    _nama_pengganti.text = '';
-                                    Navigator.of(context).pop();
-                                    Navigator.of(context).pop();
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            backgroundColor: Colors.green,
-                                            content: Text(
-                                                'Berhasil Memperbarui Data')));
-                                  }
-                                },
-                              ),
-                              const SizedBox(
-                                width: 20,
-                              ),
-                              ElevatedButton(
-                                onPressed: (() => Navigator.pop(context)),
-                                child: const Text("Cencel"),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.white, // background
-                                  foregroundColor: Colors.red, // foreground
-                                ),
-                              ),
-                            ],
-                          )
-
-                    ],
+    isScrollControlled: true,
+    context: context,
+    builder: (ctx) {
+      var _selectedValue = suratPenggantiDoc['nama'];
+      return DraggableScrollableSheet(
+        expand: false,
+        builder: (context, scrollController) {
+          return SingleChildScrollView(
+            controller: scrollController,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 20,
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                TextField(
+                  keyboardType: TextInputType.none,
+                  controller: _no,
+                  enabled: false,
+                  decoration:
+                      const InputDecoration(labelText: 'Nomor'),
+                ),
+                Padding(
+                padding: EdgeInsets.zero,
+                child: FutureBuilder(
+                  future: FirebaseFirestore.instance
+                      .collection("pegawai")
+                      .get(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      QuerySnapshot querySnapshot =
+                          snapshot.data as QuerySnapshot;
+                      List<DocumentSnapshot> items =
+                          querySnapshot.docs;
+                      List<String> namaList = items.map((item) => item['nama'] as String).toList();
+                      // for (var item in items) {
+                      //   dropdownItems.add(DropdownMenuItem(
+                      //     child: Text(item['nama']),
+                      //     value: item['nama'],
+                      //   ));
+                      // }
+                      return Column(
+                        children: [
+                          DropdownSearchUpdate(
+                            itemes: namaList,
+                            textDropdownPorps: 'Nama Pegawai PJD',
+                            hintTextProps: 'Search Nama...',
+                            onChage: (value) {
+                              _selectedValue = value!;
+                              getJabatanByNama(value)
+                                  .then((jabatan) {
+                                _jabatan.text =
+                                    jabatan; // Set nilai pada _jabatanController
+                              });
+                            },
+                            selectedItems: _selectedValue,
+                          ),
+                          TextField(
+                            keyboardType: TextInputType.none,
+                            controller: _jabatan,
+                            enabled: false,
+                            decoration: const InputDecoration(
+                                labelText: 'Jabatan'),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return CircularProgressIndicator();
+                    }
+                  },
+                )),
+                TextField(
+                    keyboardType: TextInputType.none,
+                    controller: _nama_pengganti,
+                    enabled: false,
+                    decoration:
+                        const InputDecoration(labelText: 'Nama Pengganti PJD'),
+                  ),
+                DateTimeField(
+                  format: DateFormat('yyyy-MM-dd'),
+                  onShowPicker:
+                      (BuildContext context, DateTime? currentValue) {
+                    return showDatePicker(
+                      context: context,
+                      firstDate: DateTime(1900),
+                      initialDate: currentValue ?? DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                  },
+                  controller: _tanggal_surat,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.date_range_outlined),
+                    labelText: 'Tanggal',
                   ),
                 ),
-              );
-            },
+                
+                DateTimeField(
+                  format: DateFormat('yyyy-MM-dd'),
+                  onShowPicker:
+                      (BuildContext context, DateTime? currentValue) {
+                    return showDatePicker(
+                      context: context,
+                      firstDate: DateTime(1900),
+                      initialDate: currentValue ?? DateTime.now(),
+                      lastDate: DateTime(2100),
+                    );
+                  },
+                  controller: _tanggal_perjalanan,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.date_range_outlined),
+                    labelText: 'Tanggal Perjalanan',
+                  ),
+                ),
+                TextField(
+                    keyboardType: TextInputType.multiline,
+                    controller: _alasan,
+                    maxLines: 3,
+                    decoration:
+                        const InputDecoration(labelText: 'Alasan'),
+                  ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // background
+                      foregroundColor: Colors.blue, // foreground
+                    ),
+                    child: const Text('Update'),
+                    onPressed: () async {
+                      final int no = int.parse(_no.text);
+                      final String nama = _selectedValue;
+                      final String jabatan = _jabatan.text;
+                      final String nama_pengganti = _nama_pengganti.text;
+                      final DateTime tanggal_surat =
+                          DateTime.parse(_tanggal_surat.text);
+                      final DateTime tanggal_perjalanan =
+                          DateTime.parse(_tanggal_perjalanan.text);
+                      final String alasan = _alasan.text;
+                      if (no != null) {
+                        await userCollection
+                            .doc(suratPenggantiDoc.id)
+                            .update({
+                          "id": no,
+                          "nama": nama,
+                          "jabatan": jabatan,
+                          "nama_pengganti": nama_pengganti,
+                          "tanggal_surat": tanggal_surat,
+                          "tanggal_perjalanan": tanggal_perjalanan,
+                          "alasan": alasan,
+                          
+                        });
+                        _no.text = '';
+                        _selectedValue = '';
+                        _jabatan.text = '';
+                        _tanggal_surat.text = '';
+                        _tanggal_perjalanan.text = '';
+                        _alasan.text = '';
+                        _nama_pengganti.text = '';
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                backgroundColor: Colors.green,
+                                content: Text(
+                                    'Berhasil Memperbarui Data')));
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ElevatedButton(
+                    onPressed: (() => Navigator.pop(context)),
+                    child: const Text("Cencel"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white, // background
+                      foregroundColor: Colors.red, // foreground
+                    ),
+                  ),
+                ],
+              )
+                ],
+              ),
+            ),
           );
-        });
+        },
+      );
+    });
   }
 }

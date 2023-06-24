@@ -3,6 +3,7 @@ import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerSurat/ControllerSuratPenganti.dart';
@@ -67,13 +68,13 @@ class _FormSuratPengantiState extends State<FormSuratPenganti> {
                           QuerySnapshot querySnapshot =
                               snapshot.data as QuerySnapshot;
                           List<DocumentSnapshot> items = querySnapshot.docs;
-                          List<DropdownMenuItem<String>> dropdownItems = [];
-                          for (var item in items) {
-                            dropdownItems.add(DropdownMenuItem(
-                              child: Text(item['nama']),
-                              value: item['nama'],
-                            ));
-                          }
+                          List<String> namaList = items.map((item) => item['nama'] as String).toList();
+                          // for (var item in items) {
+                          //   dropdownItems.add(DropdownMenuItem(
+                          //     child: Text(item['nama']),
+                          //     value: item['nama'],
+                          //   ));
+                          // }
                           return Column(
                             children: [
                               Padding(
@@ -82,9 +83,11 @@ class _FormSuratPengantiState extends State<FormSuratPenganti> {
                                   right: 10.0,
                                   left: 10.0,
                                 ),
-                                child: DropdownButtonForms(
-                                    itemes: dropdownItems,
-                                    onchage: ((value) {
+                                child: DropdownButtonSearch(
+                                    itemes: namaList,
+                                    textDropdownPorps: 'Nama Pegawai PJD',
+                                    hintTextProps: 'Search Nama...',
+                                    onChage: (value) {
                                       setState(() {
                                         _selectedValue = value!;
                                         getJabatanByNama(value).then((jabatan) {
@@ -94,8 +97,7 @@ class _FormSuratPengantiState extends State<FormSuratPenganti> {
                                           });
                                         }); // Panggil fungsi untuk mencari jabatan
                                       });
-                                    }),
-                                    labelTitle: "Nama Lengkap",
+                                    },
                                     validators: (value) => (value == null
                                         ? 'Nama tidak boleh kosong !'
                                         : null)),
@@ -126,7 +128,7 @@ class _FormSuratPengantiState extends State<FormSuratPenganti> {
                 child: TextFormFields(
                   controllers: _nama_pengganti,
                   enableds: false,
-                  labelTexts: 'Nama Pengganti',
+                  labelTexts: 'Nama Pengganti PJD',
                   keyboardtypes: TextInputType.text,
                   validators: (value) {
                     if (value!.isEmpty) {
@@ -170,7 +172,7 @@ class _FormSuratPengantiState extends State<FormSuratPenganti> {
                     hintStyle: TextStyle(color: Colors.grey[500]),
                     // hintText: "Masukan Email",
                     fillColor: Colors.white70,
-                    labelText: 'Tanggal Surat',
+                    labelText: 'Tanggal',
                   ),
                 ),
               ),

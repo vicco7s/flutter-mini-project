@@ -68,63 +68,63 @@ class _FormGajiHonorPegawaiState extends State<FormGajiHonorPegawai> {
               children: [
                 Container(
                     child: FutureBuilder(
-                        future: firestore.collection("pegawai").where('status', isEqualTo: "NON ASN").get(),
-                        builder: ((context, snapshot) {
-                          if (snapshot.hasData) {
-                            QuerySnapshot querySnapshot =
-                                snapshot.data as QuerySnapshot;
-                            List<DocumentSnapshot> items = querySnapshot.docs;
-                            List<String> namaList = items.map((item) => item['nama'] as String).toList();
-                            // for (var item in items) {
-                            //   dropdownItems.add(DropdownMenuItem(
-                            //     child: Text(item['nama']),
-                            //     value: item['nama'],
-                            //   ));
-                            // }
-                            return Column(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10.0,
-                                    right: 10.0,
-                                    left: 10.0,
-                                  ),
-                                  child: DropdownButtonSearch(
-                                    itemes: namaList,
-                                    textDropdownPorps: "Nama Pegawai",
-                                    hintTextProps: "Search Nama...",
-                                    onChage: (value) {
-                                      setState(() {
-                                      _selectedValue = value!;
-                                      getJabatanByNama(value).then((jabatan) {
-                                        setState(() {
-                                          _jabatan.text = jabatan; // Set nilai pada _jabatanController
-                                        });
-                                      });
+                    future: firestore.collection("pegawai").where('status', isEqualTo: "NON ASN").get(),
+                    builder: ((context, snapshot) {
+                      if (snapshot.hasData) {
+                        QuerySnapshot querySnapshot =
+                            snapshot.data as QuerySnapshot;
+                        List<DocumentSnapshot> items = querySnapshot.docs;
+                        List<String> namaList = items.map((item) => item['nama'] as String).toList();
+                        // for (var item in items) {
+                        //   dropdownItems.add(DropdownMenuItem(
+                        //     child: Text(item['nama']),
+                        //     value: item['nama'],
+                        //   ));
+                        // }
+                        return Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 10.0,
+                                right: 10.0,
+                                left: 10.0,
+                              ),
+                              child: DropdownButtonSearch(
+                                itemes: namaList,
+                                textDropdownPorps: "Nama Pegawai",
+                                hintTextProps: "Search Nama...",
+                                onChage: (value) {
+                                  setState(() {
+                                  _selectedValue = value!;
+                                  getJabatanByNama(value).then((jabatan) {
+                                    setState(() {
+                                      _jabatan.text = jabatan; // Set nilai pada _jabatanController
                                     });
-                                    },
-                                    validators:  (value) => (value == null ? 'Nama tidak boleh kosong!' : null),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: 10.0,
-                                    right: 10.0,
-                                    left: 10.0,
-                                  ),
-                                  child: TextFormFields(
-                                    controllers: _jabatan,
-                                    labelTexts: "Jabatan",
-                                    keyboardtypes: TextInputType.none,
-                                    enableds: false,
-                                  ),
-                                ),
-                              ],
-                            );
-                          } else {
-                            return CircularProgressIndicator();
-                          }
-                        }))),
+                                  });
+                                });
+                                },
+                                validators:  (value) => (value == null ? 'Nama tidak boleh kosong!' : null),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 10.0,
+                                right: 10.0,
+                                left: 10.0,
+                              ),
+                              child: TextFormFields(
+                                controllers: _jabatan,
+                                labelTexts: "Jabatan",
+                                keyboardtypes: TextInputType.none,
+                                enableds: false,
+                              ),
+                            ),
+                          ],
+                        );
+                      } else {
+                        return CircularProgressIndicator();
+                      }
+                    }))),
                 Padding(
                   padding: const EdgeInsets.only(
                     top: 10.0,
