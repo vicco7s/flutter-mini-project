@@ -12,27 +12,8 @@ class UpdateCamat {
       DocumentSnapshot<Object?> documentSnapshot, BuildContext context) async {
     final _formkey = GlobalKey<FormState>();
     final TextEditingController _no = TextEditingController();
-    final TextEditingController _tujuan = TextEditingController();
-    final TextEditingController _nama = TextEditingController();
-    final TextEditingController _keperluan = TextEditingController();
-    final TextEditingController _tanggal_mulai = TextEditingController();
-    final TextEditingController _tanggal_berakhir = TextEditingController();
 
-    if (documentSnapshot != null) {
-      Timestamp timerstamp = documentSnapshot['tanggal_mulai'];
-      Timestamp timestamp = documentSnapshot['tanggal_berakhir'];
-      var date = timerstamp.toDate();
-      var date1 = timestamp.toDate();
-      var timers = DateFormat('yyyy-MM-dd').format(date);
-      var times1 = DateFormat('yyyy-MM-dd').format(date1);
-
-      _no.text = documentSnapshot['id'].toString();
-      _tujuan.text = documentSnapshot['tujuan'];
-      _nama.text = documentSnapshot['nama'];
-      _keperluan.text = documentSnapshot['keperluan'];
-      _tanggal_mulai.text = timers.toString();
-      _tanggal_berakhir.text = times1.toString();
-    }
+    _no.text = documentSnapshot['id'].toString();
 
     await showModalBottomSheet(
         isScrollControlled: true,
@@ -40,9 +21,8 @@ class UpdateCamat {
         builder: (BuildContext ctx) {
           var options = [
             'diterima',
-            'belum diterima',
+            'belum dikonfirmasi',
           ];
-          var _currentItemSelected = documentSnapshot['status'];
           var _ket = documentSnapshot['status'];
           return Padding(
             padding: EdgeInsets.only(
@@ -59,66 +39,6 @@ class UpdateCamat {
                   controller: _no,
                   enabled: false,
                   decoration: const InputDecoration(labelText: 'Nomor'),
-                ),
-                TextField(
-                  keyboardType: TextInputType.none,
-                  controller: _nama,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Nama',
-                  ),
-                ),
-                TextField(
-                  keyboardType: TextInputType.none,
-                  controller: _tujuan,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'Tujuan',
-                  ),
-                ),
-                TextField(
-                  keyboardType: TextInputType.none,
-                  controller: _keperluan,
-                  enabled: false,
-                  decoration: const InputDecoration(
-                    labelText: 'keperluan',
-                  ),
-                ),
-                DateTimeField(
-                  enabled: false,
-                  keyboardType: TextInputType.none,
-                  format: DateFormat('yyyy-MM-dd'),
-                  onShowPicker: (BuildContext context, DateTime? currentValue) {
-                    return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(2000),
-                      initialDate: currentValue ?? DateTime.now(),
-                      lastDate: DateTime(2100),
-                    );
-                  },
-                  controller: _tanggal_mulai,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.date_range_outlined),
-                    labelText: 'Tanggal Mulai',
-                  ),
-                ),
-                DateTimeField(
-                  enabled: false,
-                  keyboardType: TextInputType.none,
-                  format: DateFormat('yyyy-MM-dd'),
-                  onShowPicker: (BuildContext context, DateTime? currentValue) {
-                    return showDatePicker(
-                      context: context,
-                      firstDate: DateTime(2000),
-                      initialDate: currentValue ?? DateTime.now(),
-                      lastDate: DateTime(2100),
-                    );
-                  },
-                  controller: _tanggal_berakhir,
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.date_range_outlined),
-                    labelText: 'Tanggal Berakhir',
-                  ),
                 ),
                 DropdownButtonFormField<String>(
                   dropdownColor: Colors.white,
@@ -137,10 +57,10 @@ class UpdateCamat {
                     var _currentItemSelected = newValueSelected!;
                     _ket = newValueSelected;
                   },
-                  value: _currentItemSelected,
+                  value: _ket,
                   decoration: const InputDecoration(
                     filled: true,
-                    fillColor: Colors.black26,
+                    fillColor: Colors.white,
                     labelText: 'Status',
                   ),
                 ),
@@ -153,30 +73,13 @@ class UpdateCamat {
                       child: const Text('Update'),
                       onPressed: () async {
                         final int no = int.parse(_no.text);
-                        final String nama = _nama.text;
-                        final String tujuan = _tujuan.text;
-                        final String keperluan = _keperluan.text;
-                        final DateTime tanggal_mulai =
-                            DateTime.parse(_tanggal_mulai.text);
-                        final DateTime tanggal_berakhir =
-                            DateTime.parse(_tanggal_berakhir.text);
                         final String status = _ket;
                         if (no != null) {
                           await _pdinas.doc(documentSnapshot.id).update({
-                            "no": no,
-                            "nama": nama,
-                            "tujuan": tujuan,
-                            "keperluan": keperluan,
-                            "tanggal_mulai": tanggal_mulai,
-                            "tanggal_berakhir": tanggal_berakhir,
+                            'id': no,
                             "status": status,
                           });
                           _no.text = '';
-                          _nama.text = '';
-                          _tujuan.text = '';
-                          _keperluan.text = '';
-                          _tanggal_mulai.text = '';
-                          _tanggal_berakhir.text = '';
                           _ket = '';
                           Navigator.of(context).pop();
                           Navigator.of(context).pop();
