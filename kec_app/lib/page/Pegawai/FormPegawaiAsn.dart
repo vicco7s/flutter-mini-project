@@ -26,15 +26,14 @@ class FormPegawaiAsn extends StatefulWidget {
 
 class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final _formkey = GlobalKey<FormState>();
-  final TextEditingController _nama = TextEditingController();
+  final _nama = TextEditingController();
   final  _nip = MaskedTextController(mask: '00000000 000000 0 000');
-  final TextEditingController _jabatan = TextEditingController();
-  final TextEditingController _tmulaitugas = TextEditingController();
-  final TextEditingController _tlahir = TextEditingController();
+  final _tmulaitugas = TextEditingController();
+  final _tlahir = TextEditingController();
   final _telp = MaskedTextController(mask: '0000 0000 0000');
-  final TextEditingController _alamat = TextEditingController();
-  final TextEditingController _tempatlahir = TextEditingController();
-  final TextEditingController _jumlahAnak = TextEditingController();
+  final _alamat = TextEditingController();
+  final _tempatlahir = TextEditingController();
+  final _jumlahAnak = TextEditingController();
 
   File? _selectedImage;
 
@@ -333,20 +332,26 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                   // Jabatan
                   Padding(
                     padding: const EdgeInsets.only(
-                      top: 10.0,
-                      right: 10.0,
-                      left: 10.0,
-                    ),
-                    child: TextFormFields(
-                      controllers: _jabatan,
-                      labelTexts: 'Jabatan',
-                      keyboardtypes: TextInputType.text,
-                      validators: (value) {
-                        if (value!.isEmpty) {
-                          return "Jabatan Tidak Boleh Kosong !";
-                        }
-                        return null;
+                        top: 10.0, right: 10.0, left: 10.0),
+                    child: DropdownButtonForms(
+                      itemes: jabatan.map((String dropDownStringItem) {
+                        return DropdownMenuItem<String>(
+                          value: dropDownStringItem,
+                          child: Text(
+                            dropDownStringItem,
+                          ),
+                        );
+                      }).toList(),
+                      onchage: (newValueSelected) {
+                        setState(() {
+                          var _currentItemSelected = newValueSelected!;
+                          jabat = newValueSelected;
+                        });
                       },
+                      labelTitle: "Jabatan",
+                      validators: ((value) => (value == null
+                          ? 'Jabatan tidak boleh kosong !'
+                          : null)),
                     ),
                   ),
                   // status pegawai
@@ -495,7 +500,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           nip: _nip.text,
                           pangkat: pakat,
                           golongan: gol,
-                          jabatan: _jabatan.text,
+                          jabatan: jabat,
                           status: stas,
                           jenis_kelamin: jk,
                           alamat: _alamat.text,

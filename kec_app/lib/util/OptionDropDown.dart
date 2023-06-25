@@ -74,5 +74,18 @@ var pendidikan_akhir = [
 var pendidikan_ak = '--';
 
 var jabatan = [
-  'Camat',
+  '--',
+  'CAMAT',
+  'SEKCAM',
+  'KASI PEMBANGUNAN',
+  'KASI KESRA',
+  'KASI PEREKONOMIAN',
+  'KASI TRANTIB',
+  'KASI PEMERINTAHAN',
+  'KASUBBAG, UMUM DAN KEPEGAWAIAN',
+  'KASUBBAG, PERENCANAAN DAN KEUANGAN',
+  'PENGADMINSTRASI UMUM',
+  'PEGAWAI TIDAK TETAP',
 ];
+
+var jabat = '--';
