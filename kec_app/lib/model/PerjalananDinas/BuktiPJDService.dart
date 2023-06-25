@@ -8,6 +8,7 @@ class BuktiKegiatan {
   final DateTime firstDate;
   final DateTime endDate;
   final String hasil;
+  late  List<String> imageUrl;
 
   BuktiKegiatan({
     required this.dasar,
@@ -19,18 +20,19 @@ class BuktiKegiatan {
     required this.firstDate,
     required this.endDate,
     required this.hasil,
+    required this.imageUrl,
   });
 
   Map<String, dynamic> toJson() => {
-    'dasar': dasar,
-    'nama': nama,
-    'nip': nip,
-    'jabatan':jabatan,
-    'keperluan': keperluan,
-    'tempat': tempat,
-    'tgl_awal': firstDate,
-    'tgl_akhir': endDate,
-    'hasil': hasil,
-  };
-
+        'dasar': dasar,
+        'nama': nama,
+        'nip': nip,
+        'jabatan': jabatan,
+        'keperluan': keperluan,
+        'tempat': tempat,
+        'tgl_awal': firstDate,
+        'tgl_akhir': endDate,
+        'hasil': hasil,
+        'imageUrl': imageUrl,
+      };
 }

@@ -54,6 +54,9 @@ dependencies:
   flutter_inappwebview: ^5.7.2+3
   flutter_custom_tabs: ^1.0.4
   dropdown_search: ^5.0.6
+  flutter_image_compress: ^2.0.3
+  flutter_cache_manager: ^3.3.0
+  cached_network_image: ^3.2.3
 
 dev_dependencies:
   flutter_test:

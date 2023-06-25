@@ -144,13 +144,13 @@ class _BuktiKegiatanPJDState extends State<BuktiKegiatanPJD> {
           ),
         ),
       ]),
-      floatingActionButton: SpeedDialFloating(
-        animatedIcons: AnimatedIcons.add_event,
-        ontap: () {
-          Navigator.of(context).push(CupertinoPageRoute(
-              builder: ((context) => FormBuktiKegiatanPJD())));
-        },
-      ),
+      // floatingActionButton: SpeedDialFloating(
+      //   animatedIcons: AnimatedIcons.add_event,
+      //   ontap: () {
+      //     Navigator.of(context).push(CupertinoPageRoute(
+      //         builder: ((context) => FormBuktiKegiatanPJD())));
+      //   },
+      // ),
     );
   }
 }

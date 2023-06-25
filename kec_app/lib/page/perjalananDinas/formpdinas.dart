@@ -26,6 +26,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
   final _tujuan = TextEditingController();
   final _keperluan = TextEditingController();
   final _jabatan = TextEditingController();
+  final _nip = TextEditingController();
   final _tanggal_berangkat = TextEditingController();
   final _tanggal_berakhir = TextEditingController();
   final _uangharian = TextEditingController();
@@ -126,6 +127,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                                           .then((result) {
                                         setState(() {
                                           _jabatan.text = result['jabatan']!;
+                                          _nip.text = result['nip']!;
                                         });
                                       });
                                     });
@@ -255,7 +257,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                         flex: 3,
                         child: Padding(
                           padding: const EdgeInsets.only(
-                              top: 10.0, right:10.0, left: 10.0),
+                              top: 10.0, right: 10.0, left: 10.0),
                           child: TextFormFields(
                             controllers: _uangharian,
                             labelTexts: 'Uang Harian',
@@ -339,9 +341,8 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                                 });
                               },
                               labelTitle: "Opsi",
-                              validators: ((value) => (value == null
-                                ? 'Harus diisi!'
-                                : null)),
+                              validators: ((value) =>
+                                  (value == null ? 'Harus diisi!' : null)),
                             )),
                       ),
                     ],
@@ -411,6 +412,7 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                         final inputDinas = InputDinas(
                           nama: _selectedValue,
                           jabatan: _jabatan.text,
+                          nip: _nip.text,
                           tujuan: _tujuan.text,
                           keperluan: _keperluan.text,
                           tanggal_berangkat:
@@ -458,10 +460,12 @@ Future<Map<String, String>> getJabatanAndNipByNama(String value) async {
       .get();
   if (querySnapshot.docs.isNotEmpty) {
     String jabatan = querySnapshot.docs[0]['jabatan'];
+    String nip = querySnapshot.docs[0]['nip'];
     return {
       'jabatan': jabatan,
+      'nip': nip,
     }; // Mengembalikan jabatan dan NIP dalam bentuk Map
   } else {
-    return {'jabatan': 'Jabatan tidak ditemukan'};
+    return {'jabatan': 'Jabatan tidak ditemukan', 'nip': 'Nip tidak Ditemukan'};
   }
 }

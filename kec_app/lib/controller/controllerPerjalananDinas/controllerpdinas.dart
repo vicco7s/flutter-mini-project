@@ -41,6 +41,7 @@ class ControllerPDinas {
     final _formkey = GlobalKey<FormState>();
     final _no = TextEditingController();
     final _jabatan = TextEditingController();
+    final _nip = TextEditingController();
     final _tujuan = TextEditingController();
     final _keperluan = TextEditingController();
     final _tanggal_mulai = TextEditingController();
@@ -63,6 +64,7 @@ class ControllerPDinas {
 
       _no.text = documentSnapshot['id'].toString();
       _jabatan.text = documentSnapshot['jabatan'];
+      _nip.text = documentSnapshot['nip'];
       _tujuan.text = documentSnapshot['tujuan'];
       _keperluan.text = documentSnapshot['keperluan'];
       _tanggal_mulai.text = timers.toString();
@@ -77,7 +79,6 @@ class ControllerPDinas {
     }
 
     var berkat = documentSnapshot['pulang_pergi'];
-    ;
 
     void updateTotal() {
       int uangharian = int.tryParse(_uangharian.text) ?? 0;
@@ -154,6 +155,7 @@ class ControllerPDinas {
                                     getJabatanAndNipByNama(value)
                                         .then((result) {
                                       _jabatan.text = result['jabatan']!;
+                                      _nip.text = result['nip']!;
                                     });
                                   },
                                   selectedItems: _selectedValue,
@@ -337,6 +339,7 @@ class ControllerPDinas {
                             onPressed: () async {
                               final int no = int.parse(_no.text);
                               final String nama = _selectedValue;
+                              final String nip = _nip.text;
                               final String jabatan = _jabatan.text;
                               final String tujuan = _tujuan.text;
                               final String keperluan = _keperluan.text;
@@ -359,6 +362,7 @@ class ControllerPDinas {
                                 await _pdinas.doc(documentSnapshot.id).update({
                                   "id": no,
                                   "nama": nama,
+                                  "nip": nip,
                                   "jabatan": jabatan,
                                   "tujuan": tujuan,
                                   "keperluan": keperluan,
@@ -374,6 +378,7 @@ class ControllerPDinas {
                                 });
                                 _no.text = '';
                                 _selectedValue = '';
+                                _nip.text = '';
                                 _jabatan.text = '';
                                 _tujuan.text = '';
                                 _keperluan.text = '';

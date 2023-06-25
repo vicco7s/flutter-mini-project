@@ -9,7 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/page/Dashboard%20user/PdinasUser.dart';
+import 'package:kec_app/page/Dashboard%20user/perjalanandinas/PdinasUser.dart';
 import 'package:kec_app/page/Dashboard%20user/profil/Pegawaiuser.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/Suratmasukuser.dart';
 import 'package:kec_app/page/Users/loginpage.dart';

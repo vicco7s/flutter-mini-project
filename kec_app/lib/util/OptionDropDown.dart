@@ -89,3 +89,7 @@ var jabatan = [
 ];
 
 var jabat = '--';
+
+var konfir_kirim = ['sudah dikirim', 'belum dikirim'];
+
+var konkirim = 'sudah dikirim';
