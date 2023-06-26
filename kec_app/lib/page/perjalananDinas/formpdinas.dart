@@ -427,7 +427,8 @@ class _FormPDinasPageState extends State<FormPDinasPage> {
                           lama_menginap: int.parse(_lamaMenginap.text),
                           jumlah_total: int.parse(_total.text),
                           status: ket,
-                          konfirmasi_kirim: konfirmasi,
+                          konfirmasi_kirim: konfirmasi, 
+                          uid: '',
                         );
                         dataPdinas.createInputSurel(inputDinas);
                         // createInputSurel(inputDinas);

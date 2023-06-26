@@ -1,4 +1,5 @@
 class BuktiKegiatan {
+  final String uid;
   final String dasar;
   final String nama;
   final String nip;
@@ -8,9 +9,10 @@ class BuktiKegiatan {
   final DateTime firstDate;
   final DateTime endDate;
   final String hasil;
-  late  List<String> imageUrl;
+  late List<String> imageUrl;
 
   BuktiKegiatan({
+    required this.uid,
     required this.dasar,
     required this.nama,
     required this.nip,
@@ -24,15 +26,16 @@ class BuktiKegiatan {
   });
 
   Map<String, dynamic> toJson() => {
-        'dasar': dasar,
-        'nama': nama,
-        'nip': nip,
-        'jabatan': jabatan,
-        'keperluan': keperluan,
-        'tempat': tempat,
-        'tgl_awal': firstDate,
-        'tgl_akhir': endDate,
-        'hasil': hasil,
-        'imageUrl': imageUrl,
-      };
+      'uid': uid,
+      'dasar': dasar,
+      'nama': nama,
+      'nip': nip,
+      'jabatan': jabatan,
+      'keperluan': keperluan,
+      'tempat': tempat,
+      'tgl_awal': firstDate,
+      'tgl_akhir': endDate,
+      'hasil': hasil,
+      'imageUrl': imageUrl,
+    };
 }

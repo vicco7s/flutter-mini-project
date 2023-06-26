@@ -1,4 +1,5 @@
 class InputDinas {
+  final String uid;
   final String nama;
   final String nip;
   final String jabatan;
@@ -17,6 +18,7 @@ class InputDinas {
   final String konfirmasi_kirim;
 
   InputDinas({
+    required this.uid,
     required this.nama,
     required this.nip,
     required this.jabatan,
@@ -35,8 +37,9 @@ class InputDinas {
     required this.konfirmasi_kirim,
   });
   Map<String, dynamic> toJson() => {
+        'uid': uid,
         'nama': nama,
-        'nip' : nip,
+        'nip': nip,
         'jabatan': jabatan,
         'tujuan': tujuan,
         'keperluan': keperluan,

@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart' as storage ;
 import 'package:kec_app/model/PerjalananDinas/BuktiPJDService.dart';
 
 class ControllerBuktiKegiatanPJD {
@@ -23,11 +24,41 @@ class ControllerBuktiKegiatanPJD {
 
   Future<void> delete(String id, BuildContext context) async {
     try {
+      final snapshot = await _buktiKegiatan.doc(id).get();
+      final data = snapshot.data();
+      
+      if (snapshot.exists &&
+        data != null &&
+        data is Map<String, dynamic> &&
+        data['imageUrl'] != null) {
+      final List<String> imageUrl = List<String>.from(data['imageUrl']);
+
+      // Hapus dokumen dari Firestore
       await _buktiKegiatan.doc(id).delete();
+
+      // Hapus imageUrl dari Firebase Storage
+      for (String url in imageUrl) {
+        final storageRef = storage.FirebaseStorage.instance.refFromURL(url);
+        await storageRef.delete();
+      }
+
       // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
           backgroundColor: Colors.green,
-          content: Text('Data Berhasil Di hapus')));
+          content: Text('Data Berhasil Dihapus'),
+        ),
+      );
+      // ignore: use_build_context_synchronously
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          backgroundColor: Colors.red,
+          content: Text('Data tidak berhasil dihapus'),
+        ),
+      );
+    }
     } on StateError catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,

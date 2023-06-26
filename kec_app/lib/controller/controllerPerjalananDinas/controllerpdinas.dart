@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:kec_app/components/DropDownSearch/DropdownSearchUpdate.dart';
 import 'package:kec_app/model/pdinasservice.dart';
 import 'package:kec_app/page/perjalananDinas/formpdinas.dart';
+import 'package:uuid/uuid.dart';
 
 class ControllerPDinas {
   final CollectionReference _pdinas =
@@ -12,12 +13,20 @@ class ControllerPDinas {
 
   void createInputSurel(InputDinas inputDinas) async {
     final json = inputDinas.toJson();
-    var querySnapshot =
-        await _pdinas.orderBy("id", descending: true).limit(1).get();
-    var maxId =
-        querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("id") : 0;
+    // final uid = doc.id; // Buat UID baru menggunakan library UUID
+    // json['uid'] = uid; // Tambahkan UID sebagai field 'uid' di Firestore
+
+    var querySnapshot = await _pdinas.orderBy("id", descending: true).limit(1).get();
+    var maxId = querySnapshot.docs.isNotEmpty ? querySnapshot.docs.first.get("id") : 0;
     json["id"] = maxId + 1;
-    await _pdinas.add(json);
+
+    //uid bawaan pada firesotre
+    var docRef = await _pdinas.add(json); // Menambahkan dokumen baru dan mendapatkan referensi dokumen
+
+    String uid = docRef.id; // Mengambil document ID sebagai UID
+    await _pdinas.doc(uid).update({'uid': uid}); // Menambahkan UID sebagai field 'uid' di Firestore
+
+    // await _pdinas.doc().set(json); // Gunakan UID sebagai Document ID
   }
 
   Future<void> delete(String id, BuildContext context) async {

@@ -30,6 +30,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
   late DocumentSnapshot documentSnapshot;
 
   final _formkey = GlobalKey<FormState>();
+  final _uid = TextEditingController();
   final _dasar = TextEditingController();
   final _nama = TextEditingController();
   final _nip = TextEditingController();
@@ -39,6 +40,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
   final _firstDate = TextEditingController();
   final _endDate = TextEditingController();
   final _hasil = TextEditingController();
+
 
   String _selectedName = "";
   bool isLoading = false;
@@ -89,6 +91,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
 
   @override
   Widget build(BuildContext context) {
+    _uid.text = documentSnapshot['uid'];
     _nama.text = documentSnapshot['nama'];
     _nip.text = documentSnapshot['nip'];
     _jabatan.text = documentSnapshot['jabatan'];
@@ -318,6 +321,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
                       });
 
                       final buktiKegiatan = BuktiKegiatan(
+                        uid: _uid.text,
                         dasar: _dasar.text,
                         nama: _nama.text,
                         nip: _nip.text,

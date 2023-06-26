@@ -34,12 +34,7 @@ class UpdateCamat {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TextField(
-                  keyboardType: TextInputType.none,
-                  controller: _no,
-                  enabled: false,
-                  decoration: const InputDecoration(labelText: 'Nomor'),
-                ),
+                
                 DropdownButtonFormField<String>(
                   dropdownColor: Colors.white,
                   isExpanded: true,
