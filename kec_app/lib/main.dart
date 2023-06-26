@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:kec_app/api/firebase_api.dart';
 import 'package:kec_app/screen/SplashScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:provider/provider.dart';
+
 
 // add firestore ke widget flutter
 

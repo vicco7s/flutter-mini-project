@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
 import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/detailKegiatanPJD.dart';
-import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/formbuktiKegiatanPJD.dart';
+import 'package:kec_app/page/Dashboard%20user/buktiperjalanandinas/formbuktiKegiatanPJD.dart';
 import 'package:kec_app/report/Report_pDinas/ReportBuktiKegiatanPJD.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 

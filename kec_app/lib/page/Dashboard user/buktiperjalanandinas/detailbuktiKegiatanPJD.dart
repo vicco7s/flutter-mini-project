@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
 
-class DetailKegiatanPJD extends StatelessWidget {
+import 'editBuktiKegiantanPJD.dart';
+
+class DetailBuktiKegiatanPJD extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
-  const DetailKegiatanPJD({super.key, required this.documentSnapshot});
+  const DetailBuktiKegiatanPJD({super.key, required this.documentSnapshot});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +45,8 @@ class DetailKegiatanPJD extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30.0),
-                  bottomRight: Radius.circular(30.0),
-                  topRight: Radius.circular(5.0),
+                  bottomRight: Radius.circular(5.0),
+                  topRight: Radius.circular(30.0),
                   bottomLeft: Radius.circular(5.0),
                 )),
                 child: Column(
@@ -153,14 +156,17 @@ class DetailKegiatanPJD extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        ElevatedButton(
-                          onPressed: () async {
-                            // await dataBuktiKegiatan.update(documentSnapshot, context);
-                          },
-                          child: const Text("Update"),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue, // background
-                            foregroundColor: Colors.white, // foreground
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  builder: (context) => EditButkiKegiantanPjd(documentSnapshot: documentSnapshot,)));
+                            },
+                            child: const Text("Update"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue, // background
+                              foregroundColor: Colors.white, // foreground
+                            ),
                           ),
                         ),
                       ],

@@ -32,7 +32,7 @@ class _EditPegawaiState extends State<EditPegawai> {
     try {
       FirebaseStorage storage = FirebaseStorage.instance;
       Reference storageReference =
-          storage.ref().child('images/$documentID.png');
+          storage.ref().child('images/'+ DateTime.now().millisecondsSinceEpoch.toString());
 
     // Mengambil URL gambar sebelumnya dari Firestore
     DocumentSnapshot docSnapshot = await pegawai.doc(documentID).get();

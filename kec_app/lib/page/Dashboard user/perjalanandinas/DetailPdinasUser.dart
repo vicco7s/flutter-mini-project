@@ -6,7 +6,8 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerUser/controllerPdinasUser.dart';
-import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/formbuktiKegiatanPJD.dart';
+import 'package:kec_app/page/Dashboard%20user/buktiperjalanandinas/detailbuktiKegiatanPJD.dart';
+import 'package:kec_app/page/Dashboard%20user/buktiperjalanandinas/formbuktiKegiatanPJD.dart';
 
 class DetailPdinasUser extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
@@ -242,9 +243,9 @@ class DetailPdinasUser extends StatelessWidget {
                         elevation: 5.0,
                         child: ListTile(
                             onTap: () {
-                              // Navigator.of(context).push(CupertinoPageRoute(
-                              //     builder: ((context) => DetailPdinasUser(
-                              //         documentSnapshot: documentSnapshot))));
+                              Navigator.of(context).push(CupertinoPageRoute(
+                                  builder: ((context) => DetailBuktiKegiatanPJD(
+                                      documentSnapshot: docSnapshot))));
                             },
                             title: Text(docSnapshot['nama'],
                                 style: TextStyle(
