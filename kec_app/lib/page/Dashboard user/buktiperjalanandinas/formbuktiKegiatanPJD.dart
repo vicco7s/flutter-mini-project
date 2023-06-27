@@ -15,6 +15,7 @@ import 'package:kec_app/components/inputborder.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
 import 'package:kec_app/model/PerjalananDinas/BuktiPJDService.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
@@ -64,7 +65,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
       // Compress the image file
       Uint8List? compressedImage = await FlutterImageCompress.compressWithFile(
         imageFile.path,
-        quality: 80, // Adjust the image quality as needed (0-100)
+        quality: 40, // Adjust the image quality as needed (0-100)
       );
 
       // Upload the compressed image file to Firebase Storage
@@ -195,7 +196,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
                     const EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
                 child: DateTimeFields(
                   controllers: _firstDate,
-                  tanggalText: 'Tanggal Berkahir',
+                  tanggalText: 'Tanggal Berangkat',
                   enableds: false,
                   validators: (value) {
                     // if ((value.toString().isEmpty) ||
@@ -374,7 +375,7 @@ class _FormBuktiKegiatanPJDState extends State<FormBuktiKegiatanPJD> {
                     }
                   },
                   child: isLoading
-                  ? LinearProgressIndicator(color: Colors.blue, backgroundColor: Colors.white,)
+                  ? ColorfulLinearProgressIndicator()
                   : Text('Submit'),),
             
             ],

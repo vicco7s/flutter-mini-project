@@ -9,6 +9,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class EditButkiKegiantanPjd extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
@@ -83,7 +84,7 @@ class _EditButkiKegiantanPjdState extends State<EditButkiKegiantanPjd> {
         Uint8List? compressedImage =
             await FlutterImageCompress.compressWithFile(
           image.path,
-          quality: 90,
+          quality: 40,
         );
         await ref.putData(compressedImage!);
 
@@ -150,7 +151,7 @@ class _EditButkiKegiantanPjdState extends State<EditButkiKegiantanPjd> {
   Future<void> selectImages() async {
       try {
         List<XFile>? pickedImages = await imagePicker.pickMultiImage(
-          imageQuality: 90,
+          imageQuality: 40,
         );
         if (pickedImages != null) {
           setState(() {
@@ -336,10 +337,7 @@ class _EditButkiKegiantanPjdState extends State<EditButkiKegiantanPjd> {
                                 foregroundColor: Colors.blue, // foreground
                               ),
                               child: _isLoading
-                                ? LinearProgressIndicator(
-                                  backgroundColor: Colors.white,
-                                  color: Colors.blue,
-                                ) // Display loading indicator when loading
+                                ? ColorfulLinearProgressIndicator()// Display loading indicator when loading
                                 : Text('Update'),
                               onPressed: _isLoading ? null:() async{
                                 setState(() {

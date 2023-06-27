@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/components/component_camat/TabbarViewWidget.dart';
+import 'package:kec_app/components/TabbarViewWidget/TabbarViewWidget.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PdinasCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
 import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';

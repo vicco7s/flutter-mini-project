@@ -9,6 +9,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kec_app/components/TabbarViewWidget/TabbarViewUser.dart';
 import 'package:kec_app/page/Dashboard%20user/perjalanandinas/PdinasUser.dart';
 import 'package:kec_app/page/Dashboard%20user/profil/Pegawaiuser.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/Suratmasukuser.dart';
@@ -27,8 +28,32 @@ class HomeUserPage extends StatefulWidget {
   State<HomeUserPage> createState() => _HomeUserPageState();
 }
 
-class _HomeUserPageState extends State<HomeUserPage> {
+class _HomeUserPageState extends State<HomeUserPage> with SingleTickerProviderStateMixin{
   final currentUser = FirebaseAuth.instance;
+
+  final List<Widget> myTabs = [
+    Tab(
+      icon: Icon(Icons.mark_email_unread_outlined),
+    ),
+    Tab(
+      icon: Icon(Icons.outgoing_mail),
+    ),
+    Tab(
+      icon: Icon(Icons.emoji_transportation_outlined),
+    ),
+    Tab(
+      icon: Icon(Icons.paid_outlined),
+    ),
+  ];
+
+  late TabController tabController;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    tabController = TabController(length: 4, vsync: this);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +116,7 @@ class _HomeUserPageState extends State<HomeUserPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
+                
                 ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -382,14 +408,30 @@ class _HomeUserPageState extends State<HomeUserPage> {
             SizedBox(
               height: 15,
             ),
-            Center(
-                child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Text(
-                "-- End --",
-                style: TextStyle(fontStyle: FontStyle.italic),
+            SizedBox(
+                height: 15,
               ),
-            ))
+              ListTile(
+                title: Text(
+                  "Highlights",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+
+              // list tabbarview
+              TabBar(
+                controller: tabController,
+                tabs: myTabs,
+                labelColor: Colors.blueAccent,
+              ),
+              Container(
+                child: SizedBox(
+                  height: MediaQuery.of(context).size.height,
+                  child: TabBarViewUsers(
+                    controllers: tabController,
+                  ),
+                ),
+              )
           ],
         ),
       ),

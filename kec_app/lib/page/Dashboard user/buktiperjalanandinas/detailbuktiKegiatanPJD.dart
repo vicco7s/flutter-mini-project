@@ -150,6 +150,26 @@ class DetailBuktiKegiatanPJD extends StatelessWidget {
                         style: TextStyle(fontSize: 18),
                       ),
                     ),
+                    SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            for (var imageUrl in documentSnapshot['imageUrl'])
+                            Container(
+                              margin: EdgeInsets.symmetric(horizontal: 5.0),
+                              height: 200.0,
+                              width: 200.0,
+                              child: Image.network(
+                                imageUrl,
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) =>
+                                    Icon(Icons.error),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    
                     SizedBox(
                       width: 30,
                     ),
