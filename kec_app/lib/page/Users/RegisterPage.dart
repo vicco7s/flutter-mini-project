@@ -2,10 +2,14 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
 import 'package:kec_app/components/inputborder.dart';
 import 'package:kec_app/page/HomePage.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 import 'loginpage.dart';
 // import 'model.dart';
+
+final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 class CreateUser extends StatefulWidget {
   @override
@@ -29,6 +33,7 @@ class _CreateUserState extends State<CreateUser> {
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
+  String _selectedValue = "";
 
   var options = [
     'Camat',
@@ -68,22 +73,57 @@ class _CreateUserState extends State<CreateUser> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.only(
-                            top: 10.0,
-                            right: 10.0,
-                            left: 10.0,
+                            top: 0.0,
+                            right: 0.0,
+                            left: 0.0,
                           ),
-                          child: TextFormFields(
-                            controllers: namaController,
-                            labelTexts: 'Nama',
-                            keyboardtypes: TextInputType.emailAddress,
-                            validators: (value) {
-                              if (value!.length == 0) {
-                                return "Email tidak boleh kosong";
-                              } else {
-                                return null;
-                              }
-                            },
-                          ),
+                          child: Container(
+                              child: FutureBuilder(
+                                  future: firestore.collection("pegawai").get(),
+                                  builder: ((context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      QuerySnapshot querySnapshot =
+                                          snapshot.data as QuerySnapshot;
+                                      List<DocumentSnapshot> items =
+                                          querySnapshot.docs;
+                                      List<String> namaList = items
+                                          .map((item) => item['nama'] as String)
+                                          .toList();
+                                      // for (var item in items) {
+                                      //   dropdownItems.add(DropdownMenuItem(
+                                      //     child: Text(item['nama']),
+                                      //     value: item['nama'],
+                                      //   ));
+                                      // }
+                                      return Column(
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 10.0,
+                                              right: 10.0,
+                                              left: 10.0,
+                                            ),
+                                            child: DropdownButtonSearch(
+                                              itemes: namaList,
+                                              textDropdownPorps: "Nama Pegawai",
+                                              hintTextProps: "Search Nama...",
+                                              onChage: (value) {
+                                                setState(() {
+                                                  _selectedValue = value!;
+                                                });
+                                              },
+                                              validators: (value) => (value ==
+                                                      null
+                                                  ? 'Nama tidak boleh kosong!'
+                                                  : null),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    } else {
+                                      return ColorfulCirclePrgressIndicator();
+                                    }
+                                  }))),
                         ),
                         SizedBox(
                           height: 10,
@@ -316,13 +356,12 @@ class _CreateUserState extends State<CreateUser> {
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       var user = _auth.currentUser;
       CollectionReference ref = FirebaseFirestore.instance.collection('users');
-      ref
-          .doc(user!.uid)
-          .set({
-            'nama' : namaController.text,
-            'email': emailController.text, 
-            'rool': rool, 
-            'uid': user.uid});
+      ref.doc(user!.uid).set({
+        'nama': _selectedValue,
+        'email': emailController.text,
+        'rool': rool,
+        'uid': user.uid
+      });
 
       setState(() {
         isLoading = false;

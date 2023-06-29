@@ -181,8 +181,5 @@ class DetailHonorPegawai extends StatelessWidget {
       })
     );
   }
-
-  
-  
 }
 

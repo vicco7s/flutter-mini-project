@@ -1,6 +1,7 @@
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 class DropdownButtonSearch extends StatelessWidget {
   DropdownButtonSearch(
@@ -9,7 +10,9 @@ class DropdownButtonSearch extends StatelessWidget {
       this.onChage,
       this.validators,
       this.selectedItems,
-      this.textDropdownPorps, this.hintTextProps});
+      this.loadingBuilders,
+      this.textDropdownPorps,
+      this.hintTextProps});
 
   final List<String> itemes;
   final void Function(String?)? onChage;
@@ -17,11 +20,13 @@ class DropdownButtonSearch extends StatelessWidget {
   final String? selectedItems;
   final String? textDropdownPorps;
   final String? hintTextProps;
+  final Widget Function(BuildContext, String)? loadingBuilders;
   @override
   Widget build(BuildContext context) {
     return DropdownSearch<String>(
       popupProps: PopupProps.menu(
         showSelectedItems: true,
+        loadingBuilder: loadingBuilders,
         searchFieldProps: TextFieldProps(
           decoration: InputDecoration(
             border: OutlineInputBorder(
