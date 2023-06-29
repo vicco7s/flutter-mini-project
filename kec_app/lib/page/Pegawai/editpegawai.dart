@@ -10,6 +10,7 @@ import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
 import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
+import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 import 'package:kec_app/util/shortpath.dart';
 
 class EditPegawai extends StatefulWidget {
@@ -372,10 +373,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                   Expanded(
                     child: ElevatedButton(
                       child: _isloading
-                      ? LinearProgressIndicator(
-                        backgroundColor: Colors.white,
-                        color: Colors.blue,
-                      ) // Display loading indicator when loading
+                      ? ColorfulLinearProgressIndicator() // Display loading indicator when loading
                       : Text('Update'),
                       onPressed: _isloading ? null : () async {
                         setState(() {

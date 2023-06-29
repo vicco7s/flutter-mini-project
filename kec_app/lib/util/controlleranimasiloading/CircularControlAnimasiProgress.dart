@@ -22,7 +22,7 @@ class _ColorfulCirclePrgressIndicatorState extends State<ColorfulCirclePrgressIn
     _colorAnimation = TweenSequence<Color?>(
       [
         TweenSequenceItem<Color?>(
-          tween: ColorTween(begin: Colors.deepPurple, end: Colors.green),
+          tween: ColorTween(begin: Colors.deepOrangeAccent, end: Colors.green),
           weight: 1,
         ),
         TweenSequenceItem<Color?>(

@@ -1,8 +1,10 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/page/Dashboard%20user/profil/detailGajiHonorUser.dart';
 
 class TabBarViewUsers extends StatefulWidget {
   TabBarViewUsers({required this.controllers});
@@ -239,8 +241,8 @@ class _TabBarViewUsersState extends State<TabBarViewUsers> {
                             elevation: 5.0,
                             child: ListTile(
                               onTap: () {
-                                // Navigator.of(context).push(CupertinoPageRoute(
-                                //     builder: (context) => DetailHonorPegawai(documentSnapshot: documentSnapshot,)));
+                                Navigator.of(context).push(CupertinoPageRoute(
+                                    builder: (context) => DetailHonorPegawaiUser(documentSnapshot: documentSnapshot,)));
                               },
                               title: Text(documentSnapshot['nama'],style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold)),
                               subtitle: Text(

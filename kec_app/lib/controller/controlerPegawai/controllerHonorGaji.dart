@@ -7,6 +7,7 @@ import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/model/Pegawai/gajihonorservice.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/page/Pegawai/GajiHonorPegawai/FormGajiHonor.dart';
+import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class ControllerGajiHonor {
   final CollectionReference gajihonor =
@@ -69,6 +70,12 @@ class ControllerGajiHonor {
     }
 
     await showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(30.0),
+          topLeft: Radius.circular(30.0)
+        )
+      ),
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
@@ -141,7 +148,7 @@ class ControllerGajiHonor {
                                       ],
                                     );
                                   } else {
-                                    return CircularProgressIndicator();
+                                    return ColorfulLinearProgressIndicator();
                                   }
                                 },
                               )),
