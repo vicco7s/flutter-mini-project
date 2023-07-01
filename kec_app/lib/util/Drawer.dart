@@ -137,16 +137,16 @@ class Drawes extends StatelessWidget {
                       CupertinoPageRoute(builder: ((context) => DinasPageList())));
                 },
               ),
-              ListTile(
-                title: const Text(
-                  'Bukti Kegiatan Perjalanan Dinas',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                      CupertinoPageRoute(builder: ((context) => BuktiKegiatanPJD())));
-                },
-              ),
+              // ListTile(
+              //   title: const Text(
+              //     'Bukti Kegiatan Perjalanan Dinas',
+              //     style: TextStyle(fontSize: 13),
+              //   ),
+              //   onTap: () {
+              //     Navigator.of(context).push(
+              //         CupertinoPageRoute(builder: ((context) => BuktiKegiatanPJD())));
+              //   },
+              // ),
             ],
           ),
           

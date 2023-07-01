@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 import 'DetailPdinasUser.dart';
 
@@ -61,7 +62,13 @@ class _PerjalananDinasUserState extends State<PerjalananDinasUser> {
         elevation: 0,
         
       ),
-      body: Column(
+      body: FutureBuilder(
+        future: Future.delayed(Duration(seconds: 3)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ColorfulCirclePrgressIndicator();
+          }else {
+            return Column(
         children: [
           Expanded(
               child: StreamBuilder<QuerySnapshot>(
@@ -92,9 +99,17 @@ class _PerjalananDinasUserState extends State<PerjalananDinasUser> {
                       elevation: 5.0,
                       child: ListTile(
                           onTap: () {
-                            Navigator.of(context).push(CupertinoPageRoute(
+                            if (documentSnapshot['status'] == 'belum dikonfirmasi') {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                              backgroundColor: Colors.orange,
+                              content: Text(
+                                  'Mohon tunggu pastikan sudah di setujui oleh camat')));
+                            }else{
+                              Navigator.of(context).push(CupertinoPageRoute(
                                 builder: ((context) => DetailPdinasUser(
                                     documentSnapshot: documentSnapshot))));
+                            }
                           },
                           title: Text(documentSnapshot['nama'],
                               style: TextStyle(
@@ -127,7 +142,10 @@ class _PerjalananDinasUserState extends State<PerjalananDinasUser> {
             },
           ))
         ],
-      ),
+      );
+          }
+        },
+      )
     );
   }
 }

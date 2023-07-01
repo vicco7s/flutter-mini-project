@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 import 'editBuktiKegiantanPJD.dart';
 
@@ -24,180 +27,172 @@ class DetailBuktiKegiatanPJD extends StatelessWidget {
     var tanggal_akhir = DateFormat.yMMMMd('id').format(dates);
 
     final dataBuktiKegiatan = ControllerBuktiKegiatanPJD();
+    final List<dynamic> imageUrls = documentSnapshot['imageUrl'];
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        elevation: 0.0,
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-        title: const Text('Detail Bukti Kegiatan'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Card(
-                elevation: 10.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  bottomRight: Radius.circular(5.0),
-                  topRight: Radius.circular(30.0),
-                  bottomLeft: Radius.circular(5.0),
-                )),
-                child: Column(
-                  children: [
-                    ListTile(
-                      leading: const Text(
-                        "No :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      title: Text(
-                        documentSnapshot['id'].toInt().toString(),
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Text(
-                        "Nama :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      title: Text(
-                        documentSnapshot['nama'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Text(
-                        "Nip :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      title: Text(
-                        documentSnapshot['nip'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Text(
-                        "Jabatan :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      title: Text(
-                        documentSnapshot['jabatan'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text(
-                        "Keperluan :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      subtitle: Text(
-                        documentSnapshot['keperluan'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Text(
-                        "Tempat :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      title: Text(
-                        documentSnapshot['tempat'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      leading: const Text(
-                        "Tanggal :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      title: Text(
-                        '${tanggal_awal.toString()} - ${tanggal_akhir.toString()}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text(
-                        "Dasar :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      subtitle: Text(
-                        documentSnapshot['dasar'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    ListTile(
-                      title: const Text(
-                        "Hasil kegiatan :",
-                        style:
-                            TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      ),
-                      subtitle: Text(
-                        documentSnapshot['hasil'],
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ),
-                    SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: [
-                            for (var imageUrl in documentSnapshot['imageUrl'])
-                            Container(
-                              margin: EdgeInsets.symmetric(horizontal: 5.0),
-                              height: 200.0,
-                              width: 200.0,
-                              child: Image.network(
-                                imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) =>
-                                    Icon(Icons.error),
+      body: FutureBuilder(
+          future: Future.delayed(Duration(seconds: 3)),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return ColorfulCirclePrgressIndicator();
+            } else {
+              return Stack(
+                children: [
+                  SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        Container(
+                          height: 400,
+                          child: CarouselSlider.builder(
+                            unlimitedMode: true,
+                            enableAutoSlider: true,
+                            itemCount: imageUrls.length,
+                            slideIndicator: CircularSlideIndicator(
+                              currentIndicatorColor: Color(0xfffc16ffc),
+                              padding: EdgeInsets.only(bottom: 32),
+                              indicatorBorderColor: Colors.white,
+                            ),
+                            slideTransform: ZoomOutSlideTransform(),
+                            autoSliderTransitionTime:
+                                Duration(milliseconds: 600),
+                            slideBuilder: (index) {
+                              return Container(
+                                margin: EdgeInsets.symmetric(horizontal: 0.0),
+                                width: MediaQuery.of(context).size.width,
+                                child: Stack(
+                                  fit: StackFit.expand,
+                                  children: [
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.only(
+                                          bottomLeft: Radius.circular(15.0),
+                                          bottomRight: Radius.circular(15.0)),
+                                      child: Image.network(
+                                        imageUrls[index],
+                                        fit: BoxFit.cover,
+                                        errorBuilder:
+                                            (context, error, stackTrace) =>
+                                                Icon(Icons.error),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Divider(
+                          thickness: 2,
+                          indent: 100,
+                          endIndent: 100,
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Dasar",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: Card(
+                            elevation: 1.0,
+                            color: Color(0xfffc16ffc),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0))),
+                            child: ListTile(
+                              title: Text(
+                                documentSnapshot['dasar'],
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    
-                    SizedBox(
-                      width: 30,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Navigator.of(context).push(CupertinoPageRoute(
-                                  builder: (context) => EditButkiKegiantanPjd(documentSnapshot: documentSnapshot,)));
-                            },
-                            child: const Text("Update"),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue, // background
-                              foregroundColor: Colors.white, // foreground
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          alignment: Alignment.topLeft,
+                          child: Text(
+                            "Hasil Bukti Perjalanan Dinas",
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 10, right: 10),
+                          child: Card(
+                            elevation: 1.0,
+                            color: Color(0xfffc16ffc),
+                            shape: RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0))),
+                            child: ListTile(
+                              title: Text(
+                                documentSnapshot['hasil'],
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+                  ),
+                  Positioned(
+                    top: 25,
+                    left: 0,
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(65, 0, 0, 0),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ),
+                  Positioned(
+                    top: 25,
+                    right: 0,
+                    child: Ink(
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(65, 0, 0, 0),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          FontAwesomeIcons.penToSquare,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(CupertinoPageRoute(
+                                  builder: (context) => EditButkiKegiantanPjd(documentSnapshot: documentSnapshot,)));
+                        },
+                      ),
+                    ),
+                  ),
+                  
+                ],
+              );
+            }
+          },
+        )
     );
   }
+  
 }
+
