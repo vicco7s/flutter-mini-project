@@ -38,18 +38,14 @@ class _HomeCamatPageState extends State<HomeCamatPage>
     Tab(
       icon: Icon(Icons.emoji_transportation_outlined),
     ),
-    Tab(
-      icon: Icon(Icons.paid_outlined),
-    ),
   ];
 
   late TabController tabController;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    tabController = TabController(length: 5, vsync: this);
+    tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -235,37 +231,7 @@ class _HomeCamatPageState extends State<HomeCamatPage>
               SizedBox(
                 height: 30,
               ),
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: 24, top: 0, right: 24, bottom: 0),
-                child: ElevatedButton(
-                    onPressed: () {
-                      // Navigator.push(
-                      //     context,
-                      //     CupertinoPageRoute(
-                      //         builder: ((context) => SuratMasukCamat())));
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white, // background
-                      foregroundColor: Colors.blueAccent, // foreground
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(11, 20, 11, 20),
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Icon(Icons.paid),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text("Biaya Perjalanan Dinas",
-                                style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold)),
-                          ],
-                        ),
-                      ),
-                    )),
-              ),
+              
               SizedBox(
                 height: 15,
               ),

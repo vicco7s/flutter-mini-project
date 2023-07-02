@@ -228,9 +228,7 @@ class TabBarViewWidget extends StatelessWidget {
             ))
           ],
         ),
-        Column(
-          children: [Text("No Data")],
-        ),
+
       ],
     );
   }

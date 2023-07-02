@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/util/ContainerDeviders.dart';
+import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailSuratBatalPJDAdmin extends StatelessWidget {
   final DocumentSnapshot suratbatalDoc;
@@ -31,105 +33,153 @@ class DetailSuratBatalPJDAdmin extends StatelessWidget {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.all(10.0),
-              child: Card(
-                elevation: 10.0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  bottomRight: Radius.circular(30.0),
-                  topRight: Radius.circular(5.0),
-                  bottomLeft: Radius.circular(5.0),
-                )),
-                child: Column(
-                  children: [
-                     ListTile(
-                    leading: const Text(
-                      "No :",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                    ),
-                    title: Text(
-                      suratbatalDoc['id'].toInt().toString(),
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Text(
-                      "Nama :",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                    ),
+          child: FutureBuilder(
+        future: Future.delayed(Duration(seconds: 3)),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return ColorfulLinearProgressIndicator();
+          } else {
+            return Column(children: [
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: Card(
+                  elevation: 0.0,
+                  color: Colors.blueAccent,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(15))),
+                  child: ListTile(
                     title: Text(
                       suratbatalDoc['nama'],
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  ListTile(
-                    leading: const Text(
-                      "Tanggal Surat :",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                    ),
-                    title: Text(
-                      tanggal_surat.toString(),
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Text(
-                      "Tanggal Perjalanan :",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                    ),
-                    title: Text(
-                      tanggal_perjalanan.toString(),
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text(
-                      "Alasan",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                      textAlign: TextAlign.center,
-                    ),
-                    subtitle: Text(
-                      suratbatalDoc['alasan'],
-                      style: TextStyle(fontSize: 18),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  ListTile(
-                    leading: const Text(
-                      "Status :",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                    ),
-                    title: Text(
-                      suratbatalDoc['status'],
-                      style: TextStyle(fontSize: 18, color:
-                                    (suratbatalDoc['status'] == 'Disetujui' ||
-                                            suratbatalDoc['status'] ==
-                                                'Mohon Tunggu'
-                                        ? Colors.green
-                                        : Colors.red)),
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text(
-                      "Keterangan :",
-                      style: TextStyle(fontSize: 18, color: Colors.blueAccent),
-                    ),
-                    subtitle: Text(
-                      suratbatalDoc['keterangan'],
-                      style: TextStyle(fontSize: 18),textAlign: TextAlign.center,
-                    ),
-                  ),
-                  ],
                 ),
               ),
-            )
-          ],
-        ),
-      ),
+              Divider(
+                indent: 100,
+                endIndent: 100,
+                thickness: 2,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 20, right: 20),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Tanggal Surat Batal",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: Card(
+                elevation: 0.0,
+                color: Color.fromARGB(255, 236, 236, 236),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: Column(
+                  children: [
+                    Divider(
+                      indent: 150,
+                      endIndent: 150,
+                      thickness: 2,
+                    ),
+                    ListTile(
+                      leading: Text(
+                        "Tanggal Surat",
+                        style: TextStyle(
+                            color: Colors.blueAccent[700],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      trailing: Text(
+                        tanggal_surat.toString(),
+                        style: TextStyle(
+                            color: Colors.blueAccent[200], fontSize: 16),
+                      ),
+                    ),
+                    Containers(),
+                    ListTile(
+                      leading: Text(
+                        "Tanggal Perjalanan Dinas",
+                        style: TextStyle(
+                            color: Colors.blueAccent[700],
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                      trailing: Text(
+                        tanggal_perjalanan.toString(),
+                        style: TextStyle(
+                            color: Colors.blueAccent[200], fontSize: 16),
+                      ),
+                    ),
+                  ],
+                )),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 20, right: 20),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Alasan",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: Card(
+                elevation: 0.0,
+                color: Color.fromARGB(255, 236, 236, 236),
+                shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: ListTile(
+                  title: Text(suratbatalDoc['alasan'],
+                      style: TextStyle(
+                          color: Colors.blueAccent[200],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                )),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                margin: EdgeInsets.only(left: 20, right: 20),
+                alignment: Alignment.topLeft,
+                child: Text(
+                  "Keterangan",
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+                child: Card(
+                elevation: 0.0,
+                color: Color.fromARGB(255, 236, 236, 236),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: ListTile(
+                  title: Text(suratbatalDoc['keterangan'],
+                      style: TextStyle(
+                          color: Colors.blueAccent[200],
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16)),
+                )),
+              ),
+              SizedBox(
+                height: 10,
+              )
+            ]);
+          }
+        },
+      )),
     );
   }
 }

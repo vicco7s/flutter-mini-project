@@ -2,12 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/detailSuratBatalPjd.dart';
 import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/formsuratbatalPJD.dart';
 import 'package:kec_app/report/reportSuratBatal/SuratBatal.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 class SuratbatalPjDinas extends StatefulWidget {
   const SuratbatalPjDinas({super.key});
@@ -47,7 +49,13 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
       body: Column(
         children: [
           Expanded(
-            child: StreamBuilder<QuerySnapshot>(
+              child: FutureBuilder(
+            future: Future.delayed(Duration(seconds: 3)),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ColorfulCirclePrgressIndicator();
+              }else {
+                return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('users')
                   .doc(_currentUser?.uid)
@@ -64,7 +72,6 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                         itemBuilder: (BuildContext context, index) {
                           final DocumentSnapshot documentSnapshot =
                               snapshot.data!.docs[index];
-
                           Timestamp timerstamp =
                               documentSnapshot['tanggal_surat'];
                           var date = timerstamp.toDate();
@@ -151,8 +158,10 @@ class _SuratbatalPjDinasState extends State<SuratbatalPjDinas> {
                         },
                       );
               },
-            ),
-          ),
+            );
+              }
+            },
+          )),
         ],
       ),
       floatingActionButton: SpeedDialFloating(

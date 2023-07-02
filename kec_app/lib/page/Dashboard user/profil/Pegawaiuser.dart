@@ -7,7 +7,6 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/page/Dashboard%20user/profil/DetailPegawai.dart';
 import 'package:kec_app/page/Pegawai/editpegawai.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
 import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';

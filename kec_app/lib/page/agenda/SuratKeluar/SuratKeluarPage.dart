@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:kec_app/controller/controllerSurat/controllerSuratKeluar.dart';
 import 'package:kec_app/page/agenda/SuratKeluar/DetailSuratKeluar.dart';
 import 'package:kec_app/page/agenda/SuratKeluar/FormSuratKeluar.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/FormSuratMasuk.dart';
@@ -25,6 +26,7 @@ class _SuratKeluarPageState extends State<SuratKeluarPage> {
 
   final Query<Map<String, dynamic>> _suratkeluar =
       FirebaseFirestore.instance.collection('suratkeluar');
+  final dataSuratKeluar = ControllerSK();
 
   @override
   Widget build(BuildContext context) {
@@ -66,43 +68,69 @@ class _SuratKeluarPageState extends State<SuratKeluarPage> {
                       itemBuilder: ((context, index) {
                         final DocumentSnapshot documentSnapshot =
                             snapshot.data!.docs[index];
-                        return Card(
-                          shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
+                        return Dismissible(
+                            key: Key(documentSnapshot.id),
+                            background: Container(
+                              alignment: Alignment.centerRight,
+                              color: Colors.red,
+                              child: Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            onDismissed: (direction) async {
+                              dataSuratKeluar.delete(
+                                  documentSnapshot.id, context);
+                            },
+                            child: Card(
+                              shape: const RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15.0),
                                 bottomRight: Radius.circular(15.0),
                                 topRight: Radius.circular(15.0),
                                 bottomLeft: Radius.circular(15.0),
-                            )),
-                          elevation: 5.0,
-                          child: ListTile(
-                            onTap: () {
-                              Navigator.of(context).push(CupertinoPageRoute(
-                                  builder: ((context) => DetailSuratKeluar(
-                                      documentSnapshot: documentSnapshot))));
-                            },
-                            title: Text(documentSnapshot['no_berkas'],style: TextStyle(color: Colors.blueAccent,fontWeight: FontWeight.bold),),
-                            subtitle: Text(documentSnapshot['alamat_penerima']),
-                            trailing: (documentSnapshot['keterangan'] ==
-                                    'sudah dikirim')
-                                ? Text(
-                                    documentSnapshot['keterangan'],
-                                    style: const TextStyle(color: Colors.green),
-                                  )
-                                : Text(
-                                    documentSnapshot['keterangan'],
-                                    style: const TextStyle(color: Colors.red),
-                                  ),
-                          ),
-                        );
+                              )),
+                              elevation: 5.0,
+                              child: ListTile(
+                                onTap: () {
+                                  Navigator.of(context).push(CupertinoPageRoute(
+                                      builder: ((context) => DetailSuratKeluar(
+                                          documentSnapshot:
+                                              documentSnapshot))));
+                                },
+                                title: Text(
+                                  documentSnapshot['no_berkas'],
+                                  style: TextStyle(
+                                      color: Colors.blueAccent,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                subtitle:
+                                    Text(documentSnapshot['alamat_penerima']),
+                                trailing: (documentSnapshot['keterangan'] ==
+                                        'sudah dikirim')
+                                    ? Text(
+                                        documentSnapshot['keterangan'],
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      )
+                                    : Text(
+                                        documentSnapshot['keterangan'],
+                                        style:
+                                            const TextStyle(color: Colors.red),
+                                      ),
+                              ),
+                            ));
                       }));
             },
           ))
         ],
       ),
       floatingActionButton: SpeedDialFloating(
-        ontap: () => Navigator.of(context).push(MaterialPageRoute(
-              builder: ((context) => const FormSuratKeluar()))),
+        ontap: () => Navigator.of(context).push(
+            MaterialPageRoute(builder: ((context) => const FormSuratKeluar()))),
         animatedIcons: AnimatedIcons.add_event,
       ),
     );

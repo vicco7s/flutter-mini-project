@@ -7,10 +7,12 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:kec_app/components/inputborder.dart';
+import 'package:kec_app/controller/controllerSurat/controlerSuratMasuk.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/DetailSurat.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/FormSuratMasuk.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 class SuratMasukPage extends StatefulWidget {
   const SuratMasukPage({super.key});
@@ -26,6 +28,7 @@ class _SuratMasukPageState extends State<SuratMasukPage> {
 
   final Query<Map<String, dynamic>> _suratmasuk = FirebaseFirestore.instance
       .collection('suratmasuk');
+  final dataControlerSM = ControllerSM();
 
   @override
   Widget build(BuildContext context) {
@@ -62,13 +65,26 @@ class _SuratMasukPageState extends State<SuratMasukPage> {
                 builder: (context, snapshot) {
                 return (snapshot.connectionState == ConnectionState.waiting) 
                 ? Center(
-                  child: CircularProgressIndicator(),
+                  child: ColorfulCirclePrgressIndicator(),
                 )
                 : ListView.builder(
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final DocumentSnapshot documentSnapshot = snapshot.data!.docs[index];
-                      return Card(
+                      return Dismissible(
+                      key: Key(documentSnapshot.id), 
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        color: Colors.red,
+                        child: Padding(padding: EdgeInsets.symmetric(horizontal: 16.0),
+                        child: Icon(Icons.delete,color: Colors.white,),
+                        ),
+                      ),
+                      onDismissed: (direction)async {
+                        await dataControlerSM.delete(documentSnapshot.id, context);
+                      },
+                      child: Card(
                         shape: const RoundedRectangleBorder(
                                 borderRadius: BorderRadius.only(
                                 topLeft: Radius.circular(15.0),
@@ -89,7 +105,7 @@ class _SuratMasukPageState extends State<SuratMasukPage> {
                           ? Text(documentSnapshot['keterangan'],style: const TextStyle(color: Colors.green),)
                           : Text(documentSnapshot['keterangan'],style: const TextStyle(color: Colors.red),)
                         ),
-                      );
+                      ));
                     },
                 );
               },
