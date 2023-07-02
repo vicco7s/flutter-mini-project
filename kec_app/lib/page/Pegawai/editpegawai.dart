@@ -173,7 +173,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                   var _currentItemSelected = newValueSelected!;
                   _jk = newValueSelected;
                 },
-                values: widget.documentSnapshot['jenis_kelamin'],
+                values: _jk,
               ),
               //tgl lahir
               DateTimeField(

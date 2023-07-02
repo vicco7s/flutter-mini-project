@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:pdf/pdf.dart';
 import 'package:intl/intl.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -107,6 +110,7 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                 generateDocument(
               format,
               filteredData,
+              selectedFilter,
             ),
           );
         },
@@ -114,11 +118,13 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
     );
   }
 
-  Future<Uint8List> generateDocument(
-    PdfPageFormat format,
-    List<Map<String, dynamic>> filteredData,
-  ) async {
-    final doc = pw.Document(pageMode: PdfPageMode.outlines);
+  Future<Uint8List> generateDocument(PdfPageFormat format,
+      List<Map<String, dynamic>> filteredData, String selectedFilter) async {
+    String documentName = "Laporan Pegawai $selectedFilter.pdf";
+
+    final doc = pw.Document(
+      pageMode: PdfPageMode.outlines,
+    );
     final font1 = await PdfGoogleFonts.openSansRegular();
     final font2 = await PdfGoogleFonts.openSansBold();
 
@@ -187,19 +193,13 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Nama",
+                    child: pw.Text("Nama/Nip",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Tempat",
-                        textAlign: pw.TextAlign.center,
-                        style: pw.TextStyle(
-                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text("Tanggal Lahir",
+                    child: pw.Text("TTL",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
@@ -211,19 +211,19 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
+                    child: pw.Text("Alamat",
+                        textAlign: pw.TextAlign.center,
+                        style: pw.TextStyle(
+                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                  ),
+                  pw.Expanded(
                     child: pw.Text("Tgl Mulai Tugas",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Pangkat",
-                        textAlign: pw.TextAlign.center,
-                        style: pw.TextStyle(
-                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text("Golongan",
+                    child: pw.Text("Pangkat/\nGol",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
@@ -235,13 +235,7 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Status",
-                        textAlign: pw.TextAlign.center,
-                        style: pw.TextStyle(
-                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text("Jumlah Anak",
+                    child: pw.Text("Status/\nJumlah Anak",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
@@ -268,12 +262,13 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
             },
             border: pw.TableBorder.all(),
             children: filteredData.map((pegawai) {
+              initializeDateFormatting('id', null);
               final Timestamp timerstamps = pegawai['tgl_mulaitugas'];
               final Timestamp timerstamp = pegawai['tgl_lahir'];
               var dates = timerstamps.toDate();
               var date = timerstamp.toDate();
-              var tgllahir = DateFormat.yMMMMd().format(date);
-              var tglmulaitugas = DateFormat.yMMMMd().format(dates);
+              var tgllahir = DateFormat.yMMMMd('id').format(date);
+              var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
 
               return pw.TableRow(children: [
                 pw.Expanded(
@@ -283,20 +278,15 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    pegawai['nama'],
+                    pegawai['nama'] + '\n' + pegawai['nip'],
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    pegawai['tempat_lahir'],
+                    pegawai['tempat_lahir'] + ', ' + tgllahir.toString(),
                     style: pw.TextStyle(fontSize: 8),
-                  ),
-                ),
-                pw.Expanded(
-                  child: pw.Text(
-                    tgllahir.toString(),textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(fontSize: 8),
+                    textAlign: pw.TextAlign.center,
                   ),
                 ),
                 pw.Expanded(
@@ -305,27 +295,33 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                       textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
+                  child: pw.Text(pegawai['alamat'],
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
+                ),
+                pw.Expanded(
                   child: pw.Text(tglmulaitugas.toString(),
-                      style: pw.TextStyle(fontSize: 8)),
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(pegawai['pangkat'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
-                ),
-                pw.Expanded(
-                  child: pw.Text(pegawai['golongan'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                  child: pw.Text(
+                      (pegawai['pangkat'] != '--' ? pegawai['pangkat'] : '') +
+                          '\n' +
+                          pegawai['golongan'],
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
                   child: pw.Text(pegawai['jabatan'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(pegawai['status_pernikahan'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
-                ),
-                pw.Expanded(
-                  child: pw.Text(pegawai['jumlah_anak'].toInt().toString(),
+                  child: pw.Text(
+                      pegawai['status_pernikahan'] +
+                          '\n' +
+                          pegawai['jumlah_anak'].toString(),
                       style: pw.TextStyle(fontSize: 8),
                       textAlign: pw.TextAlign.center),
                 ),
@@ -335,11 +331,9 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
                       textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                    child: pw.Text(
-                  pegawai['status'],
-                  style: pw.TextStyle(fontSize: 8),
-                  textAlign: pw.TextAlign.center
-                )),
+                    child: pw.Text(pegawai['status'],
+                        style: pw.TextStyle(fontSize: 8),
+                        textAlign: pw.TextAlign.center)),
               ]);
             }).toList(),
           ),
@@ -361,7 +355,8 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
         ])
       ],
     ));
-
-    return doc.save();
+    final Uint8List pdfbytes = await doc.save();
+    return pdfbytes;
   }
+
 }

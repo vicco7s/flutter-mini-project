@@ -51,7 +51,7 @@ var golongan = [
 ];
 var gol = '--';
 
-var jenis_k = ['--', 'laki-laki', 'perempuan'];
+var jenis_k = ['--', 'L', 'P'];
 var jk = '--';
 
 var s_perkawinan = ['--', 'belum kawin', 'sudah kawin'];
