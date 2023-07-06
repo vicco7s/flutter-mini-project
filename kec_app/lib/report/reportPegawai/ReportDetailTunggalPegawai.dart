@@ -111,7 +111,7 @@ Future<Uint8List> generateDocument(
                   ),
                 ),
                 child: pw.Text(
-                  "LAPORAN BIODATA PEGAWAI",
+                  "BIODATA PEGAWAI",
                   style: pw.TextStyle(
                     fontWeight: pw.FontWeight.bold,
                     fontSize: 14,

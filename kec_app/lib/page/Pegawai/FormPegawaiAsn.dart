@@ -512,7 +512,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                           tempat_lahir: _tempatlahir.text,
                           tgl_lahir: DateTime.parse(_tlahir.text),
                           telp: _telp.text,
-                          imageUrl: '',
+                          imageUrl: '', uid: '',
                         );
                         String? imageUrl;
                         // Upload the image to Firestore and get the image URL

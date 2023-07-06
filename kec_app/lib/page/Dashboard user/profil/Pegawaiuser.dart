@@ -71,7 +71,7 @@ class _PegawaiUserState extends State<PegawaiUser> {
             } else {
               return StreamBuilder<QuerySnapshot>(
                 stream: _pegawai
-                    .where('nama', isEqualTo: currentdoc?.get('nama'))
+                    .where('uid', isEqualTo: currentdoc?.get('uid'))
                     .snapshots(),
                 builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {

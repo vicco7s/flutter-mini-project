@@ -1,4 +1,5 @@
 class InputAsn {
+  final String uid;
   final String nama;
   final String nip;
   final String jenis_kelamin;
@@ -16,26 +17,28 @@ class InputAsn {
   final String telp;
   String? imageUrl;
 
-  InputAsn({
-    required this.nama,
-    required this.nip,
-    required this.jenis_kelamin,
-    required this.tgl_lahir,
-    required this.tempat_lahir,
-    required this.tanggal_mulai_tugas,
-    required this.alamat,
-    required this.pendidikan_terakhir,
-    required this.pangkat,
-    required this.golongan,
-    required this.jabatan,
-    required this.status,
-    required this.status_perkawinan,
-    required this.jumlah_anak,
-    required this.telp,
-    required this.imageUrl
-  });
+  InputAsn(
+      {
+      required this.uid,
+      required this.nama,
+      required this.nip,
+      required this.jenis_kelamin,
+      required this.tgl_lahir,
+      required this.tempat_lahir,
+      required this.tanggal_mulai_tugas,
+      required this.alamat,
+      required this.pendidikan_terakhir,
+      required this.pangkat,
+      required this.golongan,
+      required this.jabatan,
+      required this.status,
+      required this.status_perkawinan,
+      required this.jumlah_anak,
+      required this.telp,
+      required this.imageUrl});
 
   Map<String, dynamic> toJson() => {
+        'uid': uid,
         'nama': nama,
         'nip': nip,
         'jenis_kelamin': jenis_kelamin,

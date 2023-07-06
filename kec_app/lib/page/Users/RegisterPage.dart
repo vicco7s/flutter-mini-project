@@ -30,6 +30,7 @@ class _CreateUserState extends State<CreateUser> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController confirmpassController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
+  final _uid = TextEditingController();
   bool _isObscure = true;
   bool _isObscure2 = true;
   File? file;
@@ -42,6 +43,9 @@ class _CreateUserState extends State<CreateUser> {
   ];
   var _currentItemSelected = "Pegawai";
   var rool = "Pegawai";
+
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -89,12 +93,6 @@ class _CreateUserState extends State<CreateUser> {
                                       List<String> namaList = items
                                           .map((item) => item['nama'] as String)
                                           .toList();
-                                      // for (var item in items) {
-                                      //   dropdownItems.add(DropdownMenuItem(
-                                      //     child: Text(item['nama']),
-                                      //     value: item['nama'],
-                                      //   ));
-                                      // }
                                       return Column(
                                         children: [
                                           Padding(
@@ -110,6 +108,12 @@ class _CreateUserState extends State<CreateUser> {
                                               onChage: (value) {
                                                 setState(() {
                                                   _selectedValue = value!;
+                                                  getUidPegawai(value)
+                                                      .then((result) {
+                                                    setState(() {
+                                                      _uid.text = result['uid']!;
+                                                    });
+                                                  });
                                                 });
                                               },
                                               validators: (value) => (value ==
@@ -350,32 +354,58 @@ class _CreateUserState extends State<CreateUser> {
               child: CircularProgressIndicator(),
             ));
     try {
-      await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-      var user = _auth.currentUser;
-      CollectionReference ref = FirebaseFirestore.instance.collection('users');
-      ref.doc(user!.uid).set({
-        'nama': _selectedValue,
-        'email': emailController.text,
-        'rool': rool,
-        'uid': user.uid
-      });
+    CollectionReference usersRef = firebaseFirestore.collection('users');
 
-      setState(() {
-        isLoading = false;
-      });
+    // Memulai transaksi
+    await firebaseFirestore.runTransaction((transaction) async {
+      // Memeriksa apakah UID sudah ada dalam koleksi "users"
+      bool isUidExists = await checkUidExists(usersRef, _uid.text);
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: Colors.green,
-          content: Text('Email Berhasil Dibuat'),
-        ),
+      if (isUidExists) {
+        // Jika UID sudah ada, batalkan transaksi dan tampilkan pesan kesalahan
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Pengguna sudah memiliki Akun'),
+          ),
+        );
+        Navigator.pop(context);
+        return;
+      } else {
+        // Jika UID belum ada, tambahkan data pengguna ke koleksi "users"
+        DocumentReference userDocRef = usersRef.doc();
+
+        transaction.set(userDocRef, {
+          'nama': _selectedValue,
+          'email': emailController.text,
+          'role': rool,
+          'uid': _uid.text,
+        });
+
+        // Buat pengguna dengan email dan kata sandi di Firebase Authentication
+      UserCredential authResult = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
       );
 
-      Navigator.pop(context);
-      Navigator.pop(context);
+      // Update UID pengguna di dokumen "users"
+      transaction.update(userDocRef, {
+        'uid': _uid.text,
+      });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.green,
+            content: Text('Email Berhasil Dibuat'),
+          ),
+        );
+
+        Navigator.pop(context);
+        Navigator.pop(context);
+      }
+    });
+      
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -394,5 +424,25 @@ class _CreateUserState extends State<CreateUser> {
       }
       Navigator.pop(context);
     }
+  }
+}
+
+Future<bool> checkUidExists(CollectionReference usersRef, String uid) async {
+  QuerySnapshot snapshot = await usersRef.where('uid', isEqualTo: uid).get();
+  return snapshot.docs.isNotEmpty;
+}
+
+Future<Map<String, String>> getUidPegawai(String value) async {
+  QuerySnapshot querySnapshot = await firestore
+      .collection('pegawai')
+      .where('nama', isEqualTo: value)
+      .get();
+  if (querySnapshot.docs.isNotEmpty) {
+    String uid = querySnapshot.docs[0]['uid'];
+    return {
+      'uid': uid,
+    };
+  } else {
+    return {'uid': 'uid tidak ditemukan'};
   }
 }
