@@ -10,6 +10,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/controller/controllerPerjalananDinas/controllerpdinas.dart';
 import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/detailKegiatanPJD.dart';
+import 'package:kec_app/report/Report_pDinas/ReportBuktiKegiatanPJD.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
 import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
@@ -207,6 +208,9 @@ class DetailPdinas extends StatelessWidget {
                       Navigator.of(context).push(CupertinoPageRoute(builder: (context)=> DetailKegiatanPJD(documentSnapshot: docsnap,)));
                     },
                     title: Text(docsnap['nama'],style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,fontSize: 14),),
+                    leading: IconButton(onPressed: ()async{
+                      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => ReportBuktiKegiatanPJD(documentSnapshot: docsnap,)));
+                    }, icon: Icon(FontAwesomeIcons.print, color: Colors.white,)),
                     trailing: Text(
                       tanggal_awal.toString(),
                       style: TextStyle(

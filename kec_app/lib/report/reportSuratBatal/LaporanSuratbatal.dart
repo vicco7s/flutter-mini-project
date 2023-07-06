@@ -189,133 +189,147 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       build: (context) => [
         pw.Column(children: [
-          pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.center,
-          children: [
-            pw.Container(
-              width: 65,
-              height: 65,
-              child: pw.Image(memoryImage)
-            ),
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+            pw.Container(width: 65, height: 65, child: pw.Image(memoryImage)),
             pw.SizedBox(width: 30),
-            pw.Column(
-              children: [
-                  pw.Padding(
+            pw.Column(children: [
+              pw.Padding(
                   padding: pw.EdgeInsets.all(0),
-                  child: pw.Text("PEMERINTAHAN KABUPATEN TAPIN",style: pw.TextStyle(fontSize: 14,fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(
+                  child: pw.Text("PEMERINTAHAN KABUPATEN TAPIN",
+                      style: pw.TextStyle(
+                          fontSize: 14, fontWeight: pw.FontWeight.bold))),
+              pw.Padding(
                   padding: pw.EdgeInsets.only(top: 5),
-                  child: pw.Text("KECAMATAN SALAM BABARIS",style: pw.TextStyle(fontSize: 14,fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(
+                  child: pw.Text("KECAMATAN SALAM BABARIS",
+                      style: pw.TextStyle(
+                          fontSize: 14, fontWeight: pw.FontWeight.bold))),
+              pw.Padding(
                   padding: pw.EdgeInsets.only(top: 8),
-                  child: pw.Text("Jalan Transmigrasi No.02 Desa Salam Babaris Kode Pos: 71182",style: pw.TextStyle(fontSize: 12,))
-                )
-              ]
-            ),
-          ]
-        ),
-
-        pw.Divider(thickness: 3),
-        pw.SizedBox(height: 20),
-        pw.Center(
-          child: pw.Text("Laporan Surat Batal Perjalanan Dinas",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
-        ),
-        pw.SizedBox(height: 20),
-        pw.Row(
-          children: [
-            pw.Text(
-              DateFormat('MMMM yyyy').format(startDate),
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-            ),
-            pw.Text(
-              " - ",
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-            ),
-            pw.Text(
-              DateFormat('MMMM yyyy').format(endDate),
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-            ),
-          ],
-        ),
-
+                  child: pw.Text(
+                      "Jalan Transmigrasi No.02 Desa Salam Babaris Kode Pos: 71182",
+                      style: pw.TextStyle(
+                        fontSize: 12,
+                      )))
+            ]),
+          ]),
+          pw.Divider(thickness: 3),
+          pw.SizedBox(height: 20),
+          pw.Center(
+            child: pw.Text("Laporan Surat Batal Perjalanan Dinas",
+                style:
+                    pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+          ),
+          pw.SizedBox(height: 20),
+          pw.Row(
+            children: [
+              pw.Text(
+                DateFormat('MMMM yyyy').format(startDate),
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(
+                " - ",
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(
+                DateFormat('MMMM yyyy').format(endDate),
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+            ],
+          ),
           pw.Table(
-          columnWidths: {
-            0: pw.FlexColumnWidth(1.0),
-            1: pw.FlexColumnWidth(0.5),
-          },
-          border: pw.TableBorder.all(),
-          children: [
-            pw.TableRow(children: [
-              pw.Expanded(
+              columnWidths: {
+                0: pw.FlexColumnWidth(0.2),
+                1: pw.FlexColumnWidth(1.0),
+                2: pw.FlexColumnWidth(0.5),
+              },
+              border: pw.TableBorder.all(),
+              children: [
+                pw.TableRow(children: [
+                  pw.Expanded(
+                    child: pw.Text("No",
+                        textAlign: pw.TextAlign.center,
+                        style: pw.TextStyle(
+                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                  ),
+                  pw.Expanded(
                     child: pw.Text("Nama",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Tanggal",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Alasan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Keterangan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-            ]),
-          ]
-        ),
-
-        pw.Table(
+                ]),
+              ]),
+          pw.Table(
             columnWidths: {
-              0: pw.FlexColumnWidth(1.0),
-              1: pw.FlexColumnWidth(0.5),
+              0: pw.FlexColumnWidth(0.2),
+              1: pw.FlexColumnWidth(1.0),
+              2: pw.FlexColumnWidth(0.5),
             },
             border: pw.TableBorder.all(),
-            children: sortedSuratBatalDataMap.entries.map((entry) {
+            children: sortedSuratBatalDataMap.entries
+                .toList()
+                .asMap()
+                .entries
+                .map((entry) {
+              final index = entry.key + 1;
               final data = entry.value;
-              final Timestamp timerStamp = data['tanggal_surat'];
+              final Timestamp timerStamp = data.value['tanggal_surat'];
               var date = timerStamp.toDate();
               var tanggal = DateFormat.yMMMMd('id').format(date);
 
               return pw.TableRow(children: [
                 pw.Expanded(
                   child: pw.Text(
-                    data['nama'],
+                    index.toString(),
+                    style: pw.TextStyle(fontSize: 8),
+                    textAlign: pw.TextAlign.center
+                  ),
+                ),
+                pw.Expanded(
+                  child: pw.Text(
+                    data.value['nama'],
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    tanggal.toString(),textAlign: pw.TextAlign.center,
+                    tanggal.toString(),
+                    textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
-                  child: pw.Text(data['alasan'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                  child: pw.Text(data.value['alasan'],
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(data['keterangan'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                  child: pw.Text(data.value['keterangan'],
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
-               
               ]);
             }).toList(),
           ),
-
         ]),
-
         pw.SizedBox(height: 60),
         pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
           pw.Column(children: [
@@ -331,12 +345,9 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
                     style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
           ])
         ])
-
       ],
     ));
 
     return doc.save();
   }
 }
-
-

@@ -82,7 +82,6 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
-
           List<Map<String, dynamic>> filteredData = [];
 
           if (selectedFilter == 'ASN') {
@@ -120,8 +119,6 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
 
   Future<Uint8List> generateDocument(PdfPageFormat format,
       List<Map<String, dynamic>> filteredData, String selectedFilter) async {
-    String documentName = "Laporan Pegawai $selectedFilter.pdf";
-
     final doc = pw.Document(
       pageMode: PdfPageMode.outlines,
     );
@@ -261,7 +258,9 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
               2: pw.FlexColumnWidth(1.9),
             },
             border: pw.TableBorder.all(),
-            children: filteredData.map((pegawai) {
+            children: filteredData.asMap().entries.map((entry) {
+              int index = entry.key + 1;
+              Map<String, dynamic> pegawai = entry.value;
               initializeDateFormatting('id', null);
               final Timestamp timerstamps = pegawai['tgl_mulaitugas'];
               final Timestamp timerstamp = pegawai['tgl_lahir'];
@@ -272,7 +271,7 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
 
               return pw.TableRow(children: [
                 pw.Expanded(
-                  child: pw.Text(pegawai['id'].toInt().toString(),
+                  child: pw.Text(index.toString(),
                       style: pw.TextStyle(fontSize: 8),
                       textAlign: pw.TextAlign.center),
                 ),
@@ -358,5 +357,4 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
     final Uint8List pdfbytes = await doc.save();
     return pdfbytes;
   }
-
 }

@@ -160,121 +160,115 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
     doc.addPage(pw.MultiPage(
       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
       build: (context) => [
-        pw.Column(
-          children: [
-            pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.center,
-          children: [
-            pw.Container(
-              width: 65,
-              height: 65,
-              child: pw.Image(memoryImage)
-            ),
+        pw.Column(children: [
+          pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+            pw.Container(width: 65, height: 65, child: pw.Image(memoryImage)),
             pw.SizedBox(width: 30),
-            pw.Column(
-              children: [
-                  pw.Padding(
+            pw.Column(children: [
+              pw.Padding(
                   padding: pw.EdgeInsets.all(0),
-                  child: pw.Text("PEMERINTAHAN KABUPATEN TAPIN",style: pw.TextStyle(fontSize: 14,fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(
+                  child: pw.Text("PEMERINTAHAN KABUPATEN TAPIN",
+                      style: pw.TextStyle(
+                          fontSize: 14, fontWeight: pw.FontWeight.bold))),
+              pw.Padding(
                   padding: pw.EdgeInsets.only(top: 5),
-                  child: pw.Text("KECAMATAN SALAM BABARIS",style: pw.TextStyle(fontSize: 14,fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(
+                  child: pw.Text("KECAMATAN SALAM BABARIS",
+                      style: pw.TextStyle(
+                          fontSize: 14, fontWeight: pw.FontWeight.bold))),
+              pw.Padding(
                   padding: pw.EdgeInsets.only(top: 8),
-                  child: pw.Text("Jalan Transmigrasi No.02 Desa Salam Babaris Kode Pos: 71182",style: pw.TextStyle(fontSize: 12,))
-                )
-              ]
-            ),
-          ]
-        ),
-        
-        pw.Divider(thickness: 3),
-        pw.SizedBox(height: 20),
-        pw.Center(
-          child: pw.Text("Laporan Pembayaran Honor",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
-        ),
-        pw.SizedBox(height: 20),
-        pw.Row(
-          children: [
-            pw.Text(
-              DateFormat('MMMM yyyy').format(startDate),
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-            ),
-            pw.Text(
-              " - ",
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-            ),
-            pw.Text(
-              DateFormat('MMMM yyyy').format(endDate),
-              style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-            ),
-          ],
-        ),
-
-        pw.Table(
-          columnWidths: {
-            0: pw.FlexColumnWidth(0.3),
-            1: pw.FlexColumnWidth(1.5),
-            2: pw.FlexColumnWidth(1.0),
-            7: pw.FlexColumnWidth(1.4),
-          },
-          border: pw.TableBorder.all(),
-          children: [
-            pw.TableRow(children: [
-              pw.Expanded(
+                  child: pw.Text(
+                      "Jalan Transmigrasi No.02 Desa Salam Babaris Kode Pos: 71182",
+                      style: pw.TextStyle(
+                        fontSize: 12,
+                      )))
+            ]),
+          ]),
+          pw.Divider(thickness: 3),
+          pw.SizedBox(height: 20),
+          pw.Center(
+            child: pw.Text("Laporan Pembayaran Honor",
+                style:
+                    pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
+          ),
+          pw.SizedBox(height: 20),
+          pw.Row(
+            children: [
+              pw.Text(
+                DateFormat('MMMM yyyy').format(startDate),
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(
+                " - ",
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(
+                DateFormat('MMMM yyyy').format(endDate),
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+            ],
+          ),
+          pw.Table(
+              columnWidths: {
+                0: pw.FlexColumnWidth(0.3),
+                1: pw.FlexColumnWidth(1.5),
+                2: pw.FlexColumnWidth(1.0),
+                7: pw.FlexColumnWidth(1.4),
+              },
+              border: pw.TableBorder.all(),
+              children: [
+                pw.TableRow(children: [
+                  pw.Expanded(
                     child: pw.Text("No",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Nama",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Jabatan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Tanggal",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Pembayaran",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Bonus",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Total",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-              pw.Expanded(
+                  pw.Expanded(
                     child: pw.Text("Keterangan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
-            ]),
-          ]
-        ),
-        pw.Table(
+                ]),
+              ]),
+          pw.Table(
             columnWidths: {
               0: pw.FlexColumnWidth(0.3),
               1: pw.FlexColumnWidth(1.5),
@@ -282,66 +276,73 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
               7: pw.FlexColumnWidth(1.4),
             },
             border: pw.TableBorder.all(),
-            children: honorData.entries.map((entry) {
+            children: honorData.entries.toList().asMap().entries.map((entry) {
+              final index = entry.key + 1;
               final data = entry.value;
-              final Timestamp timerStamp = data['tanggal'];
+              final Timestamp timerStamp = data.value['tanggal'];
               var date = timerStamp.toDate();
               var tanggal = DateFormat.yMMMMd().format(date);
 
               return pw.TableRow(children: [
                 pw.Expanded(
-                  child: pw.Text(data['id'].toInt().toString(),
+                  child: pw.Text(index.toString(),
                       style: pw.TextStyle(fontSize: 8),
                       textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    data['nama'],
+                    data.value['nama'],
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    data['jabatan'],textAlign: pw.TextAlign.center,
+                    data.value['jabatan'],
+                    textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    tanggal.toString(),textAlign: pw.TextAlign.center,
+                    tanggal.toString(),
+                    textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
-                  child: pw.Text(NumberFormat.currency(locale: 'id', symbol: 'Rp')
-                            .format(data['gaji_honor'])
-                            .replaceAll(RegExp(r'(\.|,)00\b'), ''),
+                  child: pw.Text(
+                      NumberFormat.currency(locale: 'id', symbol: 'Rp')
+                          .format(data.value['gaji_honor'])
+                          .replaceAll(RegExp(r'(\.|,)00\b'), ''),
                       style: pw.TextStyle(fontSize: 8),
                       textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(NumberFormat.currency(locale: 'id', symbol: 'Rp')
-                            .format(data['bonus'])
-                            .replaceAll(RegExp(r'(\.|,)00\b'), ''),
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                  child: pw.Text(
+                      NumberFormat.currency(locale: 'id', symbol: 'Rp')
+                          .format(data.value['bonus'])
+                          .replaceAll(RegExp(r'(\.|,)00\b'), ''),
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(NumberFormat.currency(locale: 'id', symbol: 'Rp')
-                            .format(data['total'])
-                            .replaceAll(RegExp(r'(\.|,)00\b'), ''),
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                  child: pw.Text(
+                      NumberFormat.currency(locale: 'id', symbol: 'Rp')
+                          .format(data.value['total'])
+                          .replaceAll(RegExp(r'(\.|,)00\b'), ''),
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(data['keterangan'],
-                      style: pw.TextStyle(fontSize: 8),textAlign: pw.TextAlign.center),
+                  child: pw.Text(data.value['keterangan'],
+                      style: pw.TextStyle(fontSize: 8),
+                      textAlign: pw.TextAlign.center),
                 ),
-               
               ]);
             }).toList(),
           ),
-          ]),
-
-         pw.SizedBox(height: 60),
+        ]),
+        pw.SizedBox(height: 60),
         pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
           pw.Column(children: [
             pw.Text("Camat"),
