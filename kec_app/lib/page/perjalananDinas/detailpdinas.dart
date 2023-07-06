@@ -44,7 +44,14 @@ class DetailPdinas extends StatelessWidget {
           actions: [
             IconButton(
               onPressed: () async{
-                await dataPdinas.update(documentSnapshot, context);
+                if (documentSnapshot['konfirmasi_kirim'] == 'sudah dikirim') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                  backgroundColor: Colors.red,
+                  content: Text('Tidak Dapat Di perbarui karna Bukti Sudah Dikirim')));
+                }else{
+                  dataPdinas.update(documentSnapshot, context);
+                }
               }, 
               icon: Icon(FontAwesomeIcons.solidPenToSquare))
           ],

@@ -54,7 +54,7 @@ var gol = '--';
 var jenis_k = ['--', 'L', 'P'];
 var jk = '--';
 
-var s_perkawinan = ['--', 'belum kawin', 'sudah kawin'];
+var s_perkawinan = ['--', 'belum menikah', 'sudah menikah'];
 var sperkawinan = '--';
 
 var pendidikan_akhir = [

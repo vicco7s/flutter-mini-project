@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
 import 'package:kec_app/components/DropdownButtonForm.dart';
 import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
 import 'package:kec_app/page/Pegawai/DetaiPegawai.dart';
 import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
+import 'package:kec_app/report/reportPegawai/ReportDetailTunggalPegawai.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
 import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
@@ -109,6 +111,9 @@ class _PegawaiAsnState extends State<PegawaiAsn> {
                           )),
                           elevation: 5.0,
                           child: ListTile(
+                            leading: IconButton(onPressed: (){
+                              Navigator.of(context).push(CupertinoPageRoute(builder: (context)=> ReportDetailTunggalPegawai(documentSnapshot: documentSnapshot,)));
+                            }, icon: Icon(FontAwesomeIcons.print,color: Colors.amber,)),
                             onTap: () {
                               Navigator.of(context).push(
                                   CupertinoPageRoute(
