@@ -106,7 +106,7 @@ class DetailBuktiKegiatanPJD extends StatelessWidget {
                                     BorderRadius.all(Radius.circular(20.0))),
                             child: ListTile(
                               title: Text(
-                                documentSnapshot['dasar'],
+                                'Surat Dari ${documentSnapshot['alamat_pengirim']} Nomor ${documentSnapshot['no_berkas']}',
                                 style: TextStyle(
                                     fontSize: 16, color: Colors.white),
                               ),

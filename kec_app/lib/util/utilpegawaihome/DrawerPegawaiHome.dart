@@ -22,7 +22,7 @@ class DrawerPegawaiHome extends StatelessWidget {
           child: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection('users')
-                .where("uid", isEqualTo: currentUser.currentUser!.uid)
+                .where("email", isEqualTo: currentUser.currentUser?.email)
                 .snapshots(),
             builder: (context, snapshot) {
               return (snapshot.connectionState == ConnectionState.waiting)

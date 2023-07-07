@@ -149,12 +149,6 @@ class ControllerPDinas {
                                 List<String> namaList = items
                                     .map((item) => item['nama'] as String)
                                     .toList();
-                                // for (var item in items) {
-                                //   dropdownItems.add(DropdownMenuItem(
-                                //     child: Text(item['nama']),
-                                //     value: item['nama'],
-                                //   ));
-                                // }
                                 return DropdownSearchUpdate(
                                   itemes: namaList,
                                   textDropdownPorps: 'Nama',

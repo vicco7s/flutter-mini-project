@@ -27,7 +27,7 @@ class _SuratBatalCamatState extends State<SuratBatalCamat> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Pegawai Surat Batal'),
+        title: Text('Pilih Pegawai'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -52,7 +52,7 @@ class _SuratBatalCamatState extends State<SuratBatalCamat> {
                   ? _usersCollection
                       .orderBy("nama")
                       .startAt([search]).endAt([search + "\uf8ff"]).snapshots()
-                  : _usersCollection.where("rool", isEqualTo: "Pegawai").snapshots(),
+                  : _usersCollection.where("role", isEqualTo: "Pegawai").snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 return (snapshot.connectionState == ConnectionState.waiting)

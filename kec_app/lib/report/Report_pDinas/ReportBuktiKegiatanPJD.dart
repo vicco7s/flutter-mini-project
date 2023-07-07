@@ -133,11 +133,11 @@ Future<Uint8List> generateDocument(
                   children: [
                     pw.Text('I    Dasar'),
                     pw.SizedBox(width: 164),
-                    pw.Text(':'),
+                    pw.Text(':  '),
                     pw.Expanded(
                       child: pw.Container(
                         alignment: pw.Alignment.centerLeft,
-                        child: pw.Text('  ${documentSnapshot['dasar']}'),
+                        child: pw.Text('  \nSurat Dari ${documentSnapshot['alamat_pengirim']} Nomor ${documentSnapshot['no_berkas']}'),
                       ),
                     ),
                   ],

@@ -1,6 +1,7 @@
 class BuktiKegiatan {
   final String uid;
-  final String dasar;
+  final String no_berkas;
+  final String alamat_pengirim;
   final String nama;
   final String nip;
   final String jabatan;
@@ -13,7 +14,8 @@ class BuktiKegiatan {
 
   BuktiKegiatan({
     required this.uid,
-    required this.dasar,
+    required this.no_berkas,
+    required this.alamat_pengirim,
     required this.nama,
     required this.nip,
     required this.jabatan,
@@ -26,16 +28,17 @@ class BuktiKegiatan {
   });
 
   Map<String, dynamic> toJson() => {
-      'uid': uid,
-      'dasar': dasar,
-      'nama': nama,
-      'nip': nip,
-      'jabatan': jabatan,
-      'keperluan': keperluan,
-      'tempat': tempat,
-      'tgl_awal': firstDate,
-      'tgl_akhir': endDate,
-      'hasil': hasil,
-      'imageUrl': imageUrl,
-    };
+        'uid': uid,
+        'no_berkas':no_berkas,
+        'alamat_pengirim': alamat_pengirim,
+        'nama': nama,
+        'nip': nip,
+        'jabatan': jabatan,
+        'keperluan': keperluan,
+        'tempat': tempat,
+        'tgl_awal': firstDate,
+        'tgl_akhir': endDate,
+        'hasil': hasil,
+        'imageUrl': imageUrl,
+      };
 }
