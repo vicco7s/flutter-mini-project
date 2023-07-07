@@ -181,7 +181,7 @@ class _LoginPageState extends State<LoginPage> {
           child: CircularProgressIndicator(),
         ));
         UserCredential userCredential =
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
@@ -217,7 +217,7 @@ class _LoginPageState extends State<LoginPage> {
       .get()
       .then((DocumentSnapshot documentSnapshot) {
     if (documentSnapshot.exists) {
-      var role = documentSnapshot.get('rool');
+      var role = documentSnapshot.get('role');
       if (role is String) {
         if (role == 'Admin') {
           Navigator.pushReplacement(

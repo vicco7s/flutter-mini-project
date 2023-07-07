@@ -4,9 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
 import 'package:kec_app/components/inputborder.dart';
-import 'package:kec_app/page/HomePage.dart';
 import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
-import 'loginpage.dart';
 // import 'model.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -116,10 +114,10 @@ class _CreateUserState extends State<CreateUser> {
                                                   });
                                                 });
                                               },
-                                              validators: (value) => (value ==
-                                                      null
-                                                  ? 'Nama tidak boleh kosong!'
-                                                  : null),
+                                              // validators: (value) => (value ==
+                                              //         null
+                                              //     ? 'Nama tidak boleh kosong!'
+                                              //     : null),
                                             ),
                                           ),
                                         ],
@@ -367,34 +365,45 @@ class _CreateUserState extends State<CreateUser> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.red,
-            content: Text('Pengguna sudah memiliki Akun'),
+            content: Text('Pegawai sudah memiliki Akun'),
           ),
         );
         Navigator.pop(context);
         return;
-      } else {
-        // Jika UID belum ada, tambahkan data pengguna ke koleksi "users"
-        DocumentReference userDocRef = usersRef.doc();
+      } else if(rool == 'Pegawai') {
+        if (_selectedValue.isEmpty) {
+          // Jika role adalah "Pegawai" dan nama kosong, tampilkan pesan kesalahan
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              backgroundColor: Colors.red,
+              content: Text('Nama tidak boleh kosong untuk role Pegawai'),
+            ),
+          );
+          Navigator.pop(context);
+          return;
+        }
+        UserCredential authResult = await _auth.createUserWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+
+        String userUID = authResult.user!.uid;
+
+        DocumentReference userDocRef = usersRef.doc(userUID);
 
         transaction.set(userDocRef, {
           'nama': _selectedValue,
           'email': emailController.text,
           'role': rool,
-          'uid': _uid.text,
+          'uid': userUID,
         });
-
-        // Buat pengguna dengan email dan kata sandi di Firebase Authentication
-      UserCredential authResult = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
 
       // Update UID pengguna di dokumen "users"
       transaction.update(userDocRef, {
         'uid': _uid.text,
       });
 
-        ScaffoldMessenger.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             backgroundColor: Colors.green,
             content: Text('Email Berhasil Dibuat'),
@@ -403,6 +412,28 @@ class _CreateUserState extends State<CreateUser> {
 
         Navigator.pop(context);
         Navigator.pop(context);
+
+      }else{
+           UserCredential authResult = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      var user = _auth.currentUser;
+
+      usersRef.doc(user!.uid).set({
+        'email': emailController.text,
+        'role': rool,
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          backgroundColor: Colors.green,
+          content: Text('Email Berhasil Dibuat'),
+        ),
+      );
+
+      Navigator.pop(context);
+      Navigator.pop(context);
       }
     });
       
