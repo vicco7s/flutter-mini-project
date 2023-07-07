@@ -54,7 +54,7 @@ class _PilihPegawaiSPState extends State<PilihPegawaiSP> {
                   ? _usersCollection
                       .orderBy("nama")
                       .startAt([search]).endAt([search + "\uf8ff"]).snapshots()
-                  : _usersCollection.where("rool", isEqualTo: "Pegawai").snapshots(),
+                  : _usersCollection.where("role", isEqualTo: "Pegawai").snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
                 return (snapshot.connectionState == ConnectionState.waiting)
