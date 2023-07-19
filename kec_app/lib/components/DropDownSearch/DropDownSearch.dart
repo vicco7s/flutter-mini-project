@@ -40,7 +40,7 @@ class DropdownButtonSearch extends StatelessWidget {
           ),
         ),
         showSearchBox: true,
-        disabledItemFn: (String s) => s.startsWith('I'),
+        // disabledItemFn: (String s) => s.startsWith('I'),
       ),
       items: itemes,
       dropdownDecoratorProps: DropDownDecoratorProps(

@@ -26,6 +26,8 @@ class _EditPegawaiState extends State<EditPegawai> {
 
   final CollectionReference pegawai =
       FirebaseFirestore.instance.collection('pegawai');
+  final CollectionReference users =
+      FirebaseFirestore.instance.collection('users');
 
   bool _isloading = false;
 
@@ -373,80 +375,98 @@ class _EditPegawaiState extends State<EditPegawai> {
                   Expanded(
                     child: ElevatedButton(
                       child: _isloading
-                      ? ColorfulLinearProgressIndicator() // Display loading indicator when loading
-                      : Text('Update'),
-                      onPressed: _isloading ? null : () async {
-                        setState(() {
-                          _isloading = true; // Set loading state to true
-                        });
-                        // condition update image
-                        if (_selectedImage != null) {
-                          await updateImage(
-                              _selectedImage!, widget.documentSnapshot.id);
-                        }
-                        final int no = int.parse(_id.text);
-                        final String nama = _nama.text;
-                        final String nip = _nip.text;
-                        final DateTime tglmulai =
-                            DateTime.parse(_tmulaitugas.text);
-                        final DateTime tgllahir = DateTime.parse(_tlahir.text);
-                        final String telp = _telp.text;
-                        final String alamat = _alamat.text;
-                        final String temlahir = _tempatlahir.text;
-                        final int jumlahanak = int.parse(_jumlahAnak.text);
-                        final String pangkat = _pakat;
-                        final String golongan = _gol;
-                        final String jabatan = _jabatan.text;
-                        final String status = _stas;
-                        final String jk = _jk;
-                        final String peak = _peak;
-                        final String stper = _stper;
-                        if (no != null) {
-                          await pegawai.doc(widget.documentSnapshot.id).update({
-                            "id": no,
-                            "nama": nama,
-                            "nip": nip,
-                            "pangkat": pangkat,
-                            "golongan": golongan,
-                            "jabatan": jabatan,
-                            "status": status,
-                            "jenis_kelamin": jk,
-                            "tgl_lahir": tgllahir,
-                            "tempat_lahir": temlahir,
-                            "tgl_mulaitugas": tglmulai,
-                            "alamat": alamat,
-                            "pendidikan_terakhir": peak,
-                            "status_pernikahan": stper,
-                            "jumlah_anak": jumlahanak,
-                            "telpon": telp,
-                          });
-                          _id.text = '';
-                          _nama.text = '';
-                          _nip.text = '';
-                          _pakat = '';
-                          _gol = '';
-                          _jabatan.text = '';
-                          _stas = '';
-                          _alamat.text = '';
-                          _jk = '';
-                          _jumlahAnak.text = '';
-                          _peak = '';
-                          _stper = '';
-                          _telp.text = '';
-                          _tempatlahir.text = '';
-                          _tlahir.text = '';
-                          _tmulaitugas.text = '';
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  backgroundColor: Colors.green,
-                                  content: Text('Berhasil Memperbarui Data')));
-                        }
-                        setState(() {
-                          _isloading = false; // Set loading state to true
-                        });
-                      },
+                          ? ColorfulLinearProgressIndicator() // Display loading indicator when loading
+                          : Text('Update'),
+                      onPressed: _isloading
+                          ? null
+                          : () async {
+                              setState(() {
+                                _isloading = true; // Set loading state to true
+                              });
+                              // condition update image
+                              if (_selectedImage != null) {
+                                await updateImage(_selectedImage!,
+                                    widget.documentSnapshot.id);
+                              }
+                              final int no = int.parse(_id.text);
+                              final String nama = _nama.text;
+                              final String nip = _nip.text;
+                              final DateTime tglmulai =
+                                  DateTime.parse(_tmulaitugas.text);
+                              final DateTime tgllahir =
+                                  DateTime.parse(_tlahir.text);
+                              final String telp = _telp.text;
+                              final String alamat = _alamat.text;
+                              final String temlahir = _tempatlahir.text;
+                              final int jumlahanak =
+                                  int.parse(_jumlahAnak.text);
+                              final String pangkat = _pakat;
+                              final String golongan = _gol;
+                              final String jabatan = _jabatan.text;
+                              final String status = _stas;
+                              final String jk = _jk;
+                              final String peak = _peak;
+                              final String stper = _stper;
+                              if (no != null) {
+                                WriteBatch batch = FirebaseFirestore.instance.batch();
+                                 // Update the users collection
+                                  QuerySnapshot usersSnapshot = await users
+                                    .where("uid", isEqualTo: widget.documentSnapshot.id)
+                                    .get();
+                                  for (var doc in usersSnapshot.docs) {
+                                    batch.update(doc.reference, {"nama": nama});
+                                  }
+                                // Update the pegawai collection
+                                batch.update(
+                                  pegawai.doc(widget.documentSnapshot.id),
+                                  {
+                                    "id": no,
+                                    "nama": nama,
+                                    "nip": nip,
+                                    "pangkat": pangkat,
+                                    "golongan": golongan,
+                                    "jabatan": jabatan,
+                                    "status": status,
+                                    "jenis_kelamin": jk,
+                                    "tgl_lahir": tgllahir,
+                                    "tempat_lahir": temlahir,
+                                    "tgl_mulaitugas": tglmulai,
+                                    "alamat": alamat,
+                                    "pendidikan_terakhir": peak,
+                                    "status_pernikahan": stper,
+                                    "jumlah_anak": jumlahanak,
+                                    "telpon": telp,
+                                  },
+                                );
+                                _id.text = '';
+                                _nama.text = '';
+                                _nip.text = '';
+                                _pakat = '';
+                                _gol = '';
+                                _jabatan.text = '';
+                                _stas = '';
+                                _alamat.text = '';
+                                _jk = '';
+                                _jumlahAnak.text = '';
+                                _peak = '';
+                                _stper = '';
+                                _telp.text = '';
+                                _tempatlahir.text = '';
+                                _tlahir.text = '';
+                                _tmulaitugas.text = '';
+                                Navigator.pop(context);
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        backgroundColor: Colors.green,
+                                        content:
+                                            Text('Berhasil Memperbarui Data')));
+                                await batch.commit();
+                              }
+                              setState(() {
+                                _isloading = false; // Set loading state to true
+                              });
+                            },
                     ),
                   ),
                   const SizedBox(

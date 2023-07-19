@@ -62,7 +62,7 @@ class _GajiHonorPegawaiState extends State<GajiHonorPegawai> {
               } else {
                 return StreamBuilder<QuerySnapshot>(
                   stream: (search != "" && search != null)
-                      ? _gajihonor.orderBy("nama").startAt([search]).endAt(
+                      ? _gajihonor.orderBy("nama").orderBy("id", descending: true).startAt([search]).endAt(
                           [search + "\uf8ff"]).snapshots()
                       : _gajihonor.orderBy('id', descending: true).snapshots(),
                   builder: (BuildContext context,

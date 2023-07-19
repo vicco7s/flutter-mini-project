@@ -70,7 +70,7 @@ class _PegawaiAsnState extends State<PegawaiAsn> {
                 stream: (search != "" && search != null)
                     ? _pegawai.orderBy("nama").startAt([search]).endAt(
                         [search + "\uf8ff"]).snapshots()
-                    : _pegawai.orderBy('id', descending: false).snapshots(),
+                    : _pegawai.orderBy('id', descending: true).snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {
                   return (snapshot.connectionState == ConnectionState.waiting)
