@@ -70,6 +70,7 @@ class _SuratKeluarPageState extends State<SuratKeluarPage> {
                             snapshot.data!.docs[index];
                         return Dismissible(
                             key: Key(documentSnapshot.id),
+                            direction: DismissDirection.endToStart,
                             background: Container(
                               alignment: Alignment.centerRight,
                               color: Colors.red,
