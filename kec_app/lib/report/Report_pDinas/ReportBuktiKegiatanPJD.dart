@@ -132,7 +132,7 @@ Future<Uint8List> generateDocument(
                   children: [
                     pw.Text('I    Dasar'),
                     pw.SizedBox(width: 164),
-                    pw.Text(':  '),
+                    pw.Text(':   '),
                     pw.Expanded(
                       child: pw.Container(
                         alignment: pw.Alignment.centerLeft,
@@ -201,11 +201,11 @@ Future<Uint8List> generateDocument(
                   children: [
                     pw.Text('III  KEPERLUAN'),
                     pw.SizedBox(width: 125),
-                    pw.Text(':'),
+                    pw.Text(':   '),
                     pw.Expanded(
                       child: pw.Container(
                         alignment: pw.Alignment.centerLeft,
-                        child: pw.Text('   ${documentSnapshot['keperluan']}'),
+                        child: pw.Text(' \n${documentSnapshot['keperluan']}'),
                       ),
                     ),
                   ],
@@ -216,10 +216,11 @@ Future<Uint8List> generateDocument(
                   children: [
                     pw.Text('IV TEMPAT / INSTANSI TUJUAN'),
                     pw.SizedBox(width: 35),
+                    pw.Text(':   '),
                     pw.Expanded(
                       child: pw.Container(
                         alignment: pw.Alignment.centerLeft,
-                        child: pw.Text(':   ${documentSnapshot['tempat']}'),
+                        child: pw.Text(' \n${documentSnapshot['tempat']}'),
                       ),
                     ),
                   ],

@@ -14,6 +14,8 @@ import 'package:intl/intl.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 import '../../util/shortpath.dart';
 
@@ -27,7 +29,7 @@ class FormPegawaiAsn extends StatefulWidget {
 class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final _formkey = GlobalKey<FormState>();
   final _nama = TextEditingController();
-  final  _nip = MaskedTextController(mask: '00000000 000000 0 000');
+  final _nip = MaskedTextController(mask: '00000000 000000 0 000');
   final _tmulaitugas = TextEditingController();
   final _tlahir = TextEditingController();
   final _telp = MaskedTextController(mask: '0000 0000 0000');
@@ -36,6 +38,9 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final _jumlahAnak = TextEditingController();
 
   File? _selectedImage;
+
+  File? _selectedImageKtp;
+  bool _isloading = false;
 
   final dataPegawai = ControllerPegawai();
 
@@ -59,7 +64,33 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
       String downloadURL = await firebase_storage.FirebaseStorage.instance
           .ref(filePath)
           .getDownloadURL();
-     
+
+      return downloadURL;
+    } catch (e) {
+      throw Exception('Failed to upload image to Firestore: $e');
+    }
+  }
+
+  Future<String> uploadKtpToFirestore(File? imageFile) async {
+    if (imageFile == null) {
+      throw Exception('No image file provided.');
+    }
+
+    try {
+      // Generate a unique filename for the image using a timestamp and file extension
+      String fileName = DateTime.now().millisecondsSinceEpoch.toString();
+      String extension = imageFile.path.split('.').last;
+      String filePath = 'images/$fileName.$extension';
+
+      // Upload the image file to Firebase Storage
+      await firebase_storage.FirebaseStorage.instance
+          .ref(filePath)
+          .putFile(imageFile);
+
+      // Get the download URL for the uploaded image
+      String downloadURL = await firebase_storage.FirebaseStorage.instance
+          .ref(filePath)
+          .getDownloadURL();
 
       return downloadURL;
     } catch (e) {
@@ -435,7 +466,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       labelTexts: 'telp',
                       keyboardtypes: TextInputType.phone,
                       validators: (value) {
-                       if (value!.isEmpty) {
+                        if (value!.isEmpty) {
                           return "telp Tidak Boleh Kosong !";
                         }
                         return null;
@@ -481,72 +512,143 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                     ),
                   ),
 
-                  ElevatedButton(
-                    onPressed: ()  async {
-                      if (_formkey.currentState!.validate()) {
-                        //validation image if image no pick on gallery
-                        if (_selectedImage == null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              backgroundColor: Colors.red,
-                              content: Text('Please select an image'),
+                  Padding(
+                    padding:
+                        EdgeInsets.only(top: 10.0, right: 10.0, left: 10.0),
+                    child: Row(
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.lightGreen)),
+                          onPressed: () async {
+                            // Open the image picker to select an image from the gallery
+                            final pickedImage = (await ImagePicker()
+                                .pickImage(source: ImageSource.gallery));
+                            if (pickedImage != null) {
+                              setState(() {
+                                _selectedImageKtp = File(pickedImage.path);
+                              });
+                            }
+                          },
+                          child: Text('Tambah Ktp'),
+                        ),
+                        SizedBox(width: 10.0),
+                        Expanded(
+                          child: Text(
+                            _selectedImageKtp != null
+                                ? 'foto berhasil dipilih'
+                                : 'tidak ada foto yang dipilih',
+                            style: TextStyle(
+                              color: _selectedImageKtp != null
+                                  ? Colors.green
+                                  : Colors.red,
                             ),
-                          );
-                          return;
-                        }
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
-                        final inputAsn = InputAsn(
-                          nama: _nama.text,
-                          nip: _nip.text,
-                          pangkat: pakat,
-                          golongan: gol,
-                          jabatan: jabat,
-                          status: stas,
-                          jenis_kelamin: jk,
-                          alamat: _alamat.text,
-                          jumlah_anak: int.parse(_jumlahAnak.text),
-                          pendidikan_terakhir: pendidikan_ak,
-                          status_perkawinan: sperkawinan,
-                          tanggal_mulai_tugas:
-                              DateTime.parse(_tmulaitugas.text),
-                          tempat_lahir: _tempatlahir.text,
-                          tgl_lahir: DateTime.parse(_tlahir.text),
-                          telp: _telp.text,
-                          imageUrl: '', uid: '',
-                        );
-                        String? imageUrl;
-                        // Upload the image to Firestore and get the image URL
-                        try {
-                           imageUrl = await uploadImageToFirestore(_selectedImage);
-                         } catch (e) {
-                           ScaffoldMessenger.of(context).showSnackBar(
-                             SnackBar(
-                               backgroundColor: Colors.red,
-                               content: Text('Failed to upload image: $e'),
-                             ),
-                           );
-                           return;
-                         }
-                        inputAsn.imageUrl = imageUrl;
-                        dataPegawai.createInputPegawai(inputAsn);
-                        Navigator.pop(context);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.green,
-                                content: Text('Berhasil Menambahkan Data')));
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                                backgroundColor: Colors.red,
-                                content: Text('Gagal Menambahkan Data')));
-                      }
-                    },
-                    child: Text('Submit'),
+                  Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: ElevatedButton(
+                            onPressed: _isloading 
+                              ? null 
+                              : () async {
+                                setState(() {
+                                _isloading = true; // Set loading state to true
+                              });
+                              if (_formkey.currentState!.validate()) {
+                                //validation image if image no pick on gallery
+                                if (_selectedImage == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text('Please select an image'),
+                                    ),
+                                  );
+                                  return;
+                                } else if (_selectedImageKtp == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text('Please select an image'),
+                                    ),
+                                  );
+                                  return;
+                                }
+                        
+                                final inputAsn = InputAsn(
+                                  nama: _nama.text,
+                                  nip: _nip.text,
+                                  pangkat: pakat,
+                                  golongan: gol,
+                                  jabatan: jabat,
+                                  status: stas,
+                                  jenis_kelamin: jk,
+                                  alamat: _alamat.text,
+                                  jumlah_anak: int.parse(_jumlahAnak.text),
+                                  pendidikan_terakhir: pendidikan_ak,
+                                  status_perkawinan: sperkawinan,
+                                  tanggal_mulai_tugas:
+                                      DateTime.parse(_tmulaitugas.text),
+                                  tempat_lahir: _tempatlahir.text,
+                                  tgl_lahir: DateTime.parse(_tlahir.text),
+                                  telp: _telp.text,
+                                  imageUrl: '',
+                                  uid: '',
+                                  imageKtp: '',
+                                );
+                                String? imageUrl;
+                                String? imageKtp;
+                                // Upload the image to Firestore and get the image URL
+                                try {
+                                  imageUrl =
+                                      await uploadImageToFirestore(_selectedImage);
+                                  imageKtp =
+                                      await uploadKtpToFirestore(_selectedImageKtp);
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text('Failed to upload image: $e'),
+                                    ),
+                                  );
+                                  return;
+                                }
+                                inputAsn.imageUrl = imageUrl;
+                                inputAsn.imageKtp = imageKtp;
+                                dataPegawai.createInputPegawai(inputAsn);
+                                Navigator.pop(context);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        backgroundColor: Colors.green,
+                                        content: Text('Berhasil Menambahkan Data')));
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        backgroundColor: Colors.red,
+                                        content: Text('Gagal Menambahkan Data')));
+                              }
+                              setState(() {
+                                _isloading = true; // Set loading state to true
+                              });
+                            },
+                            child: _isloading
+                            ? ColorfulLinearProgressIndicator()
+                            : Text('Submit'),
+                          ),
+                        ),
+                      ],
+                    ),
                   )
                 ],
               )),
         ));
   }
 }
-
-

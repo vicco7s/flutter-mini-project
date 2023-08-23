@@ -52,7 +52,7 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Report Pegawai'),
+        title: Text('Laporan Pegawai'),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -165,15 +165,16 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
           pw.Divider(thickness: 3),
           pw.SizedBox(height: 20),
           pw.Center(
-            child: pw.Text("Laporan Pegawai",
+            child: pw.Text("Laporan Tabel Pegawai",
                 style:
                     pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
           ),
           pw.SizedBox(height: 20),
           pw.Row(children: [
-            pw.Text(selectedFilter,
+            pw.Text("Kategori Pegawai : " +selectedFilter,
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
           ]),
+          pw.SizedBox(height: 5),
           pw.Table(
               columnWidths: {
                 0: pw.FlexColumnWidth(0.3),

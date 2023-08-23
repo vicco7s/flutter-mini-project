@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -13,14 +12,14 @@ import 'package:intl/intl.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-class ReportHonorPegawai extends StatefulWidget {
-  const ReportHonorPegawai({Key? key}) : super(key: key);
+class LaporanPjdPerbulan extends StatefulWidget {
+  const LaporanPjdPerbulan({super.key});
 
   @override
-  State<ReportHonorPegawai> createState() => _ReportHonorPegawaiState();
+  State<LaporanPjdPerbulan> createState() => _LaporanPjdPerbulanState();
 }
 
-class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
+class _LaporanPjdPerbulanState extends State<LaporanPjdPerbulan> {
   late DateTime startDate;
   late DateTime endDate;
 
@@ -29,25 +28,25 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
     super.initState();
     // Set default start and end date to current month
     final now = DateTime.now();
-    startDate = DateTime(now.year, now.month, 2);
+    startDate = DateTime(now.year, now.month - 2, 1);
     endDate = DateTime(now.year, now.month + 1, 0);
   }
 
   Future<Map<String, dynamic>> getData() async {
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection('gajihonorpegawai')
+        .collection('pdinas')
         .orderBy("id", descending: false) // Ganti dengan nama koleksi Anda
         .get();
 
     List<DocumentSnapshot> documents = querySnapshot.docs;
 
     // Buat map untuk menyimpan data pegawai
-    Map<String, dynamic> honorData = {};
+    Map<String, dynamic> pdinasData = {};
 
     // Iterasi setiap dokumen
     for (var document in documents) {
-      Map<String, dynamic> honor = document.data() as Map<String, dynamic>;
-      Timestamp timestamp = honor['tanggal'];
+      Map<String, dynamic> pdinas = document.data() as Map<String, dynamic>;
+      Timestamp timestamp = pdinas['tanggal_mulai'];
 
       // Konversi Timestamp menjadi DateTime
       DateTime date = timestamp.toDate();
@@ -55,11 +54,11 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
       // Periksa apakah tanggal berada dalam rentang yang dipilih
       if (date.isAfter(startDate.subtract(Duration(days: 1))) &&
           date.isBefore(endDate.add(Duration(days: 1)))) {
-        honorData[document.id] = honor;
+        pdinasData[document.id] = pdinas;
       }
     }
 
-    return honorData;
+    return pdinasData;
   }
 
   Future<void> _selectDateRange(BuildContext context) async {
@@ -102,7 +101,7 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Laporan Pegawai'),
+        title: Text('Laporan PJD'),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -113,43 +112,41 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
         ],
       ),
       body: FutureBuilder<Map<String, dynamic>>(
-        future: getData(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            final honorData = snapshot.data!;
-            if (honorData.isEmpty) {
+          future: getData(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(
-                child: Text('No data available'),
+                child: ColorfulCirclePrgressIndicator(),
+              );
+            } else if (snapshot.hasData) {
+              final pdinasData = snapshot.data!;
+              if (pdinasData.isEmpty) {
+                return Center(
+                  child: Text("no data available"),
+                );
+              }
+              return PdfPreview(
+                canChangeOrientation: false,
+                canDebug: false,
+                build: (
+                  PdfPageFormat format,
+                ) =>
+                    generateDocument(
+                  format,
+                  pdinasData,
+                ),
+              );
+            } else {
+              return Center(
+                child: Text('No Data Available'),
               );
             }
-
-            return PdfPreview(
-              canChangeOrientation: false,
-              canDebug: false,
-              build: (
-                PdfPageFormat format,
-              ) =>
-                  generateDocument(
-                format,
-                honorData,
-              ),
-            );
-          } else {
-            return Center(
-              child: Text('No data available'),
-            );
-          }
-        },
-      ),
+          }),
     );
   }
 
   Future<Uint8List> generateDocument(
-      PdfPageFormat format, Map<String, dynamic> honorData) async {
+      PdfPageFormat format, Map<String, dynamic> pdinasData) async {
     final doc = pw.Document(pageMode: PdfPageMode.outlines);
     final font1 = await PdfGoogleFonts.openSansRegular();
     final font2 = await PdfGoogleFonts.openSansBold();
@@ -190,16 +187,19 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
           pw.Divider(thickness: 3),
           pw.SizedBox(height: 20),
           pw.Center(
-            child: pw.Text("Laporan Pembayaran Honor / PTT",
+            child: pw.Text("Laporan Perjalanan Dinas Perbulan",
                 style:
                     pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
           ),
           pw.SizedBox(height: 20),
           pw.Row(
             children: [
-              pw.Text("Periode Bulan : ",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
               pw.Text(
-                DateFormat('MMMM yyyy','id').format(startDate),
+                "Periode Bulan : ",
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+              ),
+              pw.Text(
+                DateFormat('MMMM yyyy', 'id').format(startDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
@@ -207,7 +207,7 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
-                DateFormat('MMMM yyyy','id').format(endDate),
+                DateFormat('MMMM yyyy', 'id').format(endDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
             ],
@@ -242,31 +242,19 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Tanggal",
+                    child: pw.Text("Tanggal Berangkat",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Pembayaran",
+                    child: pw.Text("Tanggal Kembali",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
                   ),
                   pw.Expanded(
-                    child: pw.Text("Bonus",
-                        textAlign: pw.TextAlign.center,
-                        style: pw.TextStyle(
-                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text("Total",
-                        textAlign: pw.TextAlign.center,
-                        style: pw.TextStyle(
-                            fontSize: 10, fontWeight: pw.FontWeight.bold)),
-                  ),
-                  pw.Expanded(
-                    child: pw.Text("Keterangan",
+                    child: pw.Text("Tujuan",
                         textAlign: pw.TextAlign.center,
                         style: pw.TextStyle(
                             fontSize: 10, fontWeight: pw.FontWeight.bold)),
@@ -281,12 +269,15 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
               7: pw.FlexColumnWidth(1.4),
             },
             border: pw.TableBorder.all(),
-            children: honorData.entries.toList().asMap().entries.map((entry) {
+            children: pdinasData.entries.toList().asMap().entries.map((entry) {
               final index = entry.key + 1;
               final data = entry.value;
-              final Timestamp timerStamp = data.value['tanggal'];
-              var date = timerStamp.toDate();
-              var tanggal = DateFormat.yMMMMd().format(date);
+              final Timestamp timerStamps = data.value['tanggal_mulai'];
+              final Timestamp timerStamp = data.value['tanggal_berakhir'];
+              final date1 = timerStamps.toDate();
+              var date2 = timerStamp.toDate();
+              var tanggal_mulai = DateFormat.yMMMMd('id').format(date1);
+              var tanggal_berakhir = DateFormat.yMMMMd('id').format(date1);
 
               return pw.TableRow(children: [
                 pw.Expanded(
@@ -295,8 +286,8 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
                       textAlign: pw.TextAlign.center),
                 ),
                 pw.Expanded(
-                  child: pw.Text(" "+
-                    data.value['nama'],
+                  child: pw.Text(
+                    " " + data.value['nama'],
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
@@ -309,39 +300,24 @@ class _ReportHonorPegawaiState extends State<ReportHonorPegawai> {
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                    tanggal.toString(),
+                    tanggal_mulai.toString(),
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 8),
                   ),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                      NumberFormat.currency(locale: 'id', symbol: 'Rp')
-                          .format(data.value['gaji_honor'])
-                          .replaceAll(RegExp(r'(\.|,)00\b'), ''),
-                      style: pw.TextStyle(fontSize: 8),
-                      textAlign: pw.TextAlign.center),
+                    tanggal_berakhir.toString(),
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(fontSize: 8),
+                  ),
                 ),
                 pw.Expanded(
                   child: pw.Text(
-                      NumberFormat.currency(locale: 'id', symbol: 'Rp')
-                          .format(data.value['bonus'])
-                          .replaceAll(RegExp(r'(\.|,)00\b'), ''),
-                      style: pw.TextStyle(fontSize: 8),
-                      textAlign: pw.TextAlign.center),
-                ),
-                pw.Expanded(
-                  child: pw.Text(
-                      NumberFormat.currency(locale: 'id', symbol: 'Rp')
-                          .format(data.value['total'])
-                          .replaceAll(RegExp(r'(\.|,)00\b'), ''),
-                      style: pw.TextStyle(fontSize: 8),
-                      textAlign: pw.TextAlign.center),
-                ),
-                pw.Expanded(
-                  child: pw.Text(data.value['keterangan'],
-                      style: pw.TextStyle(fontSize: 8),
-                      textAlign: pw.TextAlign.center),
+                    data.value['tujuan'],
+                    textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(fontSize: 8),
+                  ),
                 ),
               ]);
             }).toList(),

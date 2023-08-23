@@ -7,6 +7,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
+import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
 import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:kec_app/util/OptionDropDown.dart';
@@ -24,6 +25,8 @@ class EditPegawai extends StatefulWidget {
 class _EditPegawaiState extends State<EditPegawai> {
   File? _selectedImage;
 
+  File? _selectedImageKtp;
+
   final CollectionReference pegawai =
       FirebaseFirestore.instance.collection('pegawai');
   final CollectionReference users =
@@ -31,38 +34,7 @@ class _EditPegawaiState extends State<EditPegawai> {
 
   bool _isloading = false;
 
-  Future<void> updateImage(File imageFile, String documentID) async {
-    try {
-      FirebaseStorage storage = FirebaseStorage.instance;
-      Reference storageReference = storage
-          .ref()
-          .child('images/' + DateTime.now().millisecondsSinceEpoch.toString());
-
-      // Mengambil URL gambar sebelumnya dari Firestore
-      DocumentSnapshot docSnapshot = await pegawai.doc(documentID).get();
-      String previousImageUrl = docSnapshot.get('imageUrl');
-
-      // Menghapus foto sebelumnya dari Firebase Storage jika ada
-      if (previousImageUrl != null) {
-        Reference previousImageRef = storage.refFromURL(previousImageUrl);
-        await previousImageRef.delete();
-      }
-
-      if (imageFile != null) {
-        UploadTask uploadTask = storageReference.putFile(imageFile);
-        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-
-        String imageUrl = await taskSnapshot.ref.getDownloadURL();
-
-        pegawai.doc(documentID).update({
-          'imageUrl': imageUrl,
-        });
-      }
-    } catch (error) {
-      print(error);
-      // Handle error
-    }
-  }
+  final uploadImages = ControllerPegawai();
 
   final _formkey = GlobalKey<FormState>();
   final TextEditingController _id = TextEditingController();
@@ -105,6 +77,16 @@ class _EditPegawaiState extends State<EditPegawai> {
     if (pickedImage != null) {
       setState(() {
         _selectedImage = File(pickedImage.path);
+      });
+    }
+  }
+
+  Future<void> pickImageKtp() async {
+    final pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage != null) {
+      setState(() {
+        _selectedImageKtp = File(pickedImage.path);
       });
     }
   }
@@ -347,7 +329,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                             MaterialStateProperty.all(Colors.lightGreen),
                       ),
                       onPressed: pickImage,
-                      child: Text('Select Image'),
+                      child: Text('Ubah Foto Profil'),
                     ),
                     SizedBox(width: 10.0),
                     Expanded(
@@ -358,6 +340,36 @@ class _EditPegawaiState extends State<EditPegawai> {
                                 widget.documentSnapshot['imageUrl']),
                         style: TextStyle(
                           color: _selectedImage != null
+                              ? Colors.green
+                              : Colors.grey,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              Padding(
+                padding: EdgeInsets.only(top: 10.0, right: 0.0, left: 0.0),
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.lightGreen),
+                      ),
+                      onPressed: pickImageKtp,
+                      child: Text('Ubah Foto Ktp'),
+                    ),
+                    SizedBox(width: 10.0),
+                    Expanded(
+                      child: Text(
+                        _selectedImageKtp != null
+                            ? 'foto sudah dipilih'
+                            : shortenImageUpdate(
+                                widget.documentSnapshot['imageKtp']),
+                        style: TextStyle(
+                          color: _selectedImageKtp != null
                               ? Colors.green
                               : Colors.grey,
                         ),
@@ -385,7 +397,10 @@ class _EditPegawaiState extends State<EditPegawai> {
                               });
                               // condition update image
                               if (_selectedImage != null) {
-                                await updateImage(_selectedImage!,
+                                await uploadImages.updateImage(_selectedImage!,
+                                    widget.documentSnapshot.id);
+                              } else if (_selectedImageKtp != null) {
+                                await uploadImages.updateImageKtp(_selectedImageKtp!,
                                     widget.documentSnapshot.id);
                               }
                               final int no = int.parse(_id.text);
@@ -408,14 +423,16 @@ class _EditPegawaiState extends State<EditPegawai> {
                               final String peak = _peak;
                               final String stper = _stper;
                               if (no != null) {
-                                WriteBatch batch = FirebaseFirestore.instance.batch();
-                                 // Update the users collection
-                                  QuerySnapshot usersSnapshot = await users
-                                    .where("uid", isEqualTo: widget.documentSnapshot.id)
+                                WriteBatch batch =
+                                    FirebaseFirestore.instance.batch();
+                                // Update the users collection
+                                QuerySnapshot usersSnapshot = await users
+                                    .where("uid",
+                                        isEqualTo: widget.documentSnapshot.id)
                                     .get();
-                                  for (var doc in usersSnapshot.docs) {
-                                    batch.update(doc.reference, {"nama": nama});
-                                  }
+                                for (var doc in usersSnapshot.docs) {
+                                  batch.update(doc.reference, {"nama": nama});
+                                }
                                 // Update the pegawai collection
                                 batch.update(
                                   pegawai.doc(widget.documentSnapshot.id),

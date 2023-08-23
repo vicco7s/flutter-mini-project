@@ -23,7 +23,7 @@ class ReportSuratPengganti extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Surat Pengganti PJD'),
+        title: Text('Surat Pengganti'),
         centerTitle: true,
         elevation: 0,
       ),
@@ -126,8 +126,8 @@ class ReportSuratPengganti extends StatelessWidget {
        
         pw.Paragraph(
           text: '     Sebagai pengganti, kami telah menunjuk  ** ' + 
-          '${suratpenggantiDoc['nama_pengganti']}' +' **. untuk melaksanakan perjalanan dinas tersebut.'+
-          ' ${suratpenggantiDoc['nama_pengganti']} telah kami berikan briefing terkait tugas dan tanggung jawab yang harus diemban selama perjalanan dinas',
+          '${suratpenggantiDoc['nama_pengganti']}'+' **. untuk melaksanakan perjalanan dinas tersebut.'+
+          ' ${suratpenggantiDoc['nama_pengganti']} telah kami berikan briefing terkait tugas dan tanggung jawab yang harus diemban selama perjalanan dinas.',
 
         ),
 

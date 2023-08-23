@@ -82,7 +82,7 @@ class _ReportOutperbulanState extends State<ReportOutperbulan> {
             onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back_ios_new),
           ),
-          title: Text('Report SK perbulan'),
+          title: Text('Laporan Surat Keluar'),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -168,40 +168,52 @@ class _ReportOutperbulanState extends State<ReportOutperbulan> {
           child: pw.Text("Laporan Surat Keluar Perbulan",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
         ),
         pw.SizedBox(height: 20),
-        pw.Text(selectedYear,style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+        pw.Text("Periode Tahun : "+selectedYear,style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
         pw.Table(
             columnWidths: {
-              0: pw.FlexColumnWidth(2.2),
-              1: pw.FlexColumnWidth(1),
+              0: pw.FlexColumnWidth(0.2),
+              1: pw.FlexColumnWidth(2),
               2: pw.FlexColumnWidth(1.4),
             },
             border: pw.TableBorder.all(),
             children: [
               pw.TableRow(children: [
-                pw.Text("Bulan",
+                pw.Expanded(child: pw.Text("No",textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold
+                    ))),
+                pw.Expanded(child: pw.Text("Bulan",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(
                       fontSize: 10,
                       fontWeight: pw.FontWeight.bold
-                    )),
-                pw.Text("Jumlah Surat Keluar",
+                    )),),
+                pw.Expanded(child: pw.Text("Jumlah",
                     textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),
+                    style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),),
               ]),
             ]),
         pw.Table(
           columnWidths: {
-            0: pw.FlexColumnWidth(2.2),
-            1: pw.FlexColumnWidth(1),
+            0: pw.FlexColumnWidth(0.2),
+            1: pw.FlexColumnWidth(2),
             2: pw.FlexColumnWidth(1.4),
           },
           border: pw.TableBorder.all(),
-          children: data.entries
-              .map((e) => pw.TableRow(children: [
-                    pw.Text(e.key),
-                    pw.Text(e.value.toString(),textAlign: pw.TextAlign.center,),
-                  ]))
-              .toList(),
+          children: data.entries.toList().asMap().entries.map((e) {
+            int index = e.key + 1;
+            MapEntry<String, int> dataEntry = e.value;
+            int suratkeluar = dataEntry.value;
+            return pw.TableRow(children: [
+              pw.Expanded(child: pw.Text(index.toString(),textAlign: pw.TextAlign.center,)),
+              pw.Expanded(child: pw.Text(dataEntry.key),),
+              pw.Expanded(child: pw.Text(
+                suratkeluar.toString(),
+                textAlign: pw.TextAlign.center,
+              ),)
+            ]);
+          }).toList(),
         ),
         pw.SizedBox(height: 60),
         pw.Row(

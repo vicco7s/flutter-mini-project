@@ -126,7 +126,7 @@ class _LaporanSuratPenggantiState extends State<LaporanSuratPengganti> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Report Surat Pengganti'),
+        title: Text('Laporan Surat Pengganti'),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -221,8 +221,9 @@ class _LaporanSuratPenggantiState extends State<LaporanSuratPengganti> {
           pw.SizedBox(height: 20),
           pw.Row(
             children: [
+              pw.Text("Periode Bulan : ",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
               pw.Text(
-                DateFormat('MMMM yyyy').format(startDate),
+                DateFormat('MMMM yyyy','id').format(startDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
@@ -230,11 +231,12 @@ class _LaporanSuratPenggantiState extends State<LaporanSuratPengganti> {
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
-                DateFormat('MMMM yyyy').format(endDate),
+                DateFormat('MMMM yyyy','id').format(endDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
             ],
           ),
+          pw.SizedBox(height: 3),
           pw.Table(
               columnWidths: {
                 0: pw.FlexColumnWidth(0.2),

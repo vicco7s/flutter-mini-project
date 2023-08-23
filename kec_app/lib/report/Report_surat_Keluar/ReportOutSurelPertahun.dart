@@ -44,7 +44,7 @@ class ReportOutSurelPertahun extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back_ios_new),
           ),
-          title: Text('Report SK perTahun'),
+          title: Text('Laporan Surat Keluar'),
           centerTitle: true,
           elevation: 0,
         ),
@@ -116,37 +116,49 @@ class ReportOutSurelPertahun extends StatelessWidget {
         pw.SizedBox(height: 20),
         pw.Table(
             columnWidths: {
-              0: pw.FlexColumnWidth(1.5),
+              0: pw.FlexColumnWidth(0.2),
               1: pw.FlexColumnWidth(1),
               2: pw.FlexColumnWidth(1.4),
             },
             border: pw.TableBorder.all(),
             children: [
               pw.TableRow(children: [
-                pw.Text("Tahun",
+                pw.Expanded(child: pw.Text("No",textAlign: pw.TextAlign.center,
+                    style: pw.TextStyle(
+                      fontSize: 10,
+                      fontWeight: pw.FontWeight.bold
+                    ))),
+                pw.Expanded(child: pw.Text("Tahun",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(
                       fontSize: 10,
                       fontWeight: pw.FontWeight.bold
-                    )),
-                pw.Text("Jumlah Surat Keluar",
+                    )),),
+                pw.Expanded(child: pw.Text("Jumlah",
                     textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),
+                    style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),),
               ]),
             ]),
         pw.Table(
           columnWidths: {
-            0: pw.FlexColumnWidth(1.5),
+            0: pw.FlexColumnWidth(0.2),
             1: pw.FlexColumnWidth(1),
             2: pw.FlexColumnWidth(1.4),
           },
           border: pw.TableBorder.all(),
-          children: data.entries
-              .map((e) => pw.TableRow(children: [
-                    pw.Text(e.key),
-                    pw.Text(e.value.toString(),textAlign: pw.TextAlign.center,),
-                  ]))
-              .toList(),
+          children: data.entries.toList().asMap().entries.map((e) {
+            int index = e.key + 1;
+            MapEntry<String, int> dataEntry = e.value;
+            int suratkeluar = dataEntry.value;
+            return pw.TableRow(children: [
+              pw.Expanded(child: pw.Text(index.toString(),textAlign: pw.TextAlign.center,)),
+              pw.Expanded(child: pw.Text(dataEntry.key,textAlign: pw.TextAlign.center),),
+              pw.Expanded(child: pw.Text(
+                suratkeluar.toString(),
+                textAlign: pw.TextAlign.center,
+              ),)
+            ]);
+          }).toList(),
         ),
         pw.SizedBox(height: 60),
         pw.Row(

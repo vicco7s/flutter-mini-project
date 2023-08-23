@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,20 +8,17 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 import 'package:intl/intl.dart';
 
-
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
 Future<Map<String, int>> getData() async {
-  final QuerySnapshot snapshot = await firestore
-      .collection('pegawai')
-      .get();
+  final QuerySnapshot snapshot = await firestore.collection('pegawai').get();
 
   Map<String, int> data = {};
 
   for (var document in snapshot.docs) {
     final pangkat = document['pangkat'];
     if (data.containsKey(pangkat)) {
-      data[pangkat] =  (data[pangkat]! + 1);
+      data[pangkat] = (data[pangkat]! + 1);
     } else {
       data[pangkat] = 1;
     }
@@ -43,10 +39,10 @@ class ReportJumlahPegawai extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Report Jumlah Pegawai'),
+        title: Text('Laporan Pegawai'),
         centerTitle: true,
       ),
-        body: FutureBuilder(
+      body: FutureBuilder(
         future: getData(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -60,109 +56,120 @@ class ReportJumlahPegawai extends StatelessWidget {
               PdfPageFormat format,
             ) =>
                 generateDocument(
-                  format,
-                  data,
-              ),
-            );
-          },
-        ),
+              format,
+              data,
+            ),
+          );
+        },
+      ),
     );
   }
-   Future<Uint8List> generateDocument(
+
+  Future<Uint8List> generateDocument(
       PdfPageFormat format, Map<String, int> data) async {
     final doc = pw.Document(pageMode: PdfPageMode.outlines);
     final font1 = await PdfGoogleFonts.openSansRegular();
     final font2 = await PdfGoogleFonts.openSansBold();
 
-    final memoryImage = pw.MemoryImage((await rootBundle.load('image/kabtapin.png')).buffer.asUint8List(),);
+    final memoryImage = pw.MemoryImage(
+      (await rootBundle.load('image/kabtapin.png')).buffer.asUint8List(),
+    );
 
     doc.addPage(pw.MultiPage(
       build: (context) => [
-        pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.center,
-          children: [
-            pw.Container(
-              width: 65,
-              height: 65,
-              child: pw.Image(memoryImage)
-            ),
-            pw.SizedBox(width: 30),
-            pw.Column(
-              children: [
-                  pw.Padding(
-                  padding: pw.EdgeInsets.all(0),
-                  child: pw.Text("PEMERINTAHAN KABUPATEN TAPIN",style: pw.TextStyle(fontSize: 14,fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(
-                  padding: pw.EdgeInsets.only(top: 5),
-                  child: pw.Text("KECAMATAN SALAM BABARIS",style: pw.TextStyle(fontSize: 14,fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(
-                  padding: pw.EdgeInsets.only(top: 8),
-                  child: pw.Text("Jalan Transmigrasi No.02 Desa Salam Babaris Kode Pos: 71182",style: pw.TextStyle(fontSize: 12,))
-                )
-              ]
-            )
-          ]
-        ),
+        pw.Row(mainAxisAlignment: pw.MainAxisAlignment.center, children: [
+          pw.Container(width: 65, height: 65, child: pw.Image(memoryImage)),
+          pw.SizedBox(width: 30),
+          pw.Column(children: [
+            pw.Padding(
+                padding: pw.EdgeInsets.all(0),
+                child: pw.Text("PEMERINTAHAN KABUPATEN TAPIN",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))),
+            pw.Padding(
+                padding: pw.EdgeInsets.only(top: 5),
+                child: pw.Text("KECAMATAN SALAM BABARIS",
+                    style: pw.TextStyle(
+                        fontSize: 14, fontWeight: pw.FontWeight.bold))),
+            pw.Padding(
+                padding: pw.EdgeInsets.only(top: 8),
+                child: pw.Text(
+                    "Jalan Transmigrasi No.02 Desa Salam Babaris Kode Pos: 71182",
+                    style: pw.TextStyle(
+                      fontSize: 12,
+                    )))
+          ])
+        ]),
         pw.Divider(thickness: 3),
         pw.SizedBox(height: 20),
         pw.Center(
-          child: pw.Text("Laporan Jumlah Pegawai",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+          child: pw.Text("Laporan Jumlah Pegawai Berdasarkan Pangkat",
+              style:
+                  pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
         ),
         pw.SizedBox(height: 20),
         pw.Table(
             columnWidths: {
-              0: pw.FlexColumnWidth(2.2),
+              0: pw.FlexColumnWidth(0.2),
               1: pw.FlexColumnWidth(1),
               2: pw.FlexColumnWidth(1.4),
             },
             border: pw.TableBorder.all(),
             children: [
               pw.TableRow(children: [
-                pw.Text("Pangkat",
-                    textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(
-                      fontSize: 10,
-                      fontWeight: pw.FontWeight.bold
-                    )),
-                pw.Text("Jumlah Pegawai",
-                    textAlign: pw.TextAlign.center,
-                    style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),
+                pw.Expanded(child: pw.Text("No",textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(
+                          fontSize: 10, fontWeight: pw.FontWeight.bold))),
+                pw.Expanded(
+                  child: pw.Text("Pangkat",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(
+                          fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                ),
+                pw.Expanded(
+                  child: pw.Text("Jumlah Pegawai",
+                      textAlign: pw.TextAlign.center,
+                      style: pw.TextStyle(
+                          fontSize: 10, fontWeight: pw.FontWeight.bold)),
+                )
               ]),
             ]),
         pw.Table(
           columnWidths: {
-            0: pw.FlexColumnWidth(2.2),
+            0: pw.FlexColumnWidth(0.2),
             1: pw.FlexColumnWidth(1),
             2: pw.FlexColumnWidth(1.4),
           },
           border: pw.TableBorder.all(),
-          children: data.entries
-              .map((e) => pw.TableRow(children: [
-                    pw.Text(e.key),
-                    pw.Text(e.value.toString(),textAlign: pw.TextAlign.center,),
-                  ]))
-              .toList(),
+          children: data.entries.toList().asMap().entries.map((e) {
+            int index = e.key + 1;
+            MapEntry<String, int> dataEntry = e.value;
+            int pegawai = dataEntry.value;
+            return pw.TableRow(children: [
+              pw.Expanded(child: pw.Text(index.toString(),textAlign: pw.TextAlign.center,)),
+              pw.Expanded(child: pw.Text(dataEntry.key),),
+              pw.Expanded(child: pw.Text(
+                pegawai.toString(),
+                textAlign: pw.TextAlign.center,
+              ),)
+            ]);
+          }).toList(),
         ),
         pw.SizedBox(height: 60),
-        pw.Row(
-          mainAxisAlignment: pw.MainAxisAlignment.end,
-          children: [
-            pw.Column(
-              children: [
-                pw.Text("Camat"),
-                pw.SizedBox(height: 30),
-                pw.Padding(padding: const pw.EdgeInsets.only(),
-                child: pw.Text("Akhmad, S.Sos., M.AP",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
-                ),
-                pw.Padding(padding: const pw.EdgeInsets.only(),
-                child: pw.Text("198106202010011029",style: pw.TextStyle(fontWeight: pw.FontWeight.bold))
-                ),
-              ]
-            )
-          ]
-        )
+        pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
+          pw.Column(children: [
+            pw.Text("Camat"),
+            pw.SizedBox(height: 30),
+            pw.Padding(
+                padding: const pw.EdgeInsets.only(),
+                child: pw.Text("Akhmad, S.Sos., M.AP",
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+            pw.Padding(
+                padding: const pw.EdgeInsets.only(),
+                child: pw.Text("198106202010011029",
+                    style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+          ])
+        ])
       ],
     ));
 

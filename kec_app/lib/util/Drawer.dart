@@ -9,6 +9,7 @@ import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/pilihpegawai.dart';
 import 'package:kec_app/page/perjalananDinas/pdinaspage.dart';
 import 'package:kec_app/report/Report_pDinas/ReportBuktiKegiatanPJD.dart';
 import 'package:kec_app/report/Report_pDinas/ReportPDinasPerNama.dart';
+import 'package:kec_app/report/Report_pDinas/ReportPriodePjd.dart';
 import 'package:kec_app/report/Report_surat_Keluar/ReportOutSurelPertahun.dart';
 import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPerbulan.dart';
 import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPertahun.dart';
@@ -136,16 +137,6 @@ class Drawes extends StatelessWidget {
                       CupertinoPageRoute(builder: ((context) => DinasPageList())));
                 },
               ),
-              // ListTile(
-              //   title: const Text(
-              //     'Bukti Kegiatan Perjalanan Dinas',
-              //     style: TextStyle(fontSize: 13),
-              //   ),
-              //   onTap: () {
-              //     Navigator.of(context).push(
-              //         CupertinoPageRoute(builder: ((context) => BuktiKegiatanPJD())));
-              //   },
-              // ),
             ],
           ),
           
@@ -278,6 +269,17 @@ class Drawes extends StatelessWidget {
                     onTap: () {
                       Navigator.of(context).push(CupertinoPageRoute(
                           builder: ((context) => const ReportpDinasPertahun())));
+                    },
+                  ),
+
+                  ListTile(
+                    title: const Text(
+                      'Laporan Perjalanan Dinas Bulanan',
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    onTap: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          builder: ((context) => const LaporanPjdPerbulan())));
                     },
                   ),
                   

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
@@ -70,6 +71,72 @@ class ControllerPegawai {
       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: Colors.red,
           content: Text('Data tidak berhasil di hapus')));
+    }
+  }
+
+  Future<void> updateImage(File imageFile, String documentID) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference storageReference = storage
+          .ref()
+          .child('images/' + DateTime.now().millisecondsSinceEpoch.toString());
+
+      // Mengambil URL gambar sebelumnya dari Firestore
+      DocumentSnapshot docSnapshot = await pegawai.doc(documentID).get();
+      String previousImageUrl = docSnapshot.get('imageUrl');
+
+      // Menghapus foto sebelumnya dari Firebase Storage jika ada
+      if (previousImageUrl != null) {
+        Reference previousImageRef = storage.refFromURL(previousImageUrl);
+        await previousImageRef.delete();
+      }
+
+      if (imageFile != null) {
+        UploadTask uploadTask = storageReference.putFile(imageFile);
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+        String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+        pegawai.doc(documentID).update({
+          'imageUrl': imageUrl,
+        });
+      }
+    } catch (error) {
+      print(error);
+      // Handle error
+    }
+  }
+
+  Future<void> updateImageKtp(File imageFile, String documentID) async {
+    try {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference storageReference = storage
+          .ref()
+          .child('images/' + DateTime.now().millisecondsSinceEpoch.toString());
+
+      // Mengambil URL gambar sebelumnya dari Firestore
+      DocumentSnapshot docSnapshot = await pegawai.doc(documentID).get();
+      String previousImageUrl = docSnapshot.get('imageKtp');
+
+      // Menghapus foto sebelumnya dari Firebase Storage jika ada
+      if (previousImageUrl != null) {
+        Reference previousImageRef = storage.refFromURL(previousImageUrl);
+        await previousImageRef.delete();
+      }
+
+      if (imageFile != null) {
+        UploadTask uploadTask = storageReference.putFile(imageFile);
+        TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+        String imageKtp = await taskSnapshot.ref.getDownloadURL();
+
+        pegawai.doc(documentID).update({
+          'imageKtp': imageKtp,
+        });
+      }
+    } catch (error) {
+      print(error);
+      // Handle error
     }
   }
 

@@ -54,8 +54,9 @@ Future<Uint8List> generateDocument(
   );
   
   final Uint8List? imageData = await _fetchImageData(documentSnapshot['imageUrl']);
-
+  final Uint8List? imageKtp = await _fetchImageData(documentSnapshot['imageKtp']);
   final imageUrl = pw.MemoryImage(imageData!);
+  final imageFotoKtp = pw.MemoryImage(imageKtp!);
 
   await initializeDateFormatting('id', null);
   final Timestamp timerStamp = documentSnapshot['tgl_lahir'];
@@ -135,7 +136,7 @@ Future<Uint8List> generateDocument(
                         child: pw.Text(':  ${documentSnapshot['nama']}'),
                       ),
                     ),
-                    pw.SizedBox(width: 50,),
+                    pw.SizedBox(width: 30,),
                     pw.Container(
                       child: pw.Image(imageUrl,height: 70,width: 50,fit: pw.BoxFit.fill),
                     ),
@@ -294,11 +295,14 @@ Future<Uint8List> generateDocument(
                     ),
                   ],
                 ),
-                
                   
               ]),
             ]),
-                pw.SizedBox(height: 10),
+            pw.SizedBox(height: 20,),
+            pw.Center(
+                  child: pw.Image(imageFotoKtp,height: 250,width: 300,fit: pw.BoxFit.fill),
+                ),
+            pw.SizedBox(height: 10),
             pw.SizedBox(height: 60),
             pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
               pw.Column(children: [

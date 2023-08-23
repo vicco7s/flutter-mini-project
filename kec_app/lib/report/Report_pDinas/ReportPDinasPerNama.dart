@@ -95,7 +95,7 @@ class _ReportpDinasPertahunState extends State<ReportpDinasPertahun> {
             onPressed: () => Navigator.pop(context),
             icon: Icon(Icons.arrow_back_ios_new),
           ),
-          title: Text('Report PDinas Pertahun'),
+          title: Text('Laporan PJD'),
           centerTitle: true,
           elevation: 0,
           actions: [
@@ -188,12 +188,13 @@ class _ReportpDinasPertahunState extends State<ReportpDinasPertahun> {
         pw.Divider(thickness: 3),
         pw.SizedBox(height: 20),
         pw.Center(
-          child: pw.Text("Laporan Yang Sering Melakukan Perjalanan Dinas",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
+          child: pw.Text("Laporan Pegawai Yang Melaksanakan Tugas Perjalanan Dinas",style: pw.TextStyle(fontSize: 12,fontWeight: pw.FontWeight.bold)),
         ),
         pw.SizedBox(height: 20),
         pw.Row(children: [
-          pw.Text(selectedYear,style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+          pw.Text("Periode Tahun : "+selectedYear,style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
         ]),
+        pw.SizedBox(height: 2),
         pw.Table(
             columnWidths: {
               0: pw.FlexColumnWidth(0.2),
@@ -220,7 +221,7 @@ class _ReportpDinasPertahunState extends State<ReportpDinasPertahun> {
                     )),
                 ),
                 pw.Expanded(
-                  child:  pw.Text("Jumlah Tugas Perjalanan Dinas",
+                  child:  pw.Text("Jumlah Perjalanan Dinas",
                     textAlign: pw.TextAlign.center,
                     style: pw.TextStyle(fontSize: 10,fontWeight: pw.FontWeight.bold)),
                 ),

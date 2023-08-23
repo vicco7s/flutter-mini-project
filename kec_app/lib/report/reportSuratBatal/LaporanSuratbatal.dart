@@ -127,7 +127,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
           onPressed: () => Navigator.pop(context),
           icon: Icon(Icons.arrow_back_ios_new),
         ),
-        title: Text('Report Surat batal'),
+        title: Text('Laporan Surat batal'),
         centerTitle: true,
         elevation: 0,
         actions: [
@@ -222,8 +222,9 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
           pw.SizedBox(height: 20),
           pw.Row(
             children: [
+              pw.Text("Periode Bulan : ",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
               pw.Text(
-                DateFormat('MMMM yyyy').format(startDate),
+                DateFormat('MMMM yyyy','id').format(startDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
@@ -231,11 +232,12 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
-                DateFormat('MMMM yyyy').format(endDate),
+                DateFormat('MMMM yyyy','id').format(endDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
             ],
           ),
+          pw.SizedBox(height: 3),
           pw.Table(
               columnWidths: {
                 0: pw.FlexColumnWidth(0.2),
@@ -304,7 +306,7 @@ class _LaporanSuratBatalState extends State<LaporanSuratBatal> {
                   ),
                 ),
                 pw.Expanded(
-                  child: pw.Text(
+                  child: pw.Text(" "+
                     data.value['nama'],
                     style: pw.TextStyle(fontSize: 8),
                   ),
