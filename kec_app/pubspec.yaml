@@ -44,6 +44,7 @@ dependencies:
   printing: ^5.9.3
   email_validator: ^2.1.17
   basic_utils: ^5.4.2
+  file_picker: ^5.3.4
   image_picker: ^0.8.7+5
   firebase_storage: ^11.2.2
   provider: ^6.0.5
@@ -58,6 +59,10 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   cached_network_image: ^3.2.3
   flutter_carousel_slider: ^1.1.0
+  flutter_cached_pdfview: ^0.4.2
+  fluttertoast: ^8.2.2
+  permission_handler: ^10.4.3
+  loading_overlay: ^0.3.0
 
 dev_dependencies:
   flutter_test:

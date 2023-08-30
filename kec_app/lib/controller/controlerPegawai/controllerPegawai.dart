@@ -39,16 +39,18 @@ class ControllerPegawai {
       if (snapshot.exists &&
           data != null &&
           data is Map<String, dynamic> &&
-          data['imageUrl'] != null) {
+          data['imageUrl'] != null &&
+          data['imageKtp'] != null) {
+            
         final imageUrl = data['imageUrl'];
+        final imageKtp = data['imageKtp'];
+
+        // Hapus imageUrl dan imageKtp dari Firebase Storage
+        await FirebaseStorage.instance.refFromURL(imageUrl).delete();
+        await FirebaseStorage.instance.refFromURL(imageKtp).delete();
 
         // Hapus dokumen dari Firestore
         await pegawai.doc(id).delete();
-
-        // Hapus imageUrl dari Firebase Storage
-        final storageRef =
-            storage.FirebaseStorage.instance.refFromURL(imageUrl);
-        await storageRef.delete();
 
         // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
