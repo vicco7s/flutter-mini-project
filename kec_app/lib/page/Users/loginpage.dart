@@ -1,8 +1,12 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kec_app/page/Dashboard%20Camat/HomeCamatPage.dart';
 import 'package:kec_app/page/HomePage.dart';
 import 'package:kec_app/page/Dashboard%20user/HomeUserPage.dart';
@@ -27,6 +31,43 @@ class _LoginPageState extends State<LoginPage> {
 
   //auth Firestore
   final _auth = FirebaseAuth.instance;
+
+  late StreamSubscription connectivitySubscription;
+  ConnectivityResult previousresult = ConnectivityResult.none;
+
+  @override
+  void initState() {
+    super.initState();
+    connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((ConnectivityResult nowresult) {
+      if (nowresult == ConnectivityResult.none) {
+        Fluttertoast.showToast(
+          msg: "Jaringan Tidak Tersedia",
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 16.0,
+        );
+      }
+      // when mobile and wifi network connected
+      else if (previousresult == ConnectivityResult.none) {
+        // print('Connected');
+        if (nowresult == ConnectivityResult.mobile) {
+          print('Mobile Network Connected');
+          
+        } else if (nowresult == ConnectivityResult.wifi) {
+          print('WiFi Network Connected');
+        }
+      }
+      previousresult = nowresult;
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    connectivitySubscription.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,15 +94,14 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: false,
                   validator: (value) {
                     if (value!.length == 0) {
-                        return "Email Tidak Boleh Kosong";
-                      }
-                      if (!RegExp(
-                              "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
-                          .hasMatch(value)) {
-                        return ("Mohon Masukan Email Dengan Benar !");
-                      } else {
-                        return null;
-                      }
+                      return "Email Tidak Boleh Kosong";
+                    }
+                    if (!RegExp("^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+.[a-z]")
+                        .hasMatch(value)) {
+                      return ("Mohon Masukan Email Dengan Benar !");
+                    } else {
+                      return null;
+                    }
                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -89,14 +129,14 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: _isObscure3,
                   validator: (value) {
                     RegExp regex = new RegExp(r'^.{6,}$');
-                      if (value!.isEmpty) {
-                        return "Password Tidak Boleh Kosong";
-                      }
-                      if (!regex.hasMatch(value)) {
-                        return ("Masukan Password dengan benar min 6 karakter");
-                      } else {
-                        return null;
-                      }
+                    if (value!.isEmpty) {
+                      return "Password Tidak Boleh Kosong";
+                    }
+                    if (!regex.hasMatch(value)) {
+                      return ("Masukan Password dengan benar min 6 karakter");
+                    } else {
+                      return null;
+                    }
                   },
                   onSaved: (value) {
                     _pass.text = value!;
@@ -108,11 +148,11 @@ class _LoginPageState extends State<LoginPage> {
                         setState(() {
                           _isObscure3 = !_isObscure3;
                         });
-                      }, 
+                      },
                       icon: Icon(_isObscure3
-                            ? Icons.visibility
-                            : Icons.visibility_off),
-                      ),
+                          ? Icons.visibility
+                          : Icons.visibility_off),
+                    ),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(25.0),
                     ),
@@ -130,10 +170,19 @@ class _LoginPageState extends State<LoginPage> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                                visible = true;
-                              });
-                              signIn(
-                                  _email.text, _pass.text);
+                      visible = true;
+                    });
+                    if (previousresult != ConnectivityResult.none) {
+                      signIn(_email.text, _pass.text);
+                    } else {
+                      print('Jaringan Tidak Tersedia');
+                      Fluttertoast.showToast(
+                        msg: "Tidak Terhubung Ke Jaringan",
+                        backgroundColor: Colors.black,
+                        textColor: Colors.white,
+                        fontSize: 16.0,
+                      );
+                    }
                   },
                   style: ButtonStyle(
                       shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -156,8 +205,18 @@ class _LoginPageState extends State<LoginPage> {
                     Text('Jika Anda Lupa Password Klik tombol dibawah ini '),
                     TextButton(
                         onPressed: () {
-                          Navigator.of(context).push(CupertinoPageRoute(
-                              builder: ((context) => ResetPassword())));
+                          if (previousresult != ConnectivityResult.none) {
+                            Navigator.of(context).push(CupertinoPageRoute(
+                                builder: ((context) => ResetPassword())));
+                          } else {
+                            print('Jaringan Tidak Tersedia');
+                            Fluttertoast.showToast(
+                              msg: "Tidak Terhubung Ke Jaringan",
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                              fontSize: 16.0,
+                            );
+                          }
                         },
                         child: Text('Reset Password'))
                   ],
@@ -170,95 +229,90 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-    void signIn(String email, String password) async {
-      
+  void signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
       try {
         showDialog(
-        context: context,
-        barrierDismissible: false,
-        builder: (context) => Center(
-          child: CircularProgressIndicator(),
-        ));
+            context: context,
+            barrierDismissible: false,
+            builder: (context) => Center(
+                  child: CircularProgressIndicator(),
+                ));
         UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
-        Navigator.pop(context); 
+        Navigator.pop(context);
         route();
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
-            const snackBar = SnackBar(
-              backgroundColor: Colors.red,
-              content: Text('Email Pengguna Tidak Di temukan ! '),
-            );
+          const snackBar = SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Email Pengguna Tidak Di temukan ! '),
+          );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          Navigator.pop(context); 
+          Navigator.pop(context);
         } else if (e.code == 'wrong-password') {
           const snackBar = SnackBar(
-              backgroundColor: Colors.red,
-              content: Text('Password Salah masukan dengan benar !'),
-            );
+            backgroundColor: Colors.red,
+            content: Text('Password Salah masukan dengan benar !'),
+          );
           ScaffoldMessenger.of(context).showSnackBar(snackBar);
-          Navigator.pop(context); 
-        }else{
-          Navigator.pop(context); 
+          Navigator.pop(context);
+        } else {
+          Navigator.pop(context);
         }
-      } 
+      }
     }
   }
 
   void route() {
-  User? user = FirebaseAuth.instance.currentUser;
-  FirebaseFirestore.instance
-      .collection('users')
-      .doc(user!.uid)
-      .get()
-      .then((DocumentSnapshot documentSnapshot) {
-    if (documentSnapshot.exists) {
-      var role = documentSnapshot.get('role');
-      if (role is String) {
-        if (role == 'Admin') {
-          Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => const HomePage(),
-            ),
-          );
-        } else if (role == 'Camat') {
-          Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => const HomeCamatPage(),
-            ),
-          );
+    User? user = FirebaseAuth.instance.currentUser;
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(user!.uid)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        var role = documentSnapshot.get('role');
+        if (role is String) {
+          if (role == 'Admin') {
+            Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const HomePage(),
+              ),
+            );
+          } else if (role == 'Camat') {
+            Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const HomeCamatPage(),
+              ),
+            );
+          } else {
+            Navigator.pushReplacement(
+              context,
+              CupertinoPageRoute(
+                builder: (context) => const HomeUserPage(),
+              ),
+            );
+          }
         } else {
-          Navigator.pushReplacement(
-            context,
-            CupertinoPageRoute(
-              builder: (context) => const HomeUserPage(),
-            ),
+          const snackBar = SnackBar(
+            backgroundColor: Colors.red,
+            content: Text('Invalid role value!'),
           );
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
         }
       } else {
         const snackBar = SnackBar(
           backgroundColor: Colors.red,
-          content: Text('Invalid role value!'),
+          content: Text('Akun Tidak ada Di temukan!'),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-    } else {
-      const snackBar = SnackBar(
-        backgroundColor: Colors.red,
-        content: Text('Akun Tidak ada Di temukan!'),
-      );
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
-  });
+    });
+  }
 }
-  
-
-}
-
-

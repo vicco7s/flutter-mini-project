@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -11,11 +16,13 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:kec_app/controller/controllerSurat/controllerSuratKeluar.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 import 'package:flutter_cached_pdfview/flutter_cached_pdfview.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:path/path.dart' as path;
+import 'package:url_launcher/url_launcher.dart';
 
 class DetailSuratKeluar extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
@@ -27,9 +34,6 @@ class DetailSuratKeluar extends StatefulWidget {
 
 class _DetailSuratKeluarState extends State<DetailSuratKeluar> {
   late DocumentSnapshot documentSnapshot;
-
-  final FirebaseStorage _storage = FirebaseStorage.instance;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
@@ -58,7 +62,35 @@ class _DetailSuratKeluarState extends State<DetailSuratKeluar> {
         actions: [
           IconButton(
               onPressed: () async {
-                await dataSuratKeluar.update(documentSnapshot, context);
+                // await dataSuratKeluar.update(documentSnapshot, context);
+                // Validasi jika field pada databases pada firestore tidak di temukan
+                var data = documentSnapshot.data();
+                if (data != null) {
+                  if (data is Map<String, dynamic> &&
+                      data.containsKey('berkas')) {
+                    String pdfUrl = data['berkas'] ?? '';
+                    if (pdfUrl.isEmpty) {
+                      print("Berkas tidak ditemukan.");
+                    } else {
+                      await showModalBottomSheet(
+                        isScrollControlled: true,
+                        context: context,
+                        builder: (BuildContext context) {
+                          return EditSuratKeluar(
+                            documentSnapshot: documentSnapshot,
+                          );
+                        },
+                      );
+                    }
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        backgroundColor: Colors.red,
+                        content: Text(
+                            'Field (berkas) tidak ada tidak dapat mengedit data solusi : Tambah Data Baru')));
+                  }
+                } else {
+                  print("Data tidak tersedia.");
+                }
               },
               icon: Icon(FontAwesomeIcons.solidPenToSquare))
         ],
@@ -262,9 +294,14 @@ class _DetailSuratKeluarState extends State<DetailSuratKeluar> {
   }
 }
 
+
+
 class PDFBottomSheet extends StatefulWidget {
   final String pdfUrl;
-  const PDFBottomSheet({super.key, required this.pdfUrl});
+  const PDFBottomSheet({
+    super.key,
+    required this.pdfUrl,
+  });
 
   @override
   State<PDFBottomSheet> createState() => _PDFBottomSheetState();
@@ -272,55 +309,35 @@ class PDFBottomSheet extends StatefulWidget {
 
 class _PDFBottomSheetState extends State<PDFBottomSheet> {
   bool isDownloading = false;
-  Future<void> downloadPDF(String pdfUrl) async {
-    setState(() {
-      isDownloading = true;
-    });
-    // Memeriksa izin penyimpanan
-    var status = await Permission.storage.status;
-    if (!status.isGranted) {
-      // Meminta izin penyimpanan jika belum disetujui
-      status = await Permission.storage.request();
-      if (!status.isGranted) {
-        // Izin ditolak, tampilkan pesan toast
-        Fluttertoast.showToast(
-          msg: "Izin penyimpanan ditolak",
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.red,
-          textColor: Colors.white,
-        );
-        return;
-      }
+
+  Future<void> openDownloadedPDF(String pdfPath) async {
+    final url = pdfPath;
+    try {
+      await launchUrl(
+        Uri.parse(url),
+        mode: LaunchMode.externalApplication,
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: Colors.red, content: Text('Gagal Membuka Berkas ')));
+      throw "Tidak dapat membuka file $e";
     }
-
-    await Future.delayed(Duration(seconds: 2));
-    // Mulai mengunduh PDF
-    final pdfFileName = "nama_file.pdf"; // Ganti dengan nama file yang sesuai
-    final pdfFile = await DefaultCacheManager().getSingleFile(pdfUrl);
-    final pdfPath = pdfFile.path;
-
-    // Tampilkan pesan toast sukses
-    Fluttertoast.showToast(
-      msg: "PDF berhasil diunduh ke $pdfPath",
-      toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.green,
-      textColor: Colors.white,
-    );
-    setState(() {
-      isDownloading = false;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      color: Colors.white,
       height: MediaQuery.of(context).size.height * 0.8,
       child: LoadingOverlay(
         isLoading: isDownloading,
         color: Colors.grey,
-        progressIndicator: ColorfulCirclePrgressIndicator(),
+        progressIndicator: SpinKitWaveSpinner(
+          size: 70,
+          color: Colors.blueAccent,
+          waveColor: Colors.blueAccent,
+          trackColor: Colors.grey,
+        ),
         child: Column(
           children: [
             AppBar(
@@ -328,7 +345,8 @@ class _PDFBottomSheetState extends State<PDFBottomSheet> {
               centerTitle: true,
               leading: IconButton(
                   onPressed: () async {
-                    await downloadPDF(widget.pdfUrl);
+                    // await downloadPDF(widget.pdfUrl);
+                    await openDownloadedPDF(widget.pdfUrl);
                   },
                   icon: Icon(Icons.download_outlined)),
               actions: [
@@ -352,6 +370,5 @@ class _PDFBottomSheetState extends State<PDFBottomSheet> {
         ),
       ),
     );
-    ;
   }
 }

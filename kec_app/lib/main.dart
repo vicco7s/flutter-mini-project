@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_const
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,8 @@ import 'package:kec_app/api/firebase_api.dart';
 import 'package:kec_app/screen/SplashScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
+
+import 'api/alertNetwork.dart';
 
 
 // add firestore ke widget flutter
@@ -18,11 +21,12 @@ Future<void> main() async {
   await FirebaseApi().initNotifications();
   // Inisialisasi Firebase Storage
   await firebase_storage.FirebaseStorage.instance;
+
   runApp(SalbaApp());
 }
 
 class SalbaApp extends StatelessWidget {
-  const SalbaApp({Key? key}) : super(key: key);
+  const SalbaApp({Key? key,}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

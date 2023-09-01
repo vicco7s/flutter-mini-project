@@ -1,5 +1,7 @@
 // ignore: file_names
+
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:kec_app/page/Users/loginpage.dart';
 
@@ -11,11 +13,13 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+
   @override
   void initState() {
     startTimer();
     super.initState();
   }
+
 
   @override
   Widget build(BuildContext context) {
