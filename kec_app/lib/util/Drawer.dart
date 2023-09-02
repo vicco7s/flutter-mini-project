@@ -29,264 +29,273 @@ class Drawes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage('image/salba.jpg'), fit: BoxFit.fill),
+          Expanded(
+            child: ListView(
+              children: [
+            DrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('image/salba.jpg'), fit: BoxFit.cover),
+              ),
+              child: Text(
+                'Menu Utama',
+                // style: TextStyle(color: Colors.white),
+              ),
             ),
-            child: Text(
-              'Menu Utama',
-              // style: TextStyle(color: Colors.white),
+            ListTile(
+              leading: Icon(Icons.home_outlined),
+              title: Text('DashBoard'),
+              onTap: () {},
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.groups_outlined),
+              title: Text("Kepegawaian"),
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'Data Pegawai',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: ((context) => PegawaiAsn())));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Gaji Honor Pegawai',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: ((context) => const GajiHonorPegawai())));
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.mail_outline),
+              title: Text("Surat Agenda"),
+              children: <Widget>[
+                ListTile(
+                  title: Text(
+                    'Data Surat Masuk',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => SuratMasukPage())));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Data Surat Keluar',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => SuratKeluarPage())));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Data Surat Penganti',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => PilihPegawaiSP())));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Data Surat Batal',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => SuratBatalAdminPJD())));
+                  },
+                ),
+              ],
+            ),
+            ExpansionTile(
+              leading: Icon(Icons.emoji_transportation_outlined),
+              title: Text("Perjalanan Dinas"),
+              children: <Widget>[
+                ListTile(
+                  title: const Text(
+                    'Data Perjalanan Dinas',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: ((context) => DinasPageList())));
+                  },
+                ),
+              ],
+            ),
+            
+            //Laporan
+            ExpansionTile(
+              leading: Icon(Icons.ad_units_outlined),
+              title: Text("Laporan"),
+              children: <Widget>[
+                ExpansionTile(
+                  title: Text("Laporan Pegawai"),
+                  children: <Widget>[
+                    ListTile(
+                          title: const Text(
+                          'Laporan Pegawai Asn Dan Bukan Asn',
+                          style: TextStyle(fontSize: 13),                  
+                      ),
+                      onTap:(){
+                        Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const ReportPegawaiAsn()));
+                      }
+                    ),
+                    ListTile(
+                  title: const Text(
+                    'Laporan Pegawai Berdasarkan Pangkat',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                     Navigator.of(context).push(
+                CupertinoPageRoute(builder: (context) => ReportJumlahPegawai()));
+                  },
+                ),
+          
+                ListTile(
+                  title: const Text(
+                    'Laporan Detail Pegawai',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                     Navigator.of(context).push(
+                CupertinoPageRoute(builder: (context) => ReportDetailPegawai()));
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'Laporan Gaji Honor',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                     Navigator.of(context).push(
+                CupertinoPageRoute(builder: (context) => ReportHonorPegawai()));
+                  },
+                ),
+                  ],
+                ),
+                
+                ExpansionTile(
+                  title: Text("Laporan Surat"),
+                  children: [
+                    ListTile(
+                  title: const Text(
+                    'Laporan Surat Masuk Perbulan',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => const ReportJmSuratMasuk())));
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'Laporan Surat Masuk Pertahun',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => const ReportSuratMasukPerTahun())));
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'Laporan Surat Keluar Perbulan',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => const ReportOutperbulan())));
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'Laporan Surat Keluar PerTahun',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => const ReportOutSurelPertahun())));
+                  },
+                ),
+                ListTile(
+                  title: const Text(
+                    'Laporan Surat Batal',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => const LaporanSuratBatal())));
+                  },
+                ),
+          
+                ListTile(
+                  title: const Text(
+                    'Laporan Surat Pengganti',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                        builder: ((context) => const LaporanSuratPengganti())));
+                  },
+                ),
+              ],
+            ),
+                
+                ExpansionTile(
+                  title: Text("Laporan Perjalanan Dinas"),
+                  children: [
+                    ListTile(
+                      title: const Text(
+                        'Laporan Perjalanan Dinas PerTahun',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: ((context) => const ReportpDinasPertahun())));
+                      },
+                    ),
+          
+                    ListTile(
+                      title: const Text(
+                        'Laporan Perjalanan Dinas Bulanan',
+                        style: TextStyle(fontSize: 13),
+                      ),
+                      onTap: () {
+                        Navigator.of(context).push(CupertinoPageRoute(
+                            builder: ((context) => const LaporanPjdPerbulan())));
+                      },
+                    ),
+                    
+                  ],
+                ),
+              ],
+            ),
+              ],
             ),
           ),
           ListTile(
-            leading: Icon(Icons.home_outlined),
-            title: Text('DashBoard'),
-            onTap: () {},
-          ),
-          ExpansionTile(
-            leading: Icon(Icons.groups_outlined),
-            title: Text("Kepegawaian"),
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  'Data Pegawai',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                      CupertinoPageRoute(builder: ((context) => PegawaiAsn())));
-                },
-              ),
-              ListTile(
-                title: Text(
-                  'Gaji Honor Pegawai',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                      CupertinoPageRoute(builder: ((context) => const GajiHonorPegawai())));
-                },
-              ),
-            ],
-          ),
-          ExpansionTile(
-            leading: Icon(Icons.mail_outline),
-            title: Text("Surat Agenda"),
-            children: <Widget>[
-              ListTile(
-                title: Text(
-                  'Data Surat Masuk',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => SuratMasukPage())));
-                },
-              ),
-              ListTile(
-                title: Text(
-                  'Data Surat Keluar',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => SuratKeluarPage())));
-                },
-              ),
-              ListTile(
-                title: Text(
-                  'Data Surat Penganti',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => PilihPegawaiSP())));
-                },
-              ),
-              ListTile(
-                title: Text(
-                  'Data Surat Batal',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => SuratBatalAdminPJD())));
-                },
-              ),
-            ],
-          ),
-          ExpansionTile(
-            leading: Icon(Icons.emoji_transportation_outlined),
-            title: Text("Perjalanan Dinas"),
-            children: <Widget>[
-              ListTile(
-                title: const Text(
-                  'Data Perjalanan Dinas',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(
-                      CupertinoPageRoute(builder: ((context) => DinasPageList())));
-                },
-              ),
-            ],
-          ),
-          
-          //Laporan
-          ExpansionTile(
-            leading: Icon(Icons.ad_units_outlined),
-            title: Text("Laporan"),
-            children: <Widget>[
-              ExpansionTile(
-                title: Text("Laporan Pegawai"),
-                children: <Widget>[
-                  ListTile(
-                        title: const Text(
-                        'Laporan Pegawai Asn Dan Bukan Asn',
-                        style: TextStyle(fontSize: 13),                  
-                    ),
-                    onTap:(){
-                      Navigator.of(context).push(CupertinoPageRoute(builder: (context) => const ReportPegawaiAsn()));
-                    }
-                  ),
-                  ListTile(
-                title: const Text(
-                  'Laporan Pegawai Berdasarkan Pangkat',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                   Navigator.of(context).push(
-              CupertinoPageRoute(builder: (context) => ReportJumlahPegawai()));
-                },
-              ),
-
-              ListTile(
-                title: const Text(
-                  'Laporan Detail Pegawai',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                   Navigator.of(context).push(
-              CupertinoPageRoute(builder: (context) => ReportDetailPegawai()));
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Laporan Gaji Honor',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                   Navigator.of(context).push(
-              CupertinoPageRoute(builder: (context) => ReportHonorPegawai()));
-                },
-              ),
-                ],
-              ),
-              
-              ExpansionTile(
-                title: Text("Laporan Surat"),
-                children: [
-                  ListTile(
-                title: const Text(
-                  'Laporan Surat Masuk Perbulan',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const ReportJmSuratMasuk())));
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Laporan Surat Masuk Pertahun',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const ReportSuratMasukPerTahun())));
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Laporan Surat Keluar Perbulan',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const ReportOutperbulan())));
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Laporan Surat Keluar PerTahun',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const ReportOutSurelPertahun())));
-                },
-              ),
-              ListTile(
-                title: const Text(
-                  'Laporan Surat Batal',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const LaporanSuratBatal())));
-                },
-              ),
-
-              ListTile(
-                title: const Text(
-                  'Laporan Surat Pengganti',
-                  style: TextStyle(fontSize: 13),
-                ),
-                onTap: () {
-                  Navigator.of(context).push(CupertinoPageRoute(
-                      builder: ((context) => const LaporanSuratPengganti())));
-                },
-              ),
-            ],
-          ),
-              
-              ExpansionTile(
-                title: Text("Laporan Perjalanan Dinas"),
-                children: [
-                  ListTile(
-                    title: const Text(
-                      'Laporan Perjalanan Dinas PerTahun',
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: ((context) => const ReportpDinasPertahun())));
-                    },
-                  ),
-
-                  ListTile(
-                    title: const Text(
-                      'Laporan Perjalanan Dinas Bulanan',
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    onTap: () {
-                      Navigator.of(context).push(CupertinoPageRoute(
-                          builder: ((context) => const LaporanPjdPerbulan())));
-                    },
-                  ),
-                  
-                ],
-              ),
-            ],
-          ),
+          leading: Text('Powered By Uniska'),
+        ),
         ],
       ),
     );
