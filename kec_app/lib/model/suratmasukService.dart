@@ -5,13 +5,16 @@ class InputSurel {
   final String perihal;
   final DateTime tanggal_terima;
   final String keterangan;
+  String berkas;
 
   InputSurel({
     required this.noBerkas,
     required this.alamat,
     required this.tanggal,
     required this.perihal,
-    required this.tanggal_terima, required this.keterangan,
+    required this.tanggal_terima,
+    required this.keterangan,
+    required this.berkas,
   });
 
   Map<String, dynamic> toJson() => {
@@ -19,7 +22,8 @@ class InputSurel {
         'alamat_pengirim': alamat,
         'tanggal': tanggal,
         'perihal': perihal,
-        'tanggal_terima' : tanggal_terima,
-        'keterangan' : keterangan,
+        'tanggal_terima': tanggal_terima,
+        'keterangan': keterangan,
+        'berkas': berkas
       };
 }

@@ -9,8 +9,6 @@ import 'package:kec_app/screen/SplashScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 
-import 'api/alertNetwork.dart';
-
 
 // add firestore ke widget flutter
 

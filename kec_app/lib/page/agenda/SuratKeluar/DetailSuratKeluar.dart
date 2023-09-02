@@ -192,7 +192,11 @@ class _DetailSuratKeluarState extends State<DetailSuratKeluar> {
                                 SizedBox(
                                   width: 10,
                                 ),
-                                Text("Dokument Surat Keluar")
+                                Text("Berkas Surat Keluar",
+                                style: TextStyle(
+                                  color: Colors.greenAccent[700],
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16),)
                               ],
                             ),
                             onTap: () async {
@@ -221,7 +225,7 @@ class _DetailSuratKeluarState extends State<DetailSuratKeluar> {
                                       const SnackBar(
                                           backgroundColor: Colors.red,
                                           content: Text(
-                                              'Field (berkas) tidak ada dalam data atau tipe datanya tidak valid.')));
+                                              'Field (berkas) tidak ada dalam data Solusi : Tambah Surat Masuk')));
                                 }
                               } else {
                                 print("Data tidak tersedia.");
