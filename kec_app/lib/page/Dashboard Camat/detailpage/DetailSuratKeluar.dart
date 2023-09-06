@@ -3,9 +3,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
+import 'package:kec_app/components/DownloaderPdf.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
 import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
@@ -113,6 +114,59 @@ class DetailSuratKeluarCamat extends StatelessWidget {
                           ),
                         ),
                         Containers(),
+                        ListTile(
+                        title: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                            FontAwesomeIcons.filePdf,
+                            size: 20,
+                            color: Colors.red,
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            "Berkas Surat Keluar",
+                            style: TextStyle(
+                                color: Colors.greenAccent[700],
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16),
+                          )
+                        ],
+                      ),
+                      onTap: () async {
+                        // Validasi jika field pada databases pada firestore tidak di temukan
+                        var data = documentSnapshot.data();
+                        if (data != null) {
+                          if (data is Map<String, dynamic> &&
+                              data.containsKey('berkas')) {
+                            String pdfUrl = data['berkas'] ?? '';
+                            if (pdfUrl.isEmpty) {
+                              print("Berkas tidak ditemukan.");
+                            } else {
+                              await showModalBottomSheet(
+                                isScrollControlled: true,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return PDFBottomSheetSK(
+                                    pdfUrl: pdfUrl,
+                                  );
+                                },
+                              );
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    backgroundColor: Colors.red,
+                                    content: Text(
+                                        'Field (berkas) tidak ada dalam data Solusi : Tambah Surat Masuk')));
+                          }
+                        } else {
+                          print("Data tidak tersedia.");
+                        }
+                      },
+                    ),
                       ],
                     )),
                   ),
