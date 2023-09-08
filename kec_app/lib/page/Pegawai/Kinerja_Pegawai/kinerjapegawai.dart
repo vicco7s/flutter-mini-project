@@ -140,7 +140,7 @@ class TravelChart extends StatelessWidget {
                 lineTouchData: LineTouchData(
                   handleBuiltInTouches: true,
                   touchTooltipData: LineTouchTooltipData(
-                    tooltipBgColor: Colors.blueGrey.withOpacity(0.2),
+                    tooltipBgColor: Colors.grey.withOpacity(0.6),
                   ),
                 ),
                 gridData: FlGridData(show: false),
@@ -203,7 +203,7 @@ class TravelChart extends StatelessWidget {
                         FlSpot(22, 6),
                       ],
                       isCurved: false,
-                      color: Colors.blue,
+                      color: Colors.blueAccent[700],
                       dotData: FlDotData(show: true),
                       belowBarData: BarAreaData(show: true)),
                 ],
