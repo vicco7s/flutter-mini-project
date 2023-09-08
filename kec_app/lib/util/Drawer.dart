@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:kec_app/page/Pegawai/GajiHonorPegawai/Gajihonorpegawai.dart';
+import 'package:kec_app/page/Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
 import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
 import 'package:kec_app/page/agenda/SuratKeluar/SuratKeluarPage.dart';
 import 'package:kec_app/page/agenda/Suratmasuk/SuratMasukPage.dart';
@@ -72,6 +73,16 @@ class Drawes extends StatelessWidget {
                   onTap: () {
                     Navigator.of(context).push(
                         CupertinoPageRoute(builder: ((context) => const GajiHonorPegawai())));
+                  },
+                ),
+                ListTile(
+                  title: Text(
+                    'Grafik Kinerja Pegawai',
+                    style: TextStyle(fontSize: 13),
+                  ),
+                  onTap: () {
+                    Navigator.of(context).push(
+                        CupertinoPageRoute(builder: ((context) => const KinerjaPegawai())));
                   },
                 ),
               ],
@@ -173,7 +184,7 @@ class Drawes extends StatelessWidget {
           
                 ListTile(
                   title: const Text(
-                    'Laporan Detail Pegawai',
+                    'Laporan Biodata Pegawai',
                     style: TextStyle(fontSize: 13),
                   ),
                   onTap: () {
