@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+
 
 class KinerjaPegawai extends StatefulWidget {
   const KinerjaPegawai({super.key});
@@ -120,11 +123,47 @@ class TravelChart extends StatelessWidget {
     return Text(text, style: style, textAlign: TextAlign.center);
   }
 
+  Future<Map<String, List<FlSpot>>> fetchDataFromFirestore() async {
+  Map<String, List<FlSpot>> employeeData = {};
+
+  QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+      .collection('pdinas').where("nama", isEqualTo: "Akhmad S.Sos., M.AP")
+      .get();
+
+  for (var doc in querySnapshot.docs) {
+    String namaPegawai = doc['nama'];
+    Timestamp tanggalTimestamp = doc['tanggal_mulai'];
+
+    DateTime tanggal = tanggalTimestamp.toDate();
+    
+    // Check if the trip date falls within January to December
+    if (tanggal.month >= 1 && tanggal.month <= 12) {
+      // Initialize the list for the employee if not already done
+      employeeData.putIfAbsent(namaPegawai, () => List.generate(12, (index) {
+        // Adjust the X-coordinate based on the desired interval (e.g., 2)
+        double adjustedXCoordinate = index.toDouble() * 2;
+        return FlSpot(adjustedXCoordinate, 0);
+      }));
+
+      // Increment the count for the corresponding month and employee
+      int monthIndex = tanggal.month - 1;
+      if (monthIndex >= 0 && monthIndex < 12) {
+        employeeData[namaPegawai]![monthIndex] = FlSpot(
+          employeeData[namaPegawai]![monthIndex].x, // Keep the same X-coordinate
+          employeeData[namaPegawai]![monthIndex].y + 1,
+        );
+      }
+    }
+  }
+
+  return employeeData;
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Grafik PJD'),
+        title: Text('Grafik Kinerja Pegawai'),
         centerTitle: true,
         elevation: 0.0,
       ),
@@ -135,7 +174,29 @@ class TravelChart extends StatelessWidget {
             padding: EdgeInsets.only(left: 10, right: 10),
             width: 400,
             height:400,
-            child: LineChart(
+            child: FutureBuilder<Map<String, List<FlSpot>>>(
+              future: fetchDataFromFirestore(),
+              builder: (context, snapshot){
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return ColorfulCirclePrgressIndicator();
+              }else if(snapshot.hasError){
+                return Text('Error: ${snapshot.error}');
+              }else{
+                List<LineChartBarData> lineBarsData = [];
+                snapshot.data!.forEach((employeeName, employeeSpots) {
+                  lineBarsData.add(
+                    LineChartBarData(
+                      spots: employeeSpots,
+                      isCurved: false,
+                      color: Colors.blueAccent[700], // Use a unique color for each employee
+                      dotData: FlDotData(show: true),
+                      belowBarData: BarAreaData(show: true),
+                      barWidth: 2, // Adjust the bar width as needed
+                      isStrokeCapRound: true,
+                    ),
+                  );
+                });
+              return LineChart(
               LineChartData(
                 lineTouchData: LineTouchData(
                   handleBuiltInTouches: true,
@@ -186,29 +247,12 @@ class TravelChart extends StatelessWidget {
                 maxX: 22,
                 minY: 0,
                 maxY: 20,
-                lineBarsData: [
-                  LineChartBarData(
-                      spots: [
-                        FlSpot(0, 0),
-                        FlSpot(2, 2),
-                        FlSpot(4, 1),
-                        FlSpot(6, 2),
-                        FlSpot(8, 7),
-                        FlSpot(10, 3),
-                        FlSpot(12, 9),
-                        FlSpot(14, 8),
-                        FlSpot(16, 13),
-                        FlSpot(18, 4),
-                        FlSpot(20, 10),
-                        FlSpot(22, 6),
-                      ],
-                      isCurved: false,
-                      color: Colors.blueAccent[700],
-                      dotData: FlDotData(show: true),
-                      belowBarData: BarAreaData(show: true)),
-                ],
+                lineBarsData: lineBarsData,
               ),
-            ),
+            );
+                }
+              },
+            )
           ),
         ),
       ),
