@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
+import 'package:kec_app/page/Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
 import 'package:kec_app/page/Pegawai/editpegawai.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
@@ -24,7 +26,6 @@ class DetailPagePegawai extends StatelessWidget {
     var tgllahir = DateFormat.yMMMMd('id').format(date);
     var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
 
-    final dataPegawai = ControllerPegawai();
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -35,6 +36,13 @@ class DetailPagePegawai extends StatelessWidget {
         ),
         title: Text('Biodata Pegawai'),
         centerTitle: true,
+        actions: [IconButton(
+          onPressed: () {
+            Navigator.of(context).push(CupertinoPageRoute(builder: (context) => KinerjaPegawai(
+              documentsnapshot: documentSnapshot,
+            )));
+          }, 
+          icon: Icon(FontAwesomeIcons.chartLine))],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -217,37 +225,38 @@ class DetailPagePegawai extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 10),
                           child: Card(
                             color: Color.fromRGBO(254, 253, 228, 100),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                bottomRight: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                                bottomLeft: Radius.circular(10.0),
-                              )),
-                              elevation: 0.0,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(10.0),
+                              bottomRight: Radius.circular(10.0),
+                              topRight: Radius.circular(10.0),
+                              bottomLeft: Radius.circular(10.0),
+                            )),
+                            elevation: 0.0,
                             child: ExpansionTile(
-                              title: Text("Kartu Tanda Penduduk(KTP)",style: TextStyleSubtitles(),),
+                              title: Text(
+                                "Kartu Tanda Penduduk(KTP)",
+                                style: TextStyleSubtitles(),
+                              ),
                               children: [
                                 ListTile(
-                                    title: Container(
-                                      width: 100,
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(5),
-                                        image: DecorationImage(
-                                          image: NetworkImage(
-                                              documentSnapshot[
-                                                  "imageKtp"]),
-                                          fit: BoxFit.cover,
-                                        ),
+                                  title: Container(
+                                    width: 100,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            documentSnapshot["imageKtp"]),
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
+                                ),
                               ],
-                              ),
-                          ),),
-
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: Card(
@@ -353,7 +362,6 @@ class DetailPagePegawai extends StatelessWidget {
                                     ),
                                   ),
                                   Containers(),
-                                  
                                 ],
                               )),
                         )

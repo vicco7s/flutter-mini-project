@@ -81,8 +81,8 @@ class Drawes extends StatelessWidget {
                     style: TextStyle(fontSize: 13),
                   ),
                   onTap: () {
-                    Navigator.of(context).push(
-                        CupertinoPageRoute(builder: ((context) => const KinerjaPegawai())));
+                    // Navigator.of(context).push(
+                    //     CupertinoPageRoute(builder: ((context) => const KinerjaPegawai())));
                   },
                 ),
               ],
