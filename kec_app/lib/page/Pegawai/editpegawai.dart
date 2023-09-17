@@ -37,16 +37,17 @@ class _EditPegawaiState extends State<EditPegawai> {
   final uploadImages = ControllerPegawai();
 
   final _formkey = GlobalKey<FormState>();
-  final TextEditingController _id = TextEditingController();
-  final TextEditingController _nama = TextEditingController();
+  final _id = TextEditingController();
+  final _nama = TextEditingController();
   final _nip = MaskedTextController(mask: '00000000 000000 0 000');
-  final TextEditingController _jabatan = TextEditingController();
-  final TextEditingController _tmulaitugas = TextEditingController();
-  final TextEditingController _tlahir = TextEditingController();
+  final _jabatan = TextEditingController();
+  final _tmulaitugas = TextEditingController();
+  final _tlahir = TextEditingController();
+  final _agama = TextEditingController();
   final _telp = MaskedTextController(mask: '0000 0000 0000');
-  final TextEditingController _alamat = TextEditingController();
-  final TextEditingController _tempatlahir = TextEditingController();
-  final TextEditingController _jumlahAnak = TextEditingController();
+  final _alamat = TextEditingController();
+  final _tempatlahir = TextEditingController();
+  final _jumlahAnak = TextEditingController();
 
   @override
   void initState() {
@@ -62,6 +63,7 @@ class _EditPegawaiState extends State<EditPegawai> {
     _id.text = documentSnapshot['id'].toString();
     _nama.text = documentSnapshot['nama'];
     _nip.text = documentSnapshot['nip'];
+    _agama.text = documentSnapshot['agama'];
     _jabatan.text = documentSnapshot['jabatan'];
     _tmulaitugas.text = times1.toString();
     _tlahir.text = timers.toString();
@@ -207,6 +209,14 @@ class _EditPegawaiState extends State<EditPegawai> {
                 controller: _alamat,
                 decoration: const InputDecoration(
                   labelText: 'Alamat',
+                ),
+              ),
+              // agama
+              TextField(
+                keyboardType: TextInputType.text,
+                controller: _agama,
+                decoration: const InputDecoration(
+                  labelText: 'Agama',
                 ),
               ),
               // pendidikan terakhir
@@ -400,12 +410,14 @@ class _EditPegawaiState extends State<EditPegawai> {
                                 await uploadImages.updateImage(_selectedImage!,
                                     widget.documentSnapshot.id);
                               } else if (_selectedImageKtp != null) {
-                                await uploadImages.updateImageKtp(_selectedImageKtp!,
+                                await uploadImages.updateImageKtp(
+                                    _selectedImageKtp!,
                                     widget.documentSnapshot.id);
                               }
                               final int no = int.parse(_id.text);
                               final String nama = _nama.text;
                               final String nip = _nip.text;
+                              final String agama = _agama.text;
                               final DateTime tglmulai =
                                   DateTime.parse(_tmulaitugas.text);
                               final DateTime tgllahir =
@@ -449,6 +461,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                                     "tempat_lahir": temlahir,
                                     "tgl_mulaitugas": tglmulai,
                                     "alamat": alamat,
+                                    "agama": agama,
                                     "pendidikan_terakhir": peak,
                                     "status_pernikahan": stper,
                                     "jumlah_anak": jumlahanak,
@@ -465,6 +478,7 @@ class _EditPegawaiState extends State<EditPegawai> {
                                 _alamat.text = '';
                                 _jk = '';
                                 _jumlahAnak.text = '';
+                                _agama.text = "";
                                 _peak = '';
                                 _stper = '';
                                 _telp.text = '';

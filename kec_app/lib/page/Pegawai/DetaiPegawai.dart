@@ -1,31 +1,46 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
+import 'package:kec_app/components/AddRiwayatPegawai.dart';
+import 'package:kec_app/controller/controlerPegawai/controllerriwayatpegawai.dart';
 import 'package:kec_app/page/Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
 import 'package:kec_app/page/Pegawai/editpegawai.dart';
 import 'package:intl/intl.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
 import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
-class DetailPagePegawai extends StatelessWidget {
+import '../../util/RoundedRectagleutiliti.dart';
+
+class DetailPagePegawai extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;
   const DetailPagePegawai({super.key, required this.documentSnapshot});
 
   @override
+  State<DetailPagePegawai> createState() => _DetailPagePegawaiState();
+}
+
+class _DetailPagePegawaiState extends State<DetailPagePegawai> {
+  late List<dynamic> riwayatPendidikan =
+      widget.documentSnapshot["riwayat_pendidikan"];
+  late List<dynamic> riwayatPekerjaan =
+      widget.documentSnapshot['riwayat_kerja'];
+
+  @override
   Widget build(BuildContext context) {
     initializeDateFormatting('id', null);
-    Timestamp timerstamp = documentSnapshot['tgl_lahir'];
-    Timestamp timerstamps = documentSnapshot['tgl_mulaitugas'];
+    Timestamp timerstamp = widget.documentSnapshot['tgl_lahir'];
+    Timestamp timerstamps = widget.documentSnapshot['tgl_mulaitugas'];
     var dates = timerstamps.toDate();
     var date = timerstamp.toDate();
     var tgllahir = DateFormat.yMMMMd('id').format(date);
     var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
-
+    final riwayatData = RiwayatController(
+      documentSnapshot: widget.documentSnapshot,
+      context: context,
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -36,13 +51,16 @@ class DetailPagePegawai extends StatelessWidget {
         ),
         title: Text('Biodata Pegawai'),
         centerTitle: true,
-        actions: [IconButton(
-          onPressed: () {
-            Navigator.of(context).push(CupertinoPageRoute(builder: (context) => KinerjaPegawai(
-              documentsnapshot: documentSnapshot,
-            )));
-          }, 
-          icon: Icon(FontAwesomeIcons.chartLine))],
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).push(CupertinoPageRoute(
+                    builder: (context) => KinerjaPegawai(
+                          documentsnapshot: widget.documentSnapshot,
+                        )));
+              },
+              icon: Icon(FontAwesomeIcons.chartLine))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -54,6 +72,8 @@ class DetailPagePegawai extends StatelessWidget {
                   return Center(
                     child: ColorfulLinearProgressIndicator(),
                   );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
                 } else {
                   return Padding(
                     padding: const EdgeInsets.only(left: 20, right: 20),
@@ -90,7 +110,7 @@ class DetailPagePegawai extends StatelessWidget {
                                                       BorderRadius.circular(10),
                                                   image: DecorationImage(
                                                     image: NetworkImage(
-                                                        documentSnapshot[
+                                                        widget.documentSnapshot[
                                                             "imageUrl"]),
                                                     fit: BoxFit.cover,
                                                   ),
@@ -115,8 +135,8 @@ class DetailPagePegawai extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(50),
                                           image: DecorationImage(
-                                            image: NetworkImage(
-                                                documentSnapshot["imageUrl"]),
+                                            image: NetworkImage(widget
+                                                .documentSnapshot["imageUrl"]),
                                             fit: BoxFit.cover,
                                           ),
                                         ),
@@ -129,10 +149,9 @@ class DetailPagePegawai extends StatelessWidget {
                                         onPressed: () {
                                           Navigator.of(context).push(
                                               CupertinoPageRoute(
-                                                  builder: (context) =>
-                                                      EditPegawai(
-                                                          documentSnapshot:
-                                                              documentSnapshot)));
+                                                  builder: (context) => EditPegawai(
+                                                      documentSnapshot: widget
+                                                          .documentSnapshot)));
                                         },
                                         icon: Icon(
                                           FontAwesomeIcons.solidPenToSquare,
@@ -147,7 +166,7 @@ class DetailPagePegawai extends StatelessWidget {
                                   height: 5,
                                 ),
                                 Text(
-                                  documentSnapshot['nama'],
+                                  widget.documentSnapshot['nama'],
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
@@ -169,13 +188,7 @@ class DetailPagePegawai extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 10),
                           child: Card(
                               color: Color.fromRGBO(254, 253, 228, 100),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                bottomRight: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                                bottomLeft: Radius.circular(10.0),
-                              )),
+                              shape: RoundedRectangleBorders(),
                               elevation: 0.0,
                               child: Column(
                                 children: [
@@ -183,7 +196,7 @@ class DetailPagePegawai extends StatelessWidget {
                                     title:
                                         Text("Nip", style: TextStyleTitles()),
                                     subtitle: Text(
-                                      documentSnapshot['nip'],
+                                      widget.documentSnapshot['nip'],
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -192,7 +205,7 @@ class DetailPagePegawai extends StatelessWidget {
                                     title: Text("Jenis Kelamin",
                                         style: TextStyleTitles()),
                                     subtitle: Text(
-                                      documentSnapshot['jenis_kelamin'],
+                                      widget.documentSnapshot['jenis_kelamin'],
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -203,7 +216,7 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      '${documentSnapshot['tempat_lahir']}, ${tgllahir.toString()}',
+                                      '${widget.documentSnapshot['tempat_lahir']}, ${tgllahir.toString()}',
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -214,7 +227,7 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['alamat'],
+                                      widget.documentSnapshot['alamat'],
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -225,13 +238,7 @@ class DetailPagePegawai extends StatelessWidget {
                           padding: EdgeInsets.only(bottom: 10),
                           child: Card(
                             color: Color.fromRGBO(254, 253, 228, 100),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10.0),
-                              bottomRight: Radius.circular(10.0),
-                              topRight: Radius.circular(10.0),
-                              bottomLeft: Radius.circular(10.0),
-                            )),
+                            shape: RoundedRectangleBorders(),
                             elevation: 0.0,
                             child: ExpansionTile(
                               title: Text(
@@ -246,8 +253,8 @@ class DetailPagePegawai extends StatelessWidget {
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
                                       image: DecorationImage(
-                                        image: NetworkImage(
-                                            documentSnapshot["imageKtp"]),
+                                        image: NetworkImage(widget
+                                            .documentSnapshot["imageKtp"]),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
@@ -258,16 +265,176 @@ class DetailPagePegawai extends StatelessWidget {
                           ),
                         ),
                         Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Card(
+                                color: Color.fromRGBO(254, 253, 228, 100),
+                                shape: RoundedRectangleBorders(),
+                                elevation: 0.0,
+                                child: ExpansionTile(
+                                  title: Text(
+                                    "Riwayat Pendidikan",
+                                    style: TextStyleSubtitles(),
+                                  ),
+                                  children: [
+                                    ListTile(
+                                      onTap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: false,
+                                          context: context,
+                                          useSafeArea: true,
+                                          builder: (BuildContext context) {
+                                            return ButtonRwytPendidikan(
+                                              tambahPendidikan:
+                                                  riwayatData.tambahPendidikan,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      title: Text(
+                                        "Tambah Pendidikan",
+                                        style: TextStyleSubtitles(),
+                                      ),
+                                      leading: Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: riwayatPendidikan.length,
+                                      itemBuilder: (context, index) {
+                                        final pendidikanMap =
+                                            riwayatPendidikan[index]
+                                                as Map<String, dynamic>;
+                                        final namaSekolah =
+                                            pendidikanMap['nama_sekolah']
+                                                as String;
+                                        var tahunMulai =
+                                            pendidikanMap['tahunmulai']
+                                                .toDate()
+                                                .year;
+                                        var tahunBerakhir =
+                                            pendidikanMap['tahunberakhir']
+                                                .toDate()
+                                                .year;
+
+                                        return ListTile(
+                                          title: Text(
+                                            tahunMulai.toString() +
+                                                " - " +
+                                                tahunBerakhir.toString(),
+                                            style: TextStyleTitles(),
+                                          ),
+                                          subtitle: Text(namaSekolah,
+                                              style: TextStyleSubtitles()),
+                                          trailing: IconButton(
+                                              onPressed: () async {
+                                                await riwayatData
+                                                    .hapusPendidikan(index);
+                                                Navigator.of(context).pop();
+                                                // _loadData();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                        content: Text(
+                                                            'Berhasil Dihapus')));
+                                              },
+                                              icon: Icon(
+                                                Icons.delete_outline,
+                                                color: Colors.red,
+                                              )),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ))),
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Card(
+                                color: Color.fromRGBO(254, 253, 228, 100),
+                                shape: RoundedRectangleBorders(),
+                                elevation: 0.0,
+                                child: ExpansionTile(
+                                  title: Text(
+                                    "Riwayat Pekerjaan",
+                                    style: TextStyleSubtitles(),
+                                  ),
+                                  children: [
+                                    ListTile(
+                                      onTap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: false,
+                                          context: context,
+                                          useSafeArea: true,
+                                          builder: (BuildContext context) {
+                                            return ButtonRwytPekerjaan(
+                                              tambahPekerjaan:
+                                                  riwayatData.tambahPekerjaan,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      title: Text(
+                                        "Tambah Pekerjaan",
+                                        style: TextStyleSubtitles(),
+                                      ),
+                                      leading: Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: riwayatPekerjaan.length,
+                                      itemBuilder: (context, index) {
+                                        final pekerjaanMap =
+                                            riwayatPekerjaan[index]
+                                                as Map<String, dynamic>;
+                                        final namaPekerjaan =
+                                            pekerjaanMap['posisi'] as String;
+                                        var tahunMulai =
+                                            pekerjaanMap['tahunmulai']
+                                                .toDate()
+                                                .year;
+                                        var tahunBerakhir =
+                                            pekerjaanMap['tahunberakhir']
+                                                .toDate()
+                                                .year;
+                                        return ListTile(
+                                          title: Text(
+                                            tahunMulai.toString()+' - '+tahunBerakhir.toString(),
+                                            style: TextStyleTitles(),
+                                          ),
+                                          subtitle: Text(namaPekerjaan,
+                                              style: TextStyleSubtitles()),
+                                          trailing: IconButton(
+                                              onPressed: () async {
+                                                await riwayatData
+                                                    .hapusPekerjaan(index);
+                                                Navigator.of(context).pop();
+                                                // _loadData();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(const SnackBar(
+                                                        backgroundColor:
+                                                            Colors.green,
+                                                        content: Text(
+                                                            'Berhasil Dihapus')));
+                                              },
+                                              icon: Icon(
+                                                Icons.delete_outline,
+                                                color: Colors.red,
+                                              )),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ))),
+                        Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: Card(
                               color: Color.fromRGBO(254, 253, 228, 100),
-                              shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(10.0),
-                                bottomRight: Radius.circular(10.0),
-                                topRight: Radius.circular(10.0),
-                                bottomLeft: Radius.circular(10.0),
-                              )),
+                              shape: RoundedRectangleBorders(),
                               elevation: 0.0,
                               child: ExpansionTile(
                                 title: Text('Selengkapnya',
@@ -275,11 +442,23 @@ class DetailPagePegawai extends StatelessWidget {
                                 children: [
                                   ListTile(
                                     title: Text(
+                                      "Agama",
+                                      style: TextStyleTitles(),
+                                    ),
+                                    subtitle: Text(
+                                      '${widget.documentSnapshot['agama']}',
+                                      style: TextStyleSubtitles(),
+                                    ),
+                                  ),
+                                  Containers(),
+                                  ListTile(
+                                    title: Text(
                                       "Pendidikan Terakhir",
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['pendidikan_terakhir'],
+                                      widget.documentSnapshot[
+                                          'pendidikan_terakhir'],
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -290,7 +469,7 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      '${documentSnapshot['pangkat']}/${documentSnapshot['golongan']}',
+                                      '${widget.documentSnapshot['pangkat']}/${widget.documentSnapshot['golongan']}',
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -301,7 +480,7 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      '${documentSnapshot['jabatan']}',
+                                      '${widget.documentSnapshot['jabatan']}',
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -312,7 +491,7 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      '${documentSnapshot['status']}',
+                                      '${widget.documentSnapshot['status']}',
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -334,7 +513,8 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['status_pernikahan'],
+                                      widget.documentSnapshot[
+                                          'status_pernikahan'],
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
@@ -345,7 +525,7 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['jumlah_anak']
+                                      widget.documentSnapshot['jumlah_anak']
                                           .toString(),
                                       style: TextStyleSubtitles(),
                                     ),
@@ -357,14 +537,14 @@ class DetailPagePegawai extends StatelessWidget {
                                       style: TextStyleTitles(),
                                     ),
                                     subtitle: Text(
-                                      documentSnapshot['telpon'],
+                                      widget.documentSnapshot['telpon'],
                                       style: TextStyleSubtitles(),
                                     ),
                                   ),
                                   Containers(),
                                 ],
                               )),
-                        )
+                        ),
                       ],
                     ),
                   );
@@ -377,3 +557,5 @@ class DetailPagePegawai extends StatelessWidget {
     );
   }
 }
+
+

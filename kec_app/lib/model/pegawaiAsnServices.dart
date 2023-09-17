@@ -13,14 +13,18 @@ class InputAsn {
   final String jabatan;
   final String status;
   final String status_perkawinan;
+  final String agama;
   final int jumlah_anak;
   final String telp;
   String? imageUrl;
   String? imageKtp;
+  late List<String> riwayatPendidikan;
+  late List<String> riwayatKerja;
 
   InputAsn(
       {required this.uid,
       required this.nama,
+      required this.agama,
       required this.nip,
       required this.jenis_kelamin,
       required this.tgl_lahir,
@@ -36,12 +40,15 @@ class InputAsn {
       required this.jumlah_anak,
       required this.telp,
       required this.imageUrl,
-      required this.imageKtp});
+      required this.imageKtp,
+      required this.riwayatKerja,
+      required this.riwayatPendidikan});
 
   Map<String, dynamic> toJson() => {
         'uid': uid,
         'nama': nama,
         'nip': nip,
+        'agama': agama,
         'jenis_kelamin': jenis_kelamin,
         'tgl_lahir': tgl_lahir,
         'tempat_lahir': tempat_lahir,
@@ -57,5 +64,7 @@ class InputAsn {
         'telpon': telp,
         'imageUrl': imageUrl,
         'imageKtp': imageKtp,
+        'riwayat_kerja': riwayatKerja,
+        'riwayat_pendidikan': riwayatPendidikan,
       };
 }

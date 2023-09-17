@@ -1,11 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/components/AddRiwayatPegawai.dart';
+import 'package:kec_app/controller/controlerPegawai/controllerriwayatpegawai.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
 import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+
+import '../../../util/RoundedRectagleutiliti.dart';
+import '../../Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
 
 class DetailPegawaiCamat extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;
@@ -20,7 +27,13 @@ class DetailPegawaiCamat extends StatelessWidget {
     var date = timerstamp.toDate();
     var tgllahir = DateFormat.yMMMMd('id').format(date);
     var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
-    
+    final riwayatData = RiwayatController(
+      documentSnapshot: documentSnapshot,
+      context: context,
+    );
+    List<dynamic> riwayatPendidikan = documentSnapshot["riwayat_pendidikan"];
+    List<dynamic> riwayatPekerjaan = documentSnapshot['riwayat_kerja'];
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,
@@ -30,6 +43,16 @@ class DetailPegawaiCamat extends StatelessWidget {
         ),
         title: Text('Detail Pegawai'),
         centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => KinerjaPegawai(
+                        documentsnapshot: documentSnapshot,
+                      )));
+            },
+            icon: Icon(FontAwesomeIcons.chartLine))
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -190,6 +213,92 @@ class DetailPegawaiCamat extends StatelessWidget {
                               )),
                         ),
                         Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Card(
+                                color: Color.fromRGBO(254, 253, 228, 100),
+                                shape: RoundedRectangleBorders(),
+                                elevation: 0.0,
+                                child: ExpansionTile(
+                                  title: Text(
+                                    "Riwayat Pendidikan",
+                                    style: TextStyleSubtitles(),
+                                  ),
+                                  children: [
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: riwayatPendidikan.length,
+                                      itemBuilder: (context, index) {
+                                        final pendidikanMap =
+                                            riwayatPendidikan[index]
+                                                as Map<String, dynamic>;
+                                        final namaSekolah =
+                                            pendidikanMap['nama_sekolah']
+                                                as String;
+                                        var tahunMulai =
+                                            pendidikanMap['tahunmulai']
+                                                .toDate()
+                                                .year;
+                                        var tahunBerakhir =
+                                            pendidikanMap['tahunberakhir']
+                                                .toDate()
+                                                .year;
+
+                                        return ListTile(
+                                          title: Text(
+                                            tahunMulai.toString() +
+                                                " - " +
+                                                tahunBerakhir.toString(),
+                                            style: TextStyleTitles(),
+                                          ),
+                                          subtitle: Text(namaSekolah,
+                                              style: TextStyleSubtitles()),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ))),
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Card(
+                            color: Color.fromRGBO(254, 253, 228, 100),
+                            shape: RoundedRectangleBorders(),
+                            elevation: 0.0,
+                            child: ExpansionTile(
+                              title: Text(
+                                "Riwayat Pekerjaan",
+                                style: TextStyleSubtitles(),
+                              ),
+                              children: [
+                                ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: riwayatPekerjaan.length,
+                                  itemBuilder: (context, index) {
+                                    final pekerjaanMap =
+                                        riwayatPekerjaan[index]
+                                            as Map<String, dynamic>;
+                                    final namaPekerjaan =
+                                        pekerjaanMap['posisi'] as String;
+                                    var tahunMulai =
+                                        pekerjaanMap['tahunmulai']
+                                            .toDate()
+                                            .year;
+                                    var tahunBerakhir =
+                                        pekerjaanMap['tahunberakhir']
+                                            .toDate()
+                                            .year;
+                                    return ListTile(
+                                      title: Text(
+                                        tahunMulai.toString()+' - '+tahunBerakhir.toString(),
+                                        style: TextStyleTitles(),
+                                      ),
+                                      subtitle: Text(namaPekerjaan,
+                                          style: TextStyleSubtitles()),
+                                    );
+                                  },
+                                )
+                              ],
+                            ))),
+                        Padding(
                           padding: EdgeInsets.only(bottom: 10),
                           child: Card(
                               color: Color.fromRGBO(254, 253, 228, 100),
@@ -205,6 +314,17 @@ class DetailPegawaiCamat extends StatelessWidget {
                                 title: Text('Detail Selengkapnya',
                                     style: TextStyleSubtitles()),
                                 children: [
+                                  ListTile(
+                                    title: Text(
+                                      "Agama",
+                                      style: TextStyleTitles(),
+                                    ),
+                                    subtitle: Text(
+                                      documentSnapshot['agama'],
+                                      style: TextStyleSubtitles(),
+                                    ),
+                                  ),
+                                  Containers(),
                                   ListTile(
                                     title: Text(
                                       "Pendidikan Terakhir",

@@ -1,3 +1,4 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,9 +8,14 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:kec_app/components/AddRiwayatPegawai.dart';
+import 'package:kec_app/controller/controlerPegawai/controllerriwayatpegawai.dart';
 import 'package:kec_app/page/Pegawai/editpegawai.dart';
 import 'package:kec_app/util/ContainerDeviders.dart';
+import 'package:kec_app/util/RoundedRectagleutiliti.dart';
 import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+
+import '../../Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
 
 class PegawaiUser extends StatefulWidget {
   const PegawaiUser({super.key});
@@ -23,7 +29,7 @@ class _PegawaiUserState extends State<PegawaiUser> {
       FirebaseFirestore.instance.collection('pegawai');
 
   DocumentSnapshot? currentdoc;
-
+  DocumentSnapshot? _lastDocument;
   @override
   void initState() {
     super.initState();
@@ -57,6 +63,16 @@ class _PegawaiUserState extends State<PegawaiUser> {
         title: Text('Profil'),
         centerTitle: true,
         elevation: 0,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => KinerjaPegawai(
+                        documentsnapshot: _lastDocument!,
+                      )));
+            },
+            icon: Icon(FontAwesomeIcons.chartLine))
+        ],
       ),
       body: Column(
         children: [
@@ -92,6 +108,17 @@ class _PegawaiUserState extends State<PegawaiUser> {
                       var date = timerstamp.toDate();
                       var tgllahir =DateFormat.yMMMMd('id').format(date);
                       var tglmulaitugas = DateFormat.yMMMMd('id').format(dates);
+
+                      if (index == snapshot.data!.docs.length - 1) {
+                        _lastDocument = documentSnapshot;
+                      }
+
+                      final riwayatData = RiwayatController(
+                        documentSnapshot: documentSnapshot,
+                        context: context,
+                      );
+                      List<dynamic> riwayatPendidikan = documentSnapshot["riwayat_pendidikan"];
+                      List<dynamic> riwayatPekerjaan = documentSnapshot['riwayat_kerja'];
                       return Padding(
                       padding: const EdgeInsets.only(
                           left: 20, right: 20),
@@ -210,19 +237,7 @@ class _PegawaiUserState extends State<PegawaiUser> {
                               child: Card(
                                   color: Color.fromRGBO(
                                       254, 253, 228, 100),
-                                  shape:
-                                      const RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.only(
-                                    topLeft:
-                                        Radius.circular(10.0),
-                                    bottomRight:
-                                        Radius.circular(10.0),
-                                    topRight:
-                                        Radius.circular(10.0),
-                                    bottomLeft:
-                                        Radius.circular(10.0),
-                                  )),
+                                  shape:RoundedRectangleBorders(),
                                   elevation: 0.0,
                                   child: Column(
                                     children: [
@@ -280,24 +295,207 @@ class _PegawaiUserState extends State<PegawaiUser> {
                                   )),
                             ),
                             Padding(
+                          padding: EdgeInsets.only(bottom: 10),
+                          child: Card(
+                            color: Color.fromRGBO(254, 253, 228, 100),
+                            shape: RoundedRectangleBorders(),
+                            elevation: 0.0,
+                            child: ExpansionTile(
+                              title: Text(
+                                "Kartu Tanda Penduduk(KTP)",
+                                style: TextStyleSubtitles(),
+                              ),
+                              children: [
+                                ListTile(
+                                  title: Container(
+                                    width: 100,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      image: DecorationImage(
+                                        image: NetworkImage(documentSnapshot["imageKtp"]),
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                            Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Card(
+                                color: Color.fromRGBO(254, 253, 228, 100),
+                                shape: RoundedRectangleBorders(),
+                                elevation: 0.0,
+                                child: ExpansionTile(
+                                  title: Text(
+                                    "Riwayat Pendidikan",
+                                    style: TextStyleSubtitles(),
+                                  ),
+                                  children: [
+                                    ListTile(
+                                      onTap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: false,
+                                          context: context,
+                                          useSafeArea: true,
+                                          builder: (BuildContext context) {
+                                            return ButtonRwytPendidikan(
+                                              tambahPendidikan:
+                                                  riwayatData.tambahPendidikan,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      title: Text(
+                                        "Tambah Pendidikan",
+                                        style: TextStyleSubtitles(),
+                                      ),
+                                      leading: Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: riwayatPendidikan.length,
+                                      itemBuilder: (context, index) {
+                                        final pendidikanMap =
+                                            riwayatPendidikan[index]
+                                                as Map<String, dynamic>;
+                                        final namaSekolah =
+                                            pendidikanMap['nama_sekolah']
+                                                as String;
+                                        var tahunMulai =
+                                            pendidikanMap['tahunmulai']
+                                                .toDate()
+                                                .year;
+                                        var tahunBerakhir =
+                                            pendidikanMap['tahunberakhir']
+                                                .toDate()
+                                                .year;
+
+                                        return ListTile(
+                                          title: Text(
+                                            tahunMulai.toString() +
+                                                " - " +
+                                                tahunBerakhir.toString(),
+                                            style: TextStyleTitles(),
+                                          ),
+                                          subtitle: Text(namaSekolah,
+                                              style: TextStyleSubtitles()),
+                                          trailing: IconButton(
+                                          onPressed: () async {
+                                            await riwayatData
+                                                .hapusPendidikan(index);
+                                            Navigator.of(context).pop();
+                                            // _loadData();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    content: Text(
+                                                        'Berhasil Dihapus')));
+                                          },
+                                          icon: Icon(
+                                            Icons.delete_outline,
+                                            color: Colors.red,
+                                          )),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ))),
+                            Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Card(
+                                color: Color.fromRGBO(254, 253, 228, 100),
+                                shape: RoundedRectangleBorders(),
+                                elevation: 0.0,
+                                child: ExpansionTile(
+                                  title: Text(
+                                    "Riwayat Pekerjaan",
+                                    style: TextStyleSubtitles(),
+                                  ),
+                                  children: [
+                                    ListTile(
+                                      onTap: () async {
+                                        await showModalBottomSheet(
+                                          isScrollControlled: false,
+                                          context: context,
+                                          useSafeArea: true,
+                                          builder: (BuildContext context) {
+                                            return ButtonRwytPekerjaan(
+                                              tambahPekerjaan:
+                                                  riwayatData.tambahPekerjaan,
+                                            );
+                                          },
+                                        );
+                                      },
+                                      title: Text(
+                                        "Tambah Pekerjaan",
+                                        style: TextStyleSubtitles(),
+                                      ),
+                                      leading: Icon(
+                                        Icons.add,
+                                        color: Colors.blue,
+                                      ),
+                                    ),
+                                    ListView.builder(
+                                      shrinkWrap: true,
+                                      itemCount: riwayatPekerjaan.length,
+                                      itemBuilder: (context, index) {
+                                        final pekerjaanMap =
+                                            riwayatPekerjaan[index]
+                                                as Map<String, dynamic>;
+                                        final namaPekerjaan =
+                                            pekerjaanMap['posisi'] as String;
+                                        var tahunMulai =
+                                            pekerjaanMap['tahunmulai']
+                                                .toDate()
+                                                .year;
+                                        var tahunBerakhir =
+                                            pekerjaanMap['tahunberakhir']
+                                                .toDate()
+                                                .year;
+                                        return ListTile(
+                                          title: Text(
+                                            tahunMulai.toString()+' - '+tahunBerakhir.toString(),
+                                            style: TextStyleTitles(),
+                                          ),
+                                          subtitle: Text(namaPekerjaan,
+                                              style: TextStyleSubtitles()),
+                                          trailing: IconButton(
+                                          onPressed: () async {
+                                            await riwayatData
+                                                .hapusPekerjaan(index);
+                                            Navigator.of(context).pop();
+                                            // _loadData();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    backgroundColor:
+                                                        Colors.green,
+                                                    content: Text(
+                                                        'Berhasil Dihapus')));
+                                          },
+                                          icon: Icon(
+                                            Icons.delete_outline,
+                                            color: Colors.red,
+                                          )),
+                                        );
+                                      },
+                                    )
+                                  ],
+                                ))),
+                            Padding(
                               padding:
                                   EdgeInsets.only(bottom: 10),
                               child: Card(
                               color: Color.fromRGBO(
                                   254, 253, 228, 100),
-                              shape:
-                                  const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.only(
-                                topLeft:
-                                    Radius.circular(10.0),
-                                bottomRight:
-                                    Radius.circular(10.0),
-                                topRight:
-                                    Radius.circular(10.0),
-                                bottomLeft:
-                                    Radius.circular(10.0),
-                              )),
+                              shape: RoundedRectangleBorders(),
                               elevation: 0.0,
                               child: ExpansionTile(
                                 title: Text(
@@ -305,6 +503,19 @@ class _PegawaiUserState extends State<PegawaiUser> {
                                     style:
                                         TextStyleSubtitles()),
                                 children: [
+                                  ListTile(
+                                    title: Text(
+                                      "Agama",
+                                      style:
+                                          TextStyleTitles(),
+                                    ),
+                                    subtitle: Text(
+                                      documentSnapshot['agama'],
+                                      style:
+                                          TextStyleSubtitles(),
+                                    ),
+                                  ),
+                                  Containers(),
                                   ListTile(
                                     title: Text(
                                       "Pendidikan Terakhir",

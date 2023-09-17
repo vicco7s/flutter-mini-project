@@ -31,6 +31,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
   final _nama = TextEditingController();
   final _nip = MaskedTextController(mask: '00000000 000000 0 000');
   final _tmulaitugas = TextEditingController();
+  final _agama = TextEditingController();
   final _tlahir = TextEditingController();
   final _telp = MaskedTextController(mask: '0000 0000 0000');
   final _alamat = TextEditingController();
@@ -280,6 +281,25 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                       validators: (value) {
                         if (value!.isEmpty) {
                           return "alamat Tidak Boleh Kosong !";
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+                  //agama
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 10.0,
+                      right: 10.0,
+                      left: 10.0,
+                    ),
+                    child: TextFormFields(
+                      controllers: _agama,
+                      labelTexts: 'Agama',
+                      keyboardtypes: TextInputType.text,
+                      validators: (value) {
+                        if (value!.isEmpty) {
+                          return "Agama Tidak Boleh Kosong !";
                         }
                         return null;
                       },
@@ -589,6 +609,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                                   pangkat: pakat,
                                   golongan: gol,
                                   jabatan: jabat,
+                                  agama: _agama.text,
                                   status: stas,
                                   jenis_kelamin: jk,
                                   alamat: _alamat.text,
@@ -602,7 +623,7 @@ class _FormPegawaiAsnState extends State<FormPegawaiAsn> {
                                   telp: _telp.text,
                                   imageUrl: '',
                                   uid: '',
-                                  imageKtp: '',
+                                  imageKtp: '', riwayatKerja: [], riwayatPendidikan: [],
                                 );
                                 String? imageUrl;
                                 String? imageKtp;

@@ -9,6 +9,8 @@ import 'package:kec_app/screen/SplashScreen.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 
+import 'controller/controlerPegawai/controllerriwayatpegawai.dart';
+
 
 // add firestore ke widget flutter
 
@@ -20,7 +22,9 @@ Future<void> main() async {
   // Inisialisasi Firebase Storage
   await firebase_storage.FirebaseStorage.instance;
 
-  runApp(SalbaApp());
+   runApp(
+    SalbaApp()
+  );
 }
 
 class SalbaApp extends StatelessWidget {

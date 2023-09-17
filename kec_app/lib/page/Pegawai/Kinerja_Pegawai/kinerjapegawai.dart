@@ -12,6 +12,7 @@ class KinerjaPegawai extends StatefulWidget {
 }
 
 class _KinerjaPegawaiState extends State<KinerjaPegawai> {
+  late String namaPegawai = widget.documentsnapshot['nama'];
   int selectedYear = DateTime.now().year;
   List<int> availableYears = [2022, 2023, 2024, 2025, 2026, 2027];
   Widget buttonTitleWidgets(double value, TitleMeta meta) {
@@ -121,7 +122,7 @@ class _KinerjaPegawaiState extends State<KinerjaPegawai> {
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('pdinas')
-        .where("nama", isEqualTo: widget.documentsnapshot['nama'])
+        .where("nama", isEqualTo: namaPegawai)
         .get();
 
     for (var doc in querySnapshot.docs) {

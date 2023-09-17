@@ -75,16 +75,7 @@ class Drawes extends StatelessWidget {
                         CupertinoPageRoute(builder: ((context) => const GajiHonorPegawai())));
                   },
                 ),
-                ListTile(
-                  title: Text(
-                    'Grafik Kinerja Pegawai',
-                    style: TextStyle(fontSize: 13),
-                  ),
-                  onTap: () {
-                    // Navigator.of(context).push(
-                    //     CupertinoPageRoute(builder: ((context) => const KinerjaPegawai())));
-                  },
-                ),
+                  
               ],
             ),
             ExpansionTile(
