@@ -218,20 +218,21 @@ class _LaporanSuratPenggantiState extends State<LaporanSuratPengganti> {
                 style:
                     pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
           ),
-          pw.SizedBox(height: 20),
+          pw.SizedBox(height: 10),
           pw.Row(
+            mainAxisAlignment: pw.MainAxisAlignment.center,
             children: [
-              pw.Text("Periode Bulan : ",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
+              pw.Text("Periode Bulan ",style: pw.TextStyle(fontWeight: pw.FontWeight.bold),),
               pw.Text(
-                DateFormat('MMMM yyyy','id').format(startDate),
+                '"Dari '+DateFormat('dd MMMM yyyy','id').format(startDate),
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
-                " - ",
+                " Sampai ",
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
               pw.Text(
-                DateFormat('MMMM yyyy','id').format(endDate),
+                DateFormat('dd MMMM yyyy','id').format(endDate)+'"',
                 style: pw.TextStyle(fontWeight: pw.FontWeight.bold),
               ),
             ],

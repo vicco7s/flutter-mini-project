@@ -298,26 +298,26 @@ Future<Uint8List> generateDocument(
                   
               ]),
             ]),
-            pw.SizedBox(height: 20,),
-            pw.Center(
-                  child: pw.Image(imageFotoKtp,height: 250,width: 300,fit: pw.BoxFit.fill),
-                ),
-            pw.SizedBox(height: 10),
-            pw.SizedBox(height: 60),
-            pw.Row(mainAxisAlignment: pw.MainAxisAlignment.end, children: [
+            pw.SizedBox(height: 30,),
+            pw.Row(
+              mainAxisAlignment: pw.MainAxisAlignment.center,
+              children: [
               pw.Column(children: [
-                pw.Text("Camat"),
-                pw.SizedBox(height: 50),
-                pw.Padding(
-                    padding: const pw.EdgeInsets.only(),
-                    child: pw.Text('AKHMAD,S.Sos., M.AP',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
-                pw.Padding(
-                    padding: const pw.EdgeInsets.only(),
-                    child: pw.Text('NIP. 198106202010011029',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+                pw.Container(
+                decoration: pw.BoxDecoration(
+                  border: pw.Border.all(
+                    color: PdfColors.green600,
+                    width: 5,
+                  )
+                ),
+                  child: pw.Image(imageFotoKtp,height: 90,width: 150,fit: pw.BoxFit.fill),
+                ),
+                pw.SizedBox(height: 10),
+                pw.Text("E-KTP",style: pw.TextStyle(color: PdfColors.green600, fontWeight: pw.FontWeight.bold, fontStyle: pw.FontStyle.italic)),
               ])
-            ])
+            ]),
+            pw.SizedBox(height: 10),
+
       ];
     },
   ));

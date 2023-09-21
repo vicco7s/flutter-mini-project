@@ -165,7 +165,7 @@ class _ReportDetailPegawaiState extends State<ReportDetailPegawai> {
           pw.Divider(thickness: 3),
           pw.SizedBox(height: 20),
           pw.Center(
-            child: pw.Text("Laporan Tabel Pegawai",
+            child: pw.Text("Laporan Data Pegawai",
                 style:
                     pw.TextStyle(fontSize: 12, fontWeight: pw.FontWeight.bold)),
           ),
