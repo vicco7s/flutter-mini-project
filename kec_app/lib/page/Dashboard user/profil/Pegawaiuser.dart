@@ -8,12 +8,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/components/AddRiwayatPegawai.dart';
-import 'package:kec_app/controller/controlerPegawai/controllerriwayatpegawai.dart';
-import 'package:kec_app/page/Pegawai/editpegawai.dart';
-import 'package:kec_app/util/ContainerDeviders.dart';
-import 'package:kec_app/util/RoundedRectagleutiliti.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../components/AddRiwayatPegawai.dart';
+import '../../../controller/controlerPegawai/controllerriwayatpegawai.dart';
+import '../../../page/Pegawai/editpegawai.dart';
+import '../../../util/ContainerDeviders.dart';
+import '../../../util/RoundedRectagleutiliti.dart';
+import '../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 import '../../Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
 

@@ -7,11 +7,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kec_app/page/Dashboard%20Camat/HomeCamatPage.dart';
-import 'package:kec_app/page/HomePage.dart';
-import 'package:kec_app/page/Dashboard%20user/HomeUserPage.dart';
-import 'package:kec_app/page/Users/RegisterPage.dart';
-import 'package:kec_app/page/Users/resetPassword.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../Dashboard Camat/HomeCamatPage.dart';
+import '../Dashboard user/HomeUserPage.dart';
+import '../HomePage.dart';
+import 'resetPassword.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -242,7 +243,20 @@ class _LoginPageState extends State<LoginPage> {
             await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password,
-        );
+        );  
+        // Setelah berhasil masuk, ambil userType dari Firestore
+      User? user = userCredential.user;
+      DocumentSnapshot documentSnapshot = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user!.uid)
+          .get();
+      if (documentSnapshot.exists) {
+        String role = documentSnapshot.get('role');
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('isLoggedIn', true);
+        prefs.setString('userType', role);
+      }
+
         Navigator.pop(context);
         route();
       } on FirebaseAuthException catch (e) {
@@ -267,52 +281,44 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  void route() {
-    User? user = FirebaseAuth.instance.currentUser;
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(user!.uid)
-        .get()
-        .then((DocumentSnapshot documentSnapshot) {
-      if (documentSnapshot.exists) {
-        var role = documentSnapshot.get('role');
-        if (role is String) {
-          if (role == 'Admin') {
-            Navigator.pushReplacement(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          } else if (role == 'Camat') {
-            Navigator.pushReplacement(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => const HomeCamatPage(),
-              ),
-            );
-          } else {
-            Navigator.pushReplacement(
-              context,
-              CupertinoPageRoute(
-                builder: (context) => const HomeUserPage(),
-              ),
-            );
-          }
-        } else {
-          const snackBar = SnackBar(
-            backgroundColor: Colors.red,
-            content: Text('Invalid role value!'),
-          );
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        }
-      } else {
-        const snackBar = SnackBar(
-          backgroundColor: Colors.red,
-          content: Text('Akun Tidak ada Di temukan!'),
+  void route() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+  String userType = prefs.getString('userType') ?? '';
+
+  if (isLoggedIn) {
+    switch (userType) {
+      case 'Admin':
+        Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => const HomePage(),
+          ),
         );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
-    });
+        break;
+      case 'Camat':
+        Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => const HomeCamatPage(),
+          ),
+        );
+        break;
+      default:
+        Navigator.pushReplacement(
+          context,
+          CupertinoPageRoute(
+            builder: (context) => const HomeUserPage(),
+          ),
+        );
+        break;
+    }
+  } else {
+    const snackBar = SnackBar(
+      backgroundColor: Colors.red,
+      content: Text('Akun Tidak ada Di temukan!'),
+    );
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
   }
 }

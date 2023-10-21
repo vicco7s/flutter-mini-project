@@ -7,11 +7,11 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/components/inputborder.dart';
-import 'package:kec_app/controller/controllerSurat/controlerSuratMasuk.dart';
-import 'package:kec_app/model/suratmasukService.dart';
+import '../../../components/inputborder.dart';
+import '../../../controller/controllerSurat/controlerSuratMasuk.dart';
+import '../../../model/suratmasukService.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class FormSuratMasuk extends StatefulWidget {
   const FormSuratMasuk({super.key});

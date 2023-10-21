@@ -7,8 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
-import 'package:kec_app/model/suratmasukService.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../model/suratmasukService.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class ControllerSM {
 

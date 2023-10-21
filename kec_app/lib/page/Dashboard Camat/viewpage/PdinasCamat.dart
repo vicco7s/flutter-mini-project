@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kec_app/page/Dashboard%20Camat/detailpage/DetailPdinasCamat.dart';
+import '../../../page/Dashboard%20Camat/detailpage/DetailPdinasCamat.dart';
 
 class PerjalananDinasCamat extends StatefulWidget {
   const PerjalananDinasCamat({super.key});

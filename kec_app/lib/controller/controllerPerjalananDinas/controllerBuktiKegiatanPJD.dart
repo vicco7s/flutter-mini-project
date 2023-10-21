@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart' as storage;
-import 'package:kec_app/model/PerjalananDinas/BuktiPJDService.dart';
+import '../../../../model/PerjalananDinas/BuktiPJDService.dart';
 
 class ControllerBuktiKegiatanPJD {
   final CollectionReference _buktiKegiatan =

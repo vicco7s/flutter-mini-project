@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:kec_app/controller/controllerSurat/controllerSuratKeluar.dart';
-import 'package:kec_app/page/agenda/SuratKeluar/DetailSuratKeluar.dart';
-import 'package:kec_app/page/agenda/SuratKeluar/FormSuratKeluar.dart';
-import 'package:kec_app/page/agenda/Suratmasuk/FormSuratMasuk.dart';
-import 'package:kec_app/report/Report_surat_Keluar/ReportpdfOutSurel.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
+import '../../../controller/controllerSurat/controllerSuratKeluar.dart';
+import '../../../page/agenda/SuratKeluar/DetailSuratKeluar.dart';
+import '../../../page/agenda/SuratKeluar/FormSuratKeluar.dart';
+import '../../../page/agenda/Suratmasuk/FormSuratMasuk.dart';
+import '../../../report/Report_surat_Keluar/ReportpdfOutSurel.dart';
+import '../../../util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
 
 class SuratKeluarPage extends StatefulWidget {

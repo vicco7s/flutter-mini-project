@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/page/Dashboard%20user/profil/detailGajiHonorUser.dart';
+import '../../../../page/Dashboard%20user/profil/detailGajiHonorUser.dart';
 
 class TabBarViewUsers extends StatefulWidget {
   TabBarViewUsers({required this.controllers});

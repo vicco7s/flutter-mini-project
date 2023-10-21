@@ -5,11 +5,9 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
-import 'package:kec_app/components/DownloaderPdf.dart';
-import 'package:kec_app/page/agenda/Suratmasuk/DetailSurat.dart';
-import 'package:kec_app/util/ContainerDeviders.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import 'package:sikep/components/DownloaderPdf.dart';
+import 'package:sikep/util/ContainerDeviders.dart';
+import 'package:sikep/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailSuratMasukCamat extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;

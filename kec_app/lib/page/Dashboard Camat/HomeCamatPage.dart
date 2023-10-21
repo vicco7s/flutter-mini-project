@@ -5,15 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/components/TabbarViewWidget/TabbarViewWidget.dart';
-import 'package:kec_app/page/Dashboard%20Camat/viewpage/PdinasCamat.dart';
-import 'package:kec_app/page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
-import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';
-import 'package:kec_app/page/Dashboard%20Camat/viewpage/SuratmasukCamat.dart';
-import 'package:kec_app/page/Users/loginpage.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
-import 'package:kec_app/util/utilCamatHome/DrawerCamatHome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../components/TabbarViewWidget/TabbarViewWidget.dart';
+import '../../../page/Dashboard%20Camat/viewpage/PdinasCamat.dart';
+import '../../../page/Dashboard%20Camat/viewpage/PegawaiCamat.dart';
+import '../../../page/Dashboard%20Camat/viewpage/SuratKeluarCamat.dart';
+import '../../../page/Dashboard%20Camat/viewpage/SuratmasukCamat.dart';
+import '../../../page/Users/loginpage.dart';
+import '../../../util/SpeedDialFloating.dart';
+import '../../../util/utilCamatHome/DrawerCamatHome.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../screen/SplashScreen.dart';
 
 class HomeCamatPage extends StatefulWidget {
   const HomeCamatPage({super.key});
@@ -456,12 +459,17 @@ class _HomeCamatPageState extends State<HomeCamatPage>
 }
 
 Future<void> logout(BuildContext context) async {
-  await FirebaseAuth.instance.signOut();
-  // ignore: use_build_context_synchronously
+ final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', false); // Menandai pengguna tidak lagi login
+  await prefs.setString('userType', ''); // Hapus tipe pengguna yang tersimpan
+
+  await FirebaseAuth.instance.signOut(); // Logout dari Firebase Authentication
+
+  // Navigasi kembali ke halaman login
   Navigator.pushReplacement(
     context,
-    CupertinoPageRoute(
-      builder: (context) => LoginPage(),
+    MaterialPageRoute(
+      builder: (context) => SplashScreen(),
     ),
   );
 }

@@ -2,9 +2,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
-import 'package:kec_app/components/inputborder.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../../components/DropDownSearch/DropDownSearch.dart';
+import '../../../../components/inputborder.dart';
+import '../../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 // import 'model.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;

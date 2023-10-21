@@ -4,15 +4,14 @@ import 'package:image_picker/image_picker.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:intl/intl.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
-import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
-import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
-import 'package:kec_app/util/OptionDropDown.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
-import 'package:kec_app/util/shortpath.dart';
+
+import '../../components/DropdownButtomFormUpdates.dart';
+import '../../controller/controlerPegawai/controllerPegawai.dart';
+import '../../util/OptionDropDown.dart';
+import '../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../util/shortpath.dart';
 
 class EditPegawai extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;

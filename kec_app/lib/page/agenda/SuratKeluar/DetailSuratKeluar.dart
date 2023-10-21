@@ -5,10 +5,11 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/components/DownloaderPdf.dart';
-import 'package:kec_app/controller/controllerSurat/controllerSuratKeluar.dart';
-import 'package:kec_app/util/ContainerDeviders.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+
+import '../../../components/DownloaderPdf.dart';
+import '../../../controller/controllerSurat/controllerSuratKeluar.dart';
+import '../../../util/ContainerDeviders.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailSuratKeluar extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;

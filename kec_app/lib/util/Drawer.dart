@@ -1,26 +1,25 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/page/Pegawai/GajiHonorPegawai/Gajihonorpegawai.dart';
-import 'package:kec_app/page/Pegawai/Kinerja_Pegawai/kinerjapegawai.dart';
-import 'package:kec_app/page/Pegawai/pegawaiASN.dart';
-import 'package:kec_app/page/agenda/SuratKeluar/SuratKeluarPage.dart';
-import 'package:kec_app/page/agenda/Suratmasuk/SuratMasukPage.dart';
-import 'package:kec_app/page/agenda/suratBatalPerjalanan/suratbatalPJD.dart';
-import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/pilihpegawai.dart';
-import 'package:kec_app/page/perjalananDinas/pdinaspage.dart';
-import 'package:kec_app/report/Report_pDinas/ReportBuktiKegiatanPJD.dart';
-import 'package:kec_app/report/Report_pDinas/ReportPDinasPerNama.dart';
-import 'package:kec_app/report/Report_pDinas/ReportPriodePjd.dart';
-import 'package:kec_app/report/Report_surat_Keluar/ReportOutSurelPertahun.dart';
-import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPerbulan.dart';
-import 'package:kec_app/report/Report_surat_masuk/ReportJumlahSMPertahun.dart';
-import 'package:kec_app/report/Report_surat_Keluar/ReportpdfOutSurel.dart';
-import 'package:kec_app/report/reportPegawai/ReportDetaiPegawai.dart';
-import 'package:kec_app/report/reportPegawai/ReportJumlahPegawai.dart';
-import 'package:kec_app/report/reportPegawai/ReportPembayaranHonor.dart';
-import 'package:kec_app/report/reportPegawai/ReportpdfASNNonAsn.dart';
-import 'package:kec_app/report/reportSuratBatal/LaporanSuratbatal.dart';
-import 'package:kec_app/report/reportSuratPengganti/LaporanSuratPengganti.dart';
+
+import '../page/Pegawai/GajiHonorPegawai/Gajihonorpegawai.dart';
+import '../page/Pegawai/pegawaiASN.dart';
+import '../page/agenda/SuratKeluar/SuratKeluarPage.dart';
+import '../page/agenda/Suratmasuk/SuratMasukPage.dart';
+import '../page/agenda/suratBatalPerjalanan/suratbatalPJD.dart';
+import '../page/agenda/suratPegantiPegawaiPJD/pilihpegawai.dart';
+import '../page/perjalananDinas/pdinaspage.dart';
+import '../report/Report_pDinas/ReportPDinasPerNama.dart';
+import '../report/Report_pDinas/ReportPriodePjd.dart';
+import '../report/Report_surat_Keluar/ReportOutSurelPertahun.dart';
+import '../report/Report_surat_Keluar/ReportpdfOutSurel.dart';
+import '../report/Report_surat_masuk/ReportJumlahSMPerbulan.dart';
+import '../report/Report_surat_masuk/ReportJumlahSMPertahun.dart';
+import '../report/reportPegawai/ReportDetaiPegawai.dart';
+import '../report/reportPegawai/ReportJumlahPegawai.dart';
+import '../report/reportPegawai/ReportPembayaranHonor.dart';
+import '../report/reportPegawai/ReportpdfASNNonAsn.dart';
+import '../report/reportSuratBatal/LaporanSuratbatal.dart';
+import '../report/reportSuratPengganti/LaporanSuratPengganti.dart';
 
 class Drawes extends StatelessWidget {
   const Drawes({

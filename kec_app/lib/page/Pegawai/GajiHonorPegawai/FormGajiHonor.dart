@@ -3,13 +3,13 @@ import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/components/DateTimeFields.dart';
-import 'package:kec_app/components/DropDownSearch/DropDownSearch.dart';
-import 'package:kec_app/components/DropdownButtonForm.dart';
-import 'package:kec_app/components/inputborder.dart';
-import 'package:kec_app/controller/controlerPegawai/controllerHonorGaji.dart';
-import 'package:kec_app/model/Pegawai/gajihonorservice.dart';
-import 'package:kec_app/report/reportPegawai/ReportDetaiPegawai.dart';
+import '../../../../components/DateTimeFields.dart';
+import '../../../../components/DropDownSearch/DropDownSearch.dart';
+import '../../../../components/DropdownButtonForm.dart';
+import '../../../../components/inputborder.dart';
+import '../../../../controller/controlerPegawai/controllerHonorGaji.dart';
+import '../../../../model/Pegawai/gajihonorservice.dart';
+import '../../../../report/reportPegawai/ReportDetaiPegawai.dart';
 
 class FormGajiHonorPegawai extends StatefulWidget {
   const FormGajiHonorPegawai({super.key});

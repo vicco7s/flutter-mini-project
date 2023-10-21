@@ -4,9 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/page/Dashboard%20Camat/SuratPengganti/detailSuratpenggantiCamat.dart';
-import 'package:kec_app/report/reportSuratPengganti/SuratPengganti.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../../page/Dashboard%20Camat/SuratPengganti/detailSuratpenggantiCamat.dart';
+import '../../../../report/reportSuratPengganti/SuratPengganti.dart';
+import '../../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 class ListSuratPenggantiUser extends StatefulWidget {
   const ListSuratPenggantiUser({super.key});

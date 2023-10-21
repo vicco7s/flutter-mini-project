@@ -3,13 +3,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
-import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/detailSuratBatalPjd.dart';
-import 'package:kec_app/page/Dashboard%20user/surat/suratBatal/formsuratbatalPJD.dart';
-import 'package:kec_app/report/reportSuratBatal/SuratBatal.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
+import '../../../../controller/controllerUser/controllerSuratBatal.dart';
+import '../../../../page/Dashboard%20user/surat/suratBatal/detailSuratBatalPjd.dart';
+import '../../../../page/Dashboard%20user/surat/suratBatal/formsuratbatalPJD.dart';
+import '../../../../report/reportSuratBatal/SuratBatal.dart';
+import '../../../../util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+
 
 class SuratbatalPjDinas extends StatefulWidget {
   const SuratbatalPjDinas({super.key});

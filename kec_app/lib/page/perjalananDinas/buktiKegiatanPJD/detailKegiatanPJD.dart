@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import 'package:sikep/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
+import 'package:sikep/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 class DetailKegiatanPJD extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;

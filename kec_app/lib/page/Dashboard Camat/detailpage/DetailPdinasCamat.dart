@@ -5,10 +5,10 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerCamat.dart';
-import 'package:kec_app/page/perjalananDinas/buktiKegiatanPJD/detailKegiatanPJD.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../controller/controllerCamat.dart';
+import '../../../page/perjalananDinas/buktiKegiatanPJD/detailKegiatanPJD.dart';
+import '../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailPdinasCamat extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;

@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
-import 'package:kec_app/page/Dashboard%20Camat/SuratBatal/detailsuratBatalcamat.dart';
-import 'package:kec_app/report/reportSuratBatal/SuratBatal.dart';
+import '../../../controller/controllerUser/controllerSuratBatal.dart';
+import '../../../page/Dashboard%20Camat/SuratBatal/detailsuratBatalcamat.dart';
+import '../../../report/reportSuratBatal/SuratBatal.dart';
 
 class ListSuratBatalUser extends StatefulWidget {
   final DocumentSnapshot documentSnapshot;

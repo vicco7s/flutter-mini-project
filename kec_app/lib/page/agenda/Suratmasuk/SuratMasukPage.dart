@@ -5,14 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_speed_dial/flutter_speed_dial.dart';
-import 'package:kec_app/components/inputborder.dart';
-import 'package:kec_app/controller/controllerSurat/controlerSuratMasuk.dart';
-import 'package:kec_app/page/agenda/Suratmasuk/DetailSurat.dart';
-import 'package:kec_app/page/agenda/Suratmasuk/FormSuratMasuk.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
-import 'package:intl/intl.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+
+import '../../../controller/controllerSurat/controlerSuratMasuk.dart';
+import '../../../util/SpeedDialFloating.dart';
+import '../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import 'DetailSurat.dart';
+import 'FormSuratMasuk.dart';
 
 class SuratMasukPage extends StatefulWidget {
   const SuratMasukPage({super.key});

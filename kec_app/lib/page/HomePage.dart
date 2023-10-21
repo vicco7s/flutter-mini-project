@@ -4,15 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/page/Users/RegisterPage.dart';
-import 'package:kec_app/page/Users/loginpage.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sikep/screen/SplashScreen.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../util/Drawer.dart';
+import '../util/SpeedDialFloating.dart';
+import 'Users/RegisterPage.dart';
+import 'Users/loginpage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -286,12 +287,17 @@ class _HomePageState extends State<HomePage> {
 }
 
 Future<void> logout(BuildContext context) async {
-  await FirebaseAuth.instance.signOut();
-  // ignore: use_build_context_synchronously
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', false); // Menandai pengguna tidak lagi login
+  await prefs.setString('userType', ''); // Hapus tipe pengguna yang tersimpan
+
+  await FirebaseAuth.instance.signOut(); // Logout dari Firebase Authentication
+
+  // Navigasi kembali ke halaman login
   Navigator.pushReplacement(
     context,
-    CupertinoPageRoute(
-      builder: (context) => LoginPage(),
+    MaterialPageRoute(
+      builder: (context) => SplashScreen(),
     ),
   );
 }

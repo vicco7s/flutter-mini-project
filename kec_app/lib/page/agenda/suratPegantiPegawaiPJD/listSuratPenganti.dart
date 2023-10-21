@@ -2,10 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/controller/controllerSurat/ControllerSuratPenganti.dart';
-import 'package:kec_app/page/agenda/suratPegantiPegawaiPJD/detaiSuratPenganti.dart';
-import 'package:kec_app/report/reportSuratPengganti/SuratPengganti.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
+import '../../../controller/controllerSurat/ControllerSuratPenganti.dart';
+import '../../../page/agenda/suratPegantiPegawaiPJD/detaiSuratPenganti.dart';
+import '../../../report/reportSuratPengganti/SuratPengganti.dart';
+import '../../../util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
 import 'tambahSuratPenganti.dart';
 

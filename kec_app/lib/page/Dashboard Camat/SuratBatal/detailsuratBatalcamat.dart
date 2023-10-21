@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
-import 'package:kec_app/util/ContainerDeviders.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../controller/controllerUser/controllerSuratBatal.dart';
+import '../../../util/ContainerDeviders.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailSuratBatalCamat extends StatelessWidget {
   final QueryDocumentSnapshot suratBatalDoc;

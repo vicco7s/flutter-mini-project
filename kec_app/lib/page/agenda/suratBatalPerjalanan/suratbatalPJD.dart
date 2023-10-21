@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/page/agenda/suratBatalPerjalanan/detailSuratBatalPJD.dart';
+import '../../../page/agenda/suratBatalPerjalanan/detailSuratBatalPJD.dart';
 
 class SuratBatalAdminPJD extends StatefulWidget {
   const SuratBatalAdminPJD({super.key});

@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/util/OptionDropDown.dart';
+import '../../../../util/OptionDropDown.dart';
 
 class UpdatePdinasUser {
   final CollectionReference _pdinas =

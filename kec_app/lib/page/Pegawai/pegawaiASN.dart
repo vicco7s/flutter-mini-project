@@ -2,16 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/components/DropdownButtomFormUpdates.dart';
-import 'package:kec_app/components/DropdownButtonForm.dart';
-import 'package:kec_app/controller/controlerPegawai/controllerPegawai.dart';
-import 'package:kec_app/page/Pegawai/DetaiPegawai.dart';
-import 'package:kec_app/page/Pegawai/FormPegawaiAsn.dart';
-import 'package:kec_app/report/reportPegawai/ReportDetailTunggalPegawai.dart';
-import 'package:kec_app/util/OptionDropDown.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
-import 'package:intl/intl.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+
+import '../../controller/controlerPegawai/controllerPegawai.dart';
+import '../../report/reportPegawai/ReportDetailTunggalPegawai.dart';
+import '../../util/SpeedDialFloating.dart';
+import '../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import 'DetaiPegawai.dart';
+import 'FormPegawaiAsn.dart';
 
 class PegawaiAsn extends StatefulWidget {
   const PegawaiAsn({super.key});

@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/page/Dashboard%20Camat/SuratBatal/suratbatalCamat.dart';
-import 'package:kec_app/page/Dashboard%20Camat/SuratPengganti/ListSuratPengganticamat.dart';
+import 'package:sikep/page/Dashboard%20Camat/SuratBatal/suratbatalCamat.dart';
+import 'package:sikep/page/Dashboard%20Camat/SuratPengganti/ListSuratPengganticamat.dart';
 
 class DrawerCamatHome extends StatelessWidget {
   const DrawerCamatHome({

@@ -9,11 +9,12 @@ import 'package:flutter/src/widgets/container.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/components/inputborder.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerSurat/controllerSuratKeluar.dart';
-import 'package:kec_app/model/suratkeluarService.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+
+import '../../../components/inputborder.dart';
+import '../../../controller/controllerSurat/controllerSuratKeluar.dart';
+import '../../../model/suratkeluarService.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class FormSuratKeluar extends StatefulWidget {
   const FormSuratKeluar({super.key});

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/components/inputborder.dart';
+import '../../../../components/inputborder.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerUser/controllerSuratBatal.dart';
-import 'package:kec_app/model/UserService/suratbatalservice.dart';
+import '../../../../controller/controllerUser/controllerSuratBatal.dart';
+import '../../../../model/UserService/suratbatalservice.dart';
 
 class FormSuratBatalPJD extends StatefulWidget {
   final DocumentSnapshot userDocument;

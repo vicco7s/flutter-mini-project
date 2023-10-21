@@ -9,8 +9,8 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-import 'package:kec_app/components/DropDownSearch/DropdownSearchUpdate.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../components/DropDownSearch/DropdownSearchUpdate.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 import 'formbuktiKegiatanPJD.dart';
 

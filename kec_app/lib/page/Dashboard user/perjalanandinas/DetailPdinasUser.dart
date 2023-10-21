@@ -6,12 +6,12 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
-import 'package:kec_app/controller/controllerUser/controllerPdinasUser.dart';
-import 'package:kec_app/page/Dashboard%20user/buktiperjalanandinas/detailbuktiKegiatanPJD.dart';
-import 'package:kec_app/page/Dashboard%20user/buktiperjalanandinas/formbuktiKegiatanPJD.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
+import '../../../controller/controllerUser/controllerPdinasUser.dart';
+import '../../../page/Dashboard%20user/buktiperjalanandinas/detailbuktiKegiatanPJD.dart';
+import '../../../page/Dashboard%20user/buktiperjalanandinas/formbuktiKegiatanPJD.dart';
+import '../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailPdinasUser extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;

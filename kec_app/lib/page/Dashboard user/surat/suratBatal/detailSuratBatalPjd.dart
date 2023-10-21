@@ -3,9 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/util/ContainerDeviders.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../../util/ContainerDeviders.dart';
+import '../../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class DetailSuratBatalPJD extends StatelessWidget {
   final DocumentSnapshot documentSnapshot;

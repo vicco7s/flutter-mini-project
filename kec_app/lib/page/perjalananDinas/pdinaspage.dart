@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerPerjalananDinas/controllerpdinas.dart';
-import 'package:kec_app/page/perjalananDinas/detailpdinas.dart';
-import 'package:kec_app/page/perjalananDinas/formpdinas.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../../controller/controllerPerjalananDinas/controllerpdinas.dart';
+import '../../../../page/perjalananDinas/detailpdinas.dart';
+import '../../../../page/perjalananDinas/formpdinas.dart';
+import '../../../../util/SpeedDialFloating.dart';
+import '../../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 class DinasPageList extends StatefulWidget {
   const DinasPageList({super.key});

@@ -2,12 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:datetime_picker_formfield_new/datetime_picker_formfield.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/components/DropDownSearch/DropdownSearchUpdate.dart';
-import 'package:kec_app/components/DropdownButtonForm.dart';
-import 'package:kec_app/model/Pegawai/gajihonorservice.dart';
+import '../../../../components/DropDownSearch/DropdownSearchUpdate.dart';
+import '../../../../components/DropdownButtonForm.dart';
+import '../../../../model/Pegawai/gajihonorservice.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/page/Pegawai/GajiHonorPegawai/FormGajiHonor.dart';
-import 'package:kec_app/util/controlleranimasiloading/controlleranimasiprogressloading.dart';
+import '../../../../page/Pegawai/GajiHonorPegawai/FormGajiHonor.dart';
+import '../../../../util/controlleranimasiloading/controlleranimasiprogressloading.dart';
 
 class ControllerGajiHonor {
   final CollectionReference gajihonor =

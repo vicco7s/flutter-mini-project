@@ -1,12 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:kec_app/controller/controlerPegawai/controllerHonorGaji.dart';
-import 'package:kec_app/page/Pegawai/GajiHonorPegawai/DetailGajiHonor.dart';
-import 'package:kec_app/page/Pegawai/GajiHonorPegawai/FormGajiHonor.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import 'package:sikep/util/SpeedDialFloating.dart';
+
+import '../../../controller/controlerPegawai/controllerHonorGaji.dart';
+import '../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import 'DetailGajiHonor.dart';
+import 'FormGajiHonor.dart';
 
 class GajiHonorPegawai extends StatefulWidget {
   const GajiHonorPegawai({super.key});

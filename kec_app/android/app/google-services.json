@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:444198150722:android:533b4a524bca182f5343db",
+        "mobilesdk_app_id": "1:444198150722:android:f39de6271d72046d5343db",
         "android_client_info": {
-          "package_name": "com.example.kec_app"
+          "package_name": "com.salba.sikep"
         }
       },
       "oauth_client": [

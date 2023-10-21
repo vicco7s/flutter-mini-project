@@ -5,8 +5,8 @@ import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
-import 'package:kec_app/controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
-import 'package:kec_app/util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
+import '../../../controller/controllerPerjalananDinas/controllerBuktiKegiatanPJD.dart';
+import '../../../util/controlleranimasiloading/CircularControlAnimasiProgress.dart';
 
 import 'editBuktiKegiantanPJD.dart';
 

@@ -9,14 +9,16 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kec_app/components/TabbarViewWidget/TabbarViewUser.dart';
-import 'package:kec_app/page/Dashboard%20user/perjalanandinas/PdinasUser.dart';
-import 'package:kec_app/page/Dashboard%20user/profil/Pegawaiuser.dart';
-import 'package:kec_app/page/Dashboard%20user/surat/Suratmasukuser.dart';
-import 'package:kec_app/page/Users/loginpage.dart';
-import 'package:kec_app/util/SpeedDialFloating.dart';
-import 'package:kec_app/util/utilpegawaihome/DrawerPegawaiHome.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../components/TabbarViewWidget/TabbarViewUser.dart';
+import '../../../page/Dashboard%20user/perjalanandinas/PdinasUser.dart';
+import '../../../page/Dashboard%20user/profil/Pegawaiuser.dart';
+import '../../../page/Dashboard%20user/surat/Suratmasukuser.dart';
+import '../../../page/Users/loginpage.dart';
+import '../../../util/SpeedDialFloating.dart';
+import '../../../util/utilpegawaihome/DrawerPegawaiHome.dart';
 
+import '../../screen/SplashScreen.dart';
 import 'surat/SuratKeluarUser.dart';
 
 import 'package:url_launcher/url_launcher.dart';
@@ -448,12 +450,17 @@ class _HomeUserPageState extends State<HomeUserPage> with SingleTickerProviderSt
 }
 
 Future<void> logout(BuildContext context) async {
-  await FirebaseAuth.instance.signOut();
-  // ignore: use_build_context_synchronously
+  final prefs = await SharedPreferences.getInstance();
+  await prefs.setBool('isLoggedIn', false); // Menandai pengguna tidak lagi login
+  await prefs.setString('userType', ''); // Hapus tipe pengguna yang tersimpan
+
+  await FirebaseAuth.instance.signOut(); // Logout dari Firebase Authentication
+
+  // Navigasi kembali ke halaman login
   Navigator.pushReplacement(
     context,
-    CupertinoPageRoute(
-      builder: (context) => LoginPage(),
+    MaterialPageRoute(
+      builder: (context) => SplashScreen(),
     ),
   );
 }
