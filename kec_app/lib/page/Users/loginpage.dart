@@ -62,6 +62,8 @@ class _LoginPageState extends State<LoginPage> {
       }
       previousresult = nowresult;
     });
+    // Cek apakah harus logout pengguna
+
   }
 
   @override
@@ -69,6 +71,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
     connectivitySubscription.cancel();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -256,7 +259,7 @@ class _LoginPageState extends State<LoginPage> {
         prefs.setBool('isLoggedIn', true);
         prefs.setString('userType', role);
       }
-
+        saveLoginTime();
         Navigator.pop(context);
         route();
       } on FirebaseAuthException catch (e) {
@@ -279,6 +282,14 @@ class _LoginPageState extends State<LoginPage> {
         }
       }
     }
+  }
+
+  // Fungsi untuk menyimpan waktu login saat ini
+  void saveLoginTime() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final currentTime = DateTime.now().millisecondsSinceEpoch;
+    prefs.setInt('lastLoginTime', currentTime);
+    print("Time : $currentTime");
   }
 
   void route() async {

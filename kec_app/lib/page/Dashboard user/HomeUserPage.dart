@@ -55,6 +55,21 @@ class _HomeUserPageState extends State<HomeUserPage> with SingleTickerProviderSt
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 4, vsync: this);
+    checkAutoLogout();
+  }
+
+  void checkAutoLogout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final lastLoginTime = prefs.getInt('lastLoginTime');
+    if (lastLoginTime != null) {
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      final weekInMillis = 7 * 24 * 60 * 60 * 1000; // Satu minggu dalam milidetik
+      final monthInMillis = 30 * 24 * 60 * 60 * 1000; // Satu bulan dalam milidetik
+      if (currentTime - lastLoginTime > monthInMillis) {
+        // Jika melewati waktu seminggu, logout pengguna
+        logout(context);
+      }
+    }
   }
 
   @override

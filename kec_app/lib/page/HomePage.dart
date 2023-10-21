@@ -23,6 +23,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Panggil fungsi checkAutoLogout untuk memeriksa apakah pengguna harus logout
+    checkAutoLogout();
+  }
+
+  void checkAutoLogout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final lastLoginTime = prefs.getInt('lastLoginTime');
+    if (lastLoginTime != null) {
+      final currentTime = DateTime.now().millisecondsSinceEpoch;
+      final weekInMillis = 7 * 24 * 60 * 60 * 1000; // Satu minggu dalam milidetik
+      final monthInMillis = 30 * 24 * 60 * 60 * 1000; // Satu bulan dalam milidetik
+      if (currentTime - lastLoginTime > monthInMillis) {
+        // Jika melewati waktu seminggu, logout pengguna
+        logout(context);
+      }
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
