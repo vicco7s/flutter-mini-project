@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1024878666067",
+    "project_id": "sisigawian",
+    "storage_bucket": "sisigawian.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1024878666067:android:4b23ce1ab0962e5abbc1a6",
+        "android_client_info": {
+          "package_name": "com.example.sisi_gawian"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJ-JDZ1gInzJbyzW5PapCiEoQC5w1Z_PE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
